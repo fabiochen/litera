@@ -1,0 +1,132 @@
+{
+  "CONFIG":{
+      "APP":{
+          "ORAL-LANGUAGE":"PORTUGUÊS"
+      },
+      "DEVELOPER":{
+          "NAME":"Team Unitas","EMAIL":"info@unitasoft.net"
+      },
+      "SETTINGS": [
+          {
+              "NAVIGATION-LANGUAGE": "English"
+          },
+          {
+              "NAVIGATION-LANGUAGE": "Français"
+          },
+          {
+              "NAVIGATION-LANGUAGE": "Português"
+          }
+      ],
+      "VOCABULARY": [
+
+          {
+              "LANGUAGE": "Language",
+              "SAVE": "Save",
+              "ABOUT":"About",
+              "CONTACT":"Contact",
+              "SETTINGS":"Settings",
+              "LESSON": "Lesson",
+              "LETTERS":"Letters",
+              "VOWELS":"Vowels",
+              "CONSONANTS":"Consonants",
+              "ALPHABET":"Alphabet",
+              "SYLLABLES":"Syllables",
+              "MATCH-CASE":"Upper / lower case",
+              "NUMBERS":"Numbers",
+              "ONSET": "Onset",
+              "ONSETS": "Onsets",
+              "ORDER-NUMBERS":"Numerical Order",
+              "ORDER-VOWELS":"Vowel Order",
+              "ORDER-ALPHABET":"Alphabetical Order",
+              "WORD":"Word",
+              "WORDS":"Words",
+              "EXERCISE": "Exercise",
+              "TEST": "Test",
+              "PICTURE":"Picture",
+              "PICTURES":"Pictures",
+              "SOUND": "Sound",
+              "SPELLING":"Spelling",
+              "REPORTS": "Reports",
+              "TYPE-WORD": "Enter the word",
+              "CHECK": "check",
+              "SHARE": "Share",
+              "SHUFFLE": "shuffle",
+              "BEGINNING": "Beginning",
+              "END": "End",
+              "UNLOCKMODULES": "Unlock modules"
+          },
+          {
+              "LANGUAGE": "Langue",
+              "SAVE": "Sauvegarder",
+              "ABOUT":"A propos",
+              "CONTACT":"Contact",
+              "SETTINGS":"Paramètres",
+              "LESSON": "Leçon",
+              "LETTERS":"Lettres",
+              "VOWELS":"Voyelles",
+              "CONSONANTS":"Consonnes",
+              "ALPHABET":"Alphabet",
+              "SYLLABLES":"Syllabes",
+              "MATCH-CASE":"Majuscule / Minuscule",
+              "NUMBERS":"Chiffres",
+              "ONSET": "Son initial",
+              "ONSETS": "Sons initiales",
+              "ORDER-NUMBERS":"Ordre Numérique",
+              "ORDER-VOWELS":"Ordre des Voyelles",
+              "ORDER-ALPHABET":"Ordre Alphabétique",
+              "WORD":"Mot",
+              "WORDS":"Mots",
+              "EXERCISE": "Exercice",
+              "TEST": "Test",
+              "PICTURE":"Image",
+              "PICTURES":"Images",
+              "SOUND": "Son",
+              "SPELLING":"Épeler",
+              "REPORTS": "Rapports",
+              "TYPE-WORD": "Entrez le mot",
+              "CHECK": "vérifier",
+              "SHARE": "partager",
+              "SHUFFLE": "mélanger",
+              "BEGINNING": "Début",
+              "END": "Fin",
+              "UNLOCKMODULES": "Debloquer les modules"
+          },
+          {
+              "LANGUAGE": "Língua",
+              "SAVE": "Salvar",
+              "ABOUT":"Sobre",
+              "CONTACT":"Contato",
+              "SETTINGS":"Configuração",
+              "LESSON": "Lição",
+              "LETTERS":"Letras",
+              "VOWELS":"Vogais",
+              "CONSONANTS":"Consoantes",
+              "ALPHABET":"Alfabeto",
+              "SYLLABLES": "Sílabas",
+              "MATCH-CASE":"Maiúscula / Minúscula",
+              "NUMBERS":"Números",
+              "ONSET": "Som inicial",
+              "ONSETS": "Sons iniciais",
+              "ORDER-NUMBERS":"Ordem Numérica",
+              "ORDER-VOWELS":"Ordem das Vogais",
+              "ORDER-ALPHABET":"Ordem Alfabética",
+              "WORD":"Palavra",
+              "WORDS":"Palavras",
+              "EXERCISE": "Exercício",
+              "TEST": "Teste",
+              "PICTURE":"Imagem",
+              "PICTURES":"Imagens",
+              "SOUND": "Som",
+              "SPELLING":"Soletrar",
+              "REPORTS": "Relatórios",
+              "TYPE-WORD": "Digite a palavra",
+              "CHECK": "verificar",
+              "SHARE": "Compartilhar",
+              "SHUFFLE": "embaralhar",
+              "BEGINNING": "Começo",
+              "END": "Fim",
+              "UNLOCKMODULES": "Desbloquear módulos"
+          }
+      ]
+    }
+}
