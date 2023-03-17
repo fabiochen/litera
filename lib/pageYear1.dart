@@ -339,6 +339,9 @@ class _PageYear1State extends BaseModuleState<PageYear1> {
                       );
                     } (),
                   ), // test #3: match case
+                  Divider(
+                    color: Colors.teal,
+                  ),
                   Container(
                     child: () {
                       String title = getAssetsVocab('SYLLABLES');
@@ -463,6 +466,37 @@ class _PageYear1State extends BaseModuleState<PageYear1> {
                   ), // exercise 1
                   Container(
                     child: () {
+                      String title = getAssetsVocab('WORD') + " / " + getAssetsVocab('SYLLABLES');
+                      int moduleIndex = ModulesYear1Portuguese.Syllables_Exercise_SyllablesWord.index;
+                      bool isModuleLocked = moduleIndex > getUnlockModuleIndex(year,1);
+                      return ListTile(
+                        leading: getExerciseIcon(),
+                        title: Text(
+                          title,
+                          style: getModuleStyle(isModuleLocked),
+                        ),
+                        trailing: getLockIcon(isModuleLocked),
+                        onTap: () {
+                          if (!isModuleLocked) Navigator.pushNamed(context, '/ModuleSyllableWord',
+                              arguments: <String, Object>{
+                                'title': getAssetsVocab('EXERCISE') + ": " + title,
+                                'mode': 'exercise',
+                                'year': year,
+                                'subject': expandedId,  // whichever panel is expanded is the subject matter
+                                'moduleIndex': moduleIndex,
+                                'list': syllableUnique.where((word) => word.title.length == 4).toList()
+                              }).then((_) {
+                            // This block runs when you have returned back to the 1st Page from 2nd.
+                            setState(() {
+                              // Call setState to refresh the page.
+                            });
+                          });
+                        },
+                      );
+                    } (),
+                  ), // exercise 2
+                  Container(
+                    child: () {
                       String title = getAssetsVocab('SOUND')  + " / " + getAssetsVocab('SYLLABLES');
                       int moduleIndex = ModulesYear1Portuguese.Syllables_Test_SyllablesSound.index;
                       bool isModuleLocked = moduleIndex > getUnlockModuleIndex(year,1);
@@ -494,6 +528,40 @@ class _PageYear1State extends BaseModuleState<PageYear1> {
                       );
                     } (),
                   ), // test 1
+                  Container(
+                    child: () {
+                      String title = getAssetsVocab('WORD') + " / " + getAssetsVocab('SYLLABLES');
+                      int moduleIndex = ModulesYear1Portuguese.Syllables_Test_SyllablesWord.index;
+                      bool isModuleLocked = moduleIndex > getUnlockModuleIndex(year,1);
+                      return ListTile(
+                        leading: getTestIcon(),
+                        title: Text(
+                          title,
+                          style: getModuleStyle(isModuleLocked),
+                        ),
+                        trailing: getLockIcon(isModuleLocked),
+                        onTap: () {
+                          if (!isModuleLocked) Navigator.pushNamed(context, '/ModuleSyllableWord',
+                              arguments: <String, Object>{
+                                'title': getAssetsVocab('EXERCISE') + ": " + title,
+                                'mode': 'test',
+                                'numberQuestions': 20,
+                                'year': year,
+                                'subject': expandedId,  // whichever panel is expanded is the subject matter
+                                'moduleIndex': moduleIndex,
+                                'list': syllableUnique.where((word) =>
+                                    word.title.length == 4
+                                ).toList()
+                              }).then((_) {
+                            // This block runs when you have returned back to the 1st Page from 2nd.
+                            setState(() {
+                              // Call setState to refresh the page.
+                            });
+                          });
+                        },
+                      );
+                    } (),
+                  ), // test 2
                 ],
               ),
             ),

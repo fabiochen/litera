@@ -34,6 +34,7 @@ Color menuColor = Colors.teal;
 Color menuColorDark = Colors.teal[800];
 
 List<Word> alphabet;
+List<Word> syllableUnique;
 List<Word> listWordOnset;
 List<Word> listVowels;
 List<Word> listAlphabet;
@@ -82,7 +83,9 @@ enum ModulesYear1Portuguese {
   Syllables_Lesson_Consonant_Vowels,
   Syllables_Lesson_Words,
   Syllables_Exercise_SyllablesSound,
+  Syllables_Exercise_SyllablesWord,
   Syllables_Test_SyllablesSound,
+  Syllables_Test_SyllablesWord,
 }
 enum ModulesYear1Math {
   Numbers_Lesson_1_10,
@@ -165,6 +168,21 @@ Future populate() async {
       // print("id:" + word.id.toString());
       // print("title:" + word.title);
       alphabet.add(word);
+    } else {
+      print("empty result");
+    }
+  });
+
+  parsedWords['LIST']['CATEGORY']['SYLLABLE-UNIQUE'].forEach((key) {
+    int id = int.parse(key.toString());
+    //print("key:" + key.toString());
+    final result = listVocab.where((element) => element.id == id);
+    Word word;
+    if (result.isNotEmpty) {
+      word = result.first;
+      // print("id:" + word.id.toString());
+      // print("title:" + word.title);
+      syllableUnique.add(word);
     } else {
       print("empty result");
     }
@@ -396,6 +414,7 @@ Future init() async {
   prefs = await SharedPreferences.getInstance();
 
   alphabet = [];
+  syllableUnique = [];
   listWordOnset = [];
   listSyllables = [];
   listVowels = [];
@@ -585,14 +604,7 @@ ElevatedButton getImageTile(int id) {
       ),
       child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Image(
-              image: AssetImage('assets/images/$id.png'),
-              width: 200,
-              gaplessPlayback: true,
-            ),
-          ),
+          getImage(id,200),
           Positioned(
             bottom: 10, right: 0,
             child: Icon(
@@ -611,6 +623,17 @@ ElevatedButton getImageTile(int id) {
           ), // second icon to "paint" previous transparent icon
         ],
       )
+  );
+}
+
+Padding getImage(int id, double width) {
+  return Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: Image(
+      image: AssetImage('assets/images/$id.png'),
+      width: width,
+      gaplessPlayback: true,
+    ),
   );
 }
 

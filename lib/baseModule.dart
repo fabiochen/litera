@@ -86,26 +86,15 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     print("************* baseModule: didChangeDependencies");
     try {
       Map args = ModalRoute.of(context).settings.arguments;
-      print("************* baseModule: didChangeDependencies 1");
       title = args['title'] ?? '';
-      print("************* baseModule: didChangeDependencies 2");
       mode = args['mode'];
-      print("************* baseModule: didChangeDependencies 3");
       year = args['year'];
-      print("************* baseModule: didChangeDependencies 4");
       subject = args['subject'];
-      print("************* baseModule: didChangeDependencies 5");
       moduleIndex = args['moduleIndex'];
-      print("************* baseModule: didChangeDependencies 6");
       listProcess = args['list'];
-      print("************* baseModule: didChangeDependencies 7");
       numberQuestions = args['numberQuestions']??listProcess.length.toInt();
       useNavigation = args['useNavigation'] ?? true;
       useProgressBar = args['useProgressBar'] ?? true;
-
-      print("************* baseModule: didChangeDependencies");
-      print("year: $year");
-      print("subject: $subject");
 
       if (listProcess.length == 1) {
         useNavigation = false;

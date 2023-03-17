@@ -171,7 +171,6 @@ class _MenuState extends BaseModuleState<Menu> {
                         );
                       } (),
                     ),  // letters 3
-
                     Container(
                       child: () {
                         String _title = getAssetsVocab('SOUND')  + " / " + getAssetsVocab('SYLLABLES');
@@ -195,6 +194,29 @@ class _MenuState extends BaseModuleState<Menu> {
                         );
                       } (),
                     ),  // syllables 1
+                    Container(
+                      child: () {
+                        String _title = getAssetsVocab('WORD')  + " / " + getAssetsVocab('SYLLABLES');
+                        return ListTile(
+                          leading: getReportIcon(),
+                          title: Text(
+                            _title,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/BaseReport',
+                                arguments: <String, Object>{
+                                  'title': _title,
+                                  'mode': 'report',
+                                  'year': 1,
+                                  'subject': expandedId,  // whichever panel is expanded is the subject matter
+                                  'moduleIndex': ModulesYear1Portuguese.Syllables_Test_SyllablesWord.index,
+                                  'list': syllableUnique.where((word) => word.title.length == 4).toList()
+                                });
+                          },
+                        );
+                      } (),
+                    ),  // syllables 2
 
                     Divider(
                       color: Colors.grey,

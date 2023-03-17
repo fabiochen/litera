@@ -29,6 +29,7 @@ import 'package:litera/lessonWords.dart';
 import 'package:litera/lessonSyllables.dart';
 import 'package:litera/lessonSyllablesConsonantsVowels.dart';
 import 'package:litera/moduleSyllableOnset2Text.dart';
+import 'package:litera/moduleSyllableWord.dart';
 import 'package:litera/lessonOnset2Words.dart';
 import 'package:litera/lessonWord2Onsets.dart';
 import 'package:litera/lessonWordsConsonantsVowels.dart';
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
                 '/LessonSyllablesConsonantsVowels' : (context) => LessonSyllablesConsonantsVowels(),
                 '/lessonSyllables2Words'     : (context) => LessonSyllables2Words(),
                 '/ModuleSyllableOnset2Text'  : (context) => ModuleSyllableOnset2Text(),
+                '/ModuleSyllableWord'        : (context) => ModuleSyllableWord(),
                 '/lessonOnset2Words'         : (context) => LessonOnset2Words(),
                 '/lessonWord2Onsets'         : (context) => LessonWord2Onsets(),
                 '/LessonWordsConsonantsVowels' : (context) => LessonWordsConsonantsVowels(),
