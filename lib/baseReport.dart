@@ -12,7 +12,7 @@ class BaseReport extends BaseModule {
 
 class BaseReportState<T extends BaseReport> extends BaseModuleState<T> {
 
-  Comparator<Object> criteria = (a, b) => (a as Word).title.compareTo((b as Word).title);
+  Comparator<Object> criteria = (a, b) => (a as Word).id.compareTo((b as Word).id);
 
   Widget getBody() {
     listProcess.sort(criteria);
@@ -45,15 +45,17 @@ class BaseReportState<T extends BaseReport> extends BaseModuleState<T> {
                     double totalCount = correctCount + wrongCount + 0.0001;
                     return Container(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Flexible(
-                                flex:1,
+                              flex:1,
+                              child: FittedBox(
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   padding: EdgeInsets.all(10),
                                   child: _getMainText(),
-                                )),
+                                ),
+                              )),
                             Flexible(
                               flex: 4,
                               child: Column(

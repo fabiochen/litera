@@ -29,7 +29,7 @@ import 'package:litera/lessonWords.dart';
 import 'package:litera/lessonSyllables.dart';
 import 'package:litera/lessonSyllablesConsonantsVowels.dart';
 import 'package:litera/moduleSyllableOnset2Text.dart';
-import 'package:litera/moduleSyllableWord.dart';
+import 'package:litera/moduleSyllablesWord.dart';
 import 'package:litera/lessonOnset2Words.dart';
 import 'package:litera/lessonWord2Onsets.dart';
 import 'package:litera/lessonWordsConsonantsVowels.dart';
@@ -38,6 +38,7 @@ import 'package:litera/reportPicture2Numbers.dart';
 import 'package:litera/reportSyllableSound2Text.dart';
 import 'package:litera/moduleWords2Picture.dart';
 import 'package:litera/moduleNumbers2Picture.dart';
+import 'package:litera/moduleNumbers2Word.dart';
 import 'package:litera/moduleLetters2Onset.dart';
 import 'package:litera/moduleSpelling01.dart';
 import 'package:litera/moduleSpelling02.dart';
@@ -98,7 +99,7 @@ class MyApp extends StatelessWidget {
                 '/LessonSyllablesConsonantsVowels' : (context) => LessonSyllablesConsonantsVowels(),
                 '/lessonSyllables2Words'     : (context) => LessonSyllables2Words(),
                 '/ModuleSyllableOnset2Text'  : (context) => ModuleSyllableOnset2Text(),
-                '/ModuleSyllableWord'        : (context) => ModuleSyllableWord(),
+                '/ModuleSyllablesWord'        : (context) => ModuleSyllablesWord(),
                 '/lessonOnset2Words'         : (context) => LessonOnset2Words(),
                 '/lessonWord2Onsets'         : (context) => LessonWord2Onsets(),
                 '/LessonWordsConsonantsVowels' : (context) => LessonWordsConsonantsVowels(),
@@ -107,6 +108,7 @@ class MyApp extends StatelessWidget {
                 '/ModuleLetters2Onset'       : (context) => ModuleLetters2Onset(),
                 '/ReportLetters2Onset'       : (context) => ReportLetters2Onset(),
                 '/ModuleNumbers2Picture'     : (context) => ModuleNumbers2Picture(),
+                '/ModuleNumbers2Word'        : (context) => ModuleNumbers2Word(),
                 '/ModuleWords2Picture'       : (context) => ModuleWords2Picture(),
                 '/BaseReport'                : (context) => BaseReport(),
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),

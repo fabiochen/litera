@@ -5,12 +5,12 @@ import 'package:litera/baseOptionTiles.dart';
 import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
-class ModuleSyllableWord extends BaseOptionTiles {
+class ModuleSyllablesWord extends BaseOptionTiles {
   @override
-  _ModuleSyllableWordState createState() => _ModuleSyllableWordState();
+  _ModuleSyllablesWordState createState() => _ModuleSyllablesWordState();
 }
 
-class _ModuleSyllableWordState extends BaseOptionTilesState<ModuleSyllableWord> {
+class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord> {
 
   Widget getMainTile() {
     listProcess.shuffle();

@@ -13,7 +13,7 @@ class PageHome extends BaseModule {
 
 class _PageHomeState extends BaseModuleState<PageHome> {
 
-  String title = "Litera";
+  String title = appTitle;
   Color backgroundColor = Colors.teal;
 
   @override
@@ -81,6 +81,10 @@ class _PageHomeState extends BaseModuleState<PageHome> {
                     ).then((_) {
                       // This block runs when you have returned back to the 1st Page from 2nd.
                       print("returned 1");
+                      print("Last PT ModuleIndex: " + ModulePosYear1Por.values.length.toString());
+                      print("Saved PT ModuleIndex: " + getUnlockModuleIndex(1, 1).toString());
+                      print("Last MT ModuleIndex: " + ModulePosYear1Mat.values.length.toString());
+                      print("Saved MT ModuleIndex: " + getUnlockModuleIndex(1, 2).toString());
                       setState(() {
                         // Call setState to refresh the page.
                       });
@@ -112,11 +116,9 @@ class _PageHomeState extends BaseModuleState<PageHome> {
             Container(
               child: InkWell(
                   onTap: () {
-                    print("Last ModuleIndex: " + ModulesYear1Portuguese.values.length.toString());
-                    print("Saved ModuleIndex: " + getUnlockModuleIndex(1, 1).toString());
                     if (
-                      ModulesYear1Portuguese.values.length <= getUnlockModuleIndex(1, 1) &&
-                      ModulesYear1Math.values.length <= getUnlockModuleIndex(1, 2)
+                      ModulePosYear1Por.values.length <= getUnlockModuleIndex(Year.ONE.index, Subject.PORTUGUESE.index) &&
+                      ModulePosYear1Mat.values.length <= getUnlockModuleIndex(Year.ONE.index, Subject.MATH.index)
                     )
                       Navigator.push(
                       context,
@@ -156,8 +158,8 @@ class _PageHomeState extends BaseModuleState<PageHome> {
                             size: 100,
                           ),
                           if (
-                            ModulesYear1Portuguese.values.length > getUnlockModuleIndex(1, 1) ||
-                            ModulesYear1Math.values.length > getUnlockModuleIndex(1, 2)
+                            ModulePosYear1Por.values.length > getUnlockModuleIndex(Year.ONE.index, Subject.PORTUGUESE.index) ||
+                            ModulePosYear1Mat.values.length > getUnlockModuleIndex(Year.ONE.index, Subject.MATH.index)
                           ) getLockIcon(true),
                         ],
                       ),

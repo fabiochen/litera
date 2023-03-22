@@ -1,7 +1,8 @@
 {
   "CONFIG":{
       "APP":{
-          "ORAL-LANGUAGE":"PORTUGUÊS"
+          "ORAL-LANGUAGE":"PORTUGUÊS",
+          "TITLE": "Litera Brasil"
       },
       "DEVELOPER":{
           "NAME":"Team Unitas","EMAIL":"info@unitasoft.net"
@@ -18,7 +19,6 @@
           }
       ],
       "VOCABULARY": [
-
           {
               "LANGUAGE": "Language",
               "SAVE": "Save",
@@ -32,6 +32,7 @@
               "ALPHABET":"Alphabet",
               "SYLLABLES":"Syllables",
               "MATCH-CASE":"Upper / lower case",
+              "NUMBER":"Number",
               "NUMBERS":"Numbers",
               "ONSET": "Onset",
               "ONSETS": "Onsets",
@@ -46,6 +47,7 @@
               "PICTURES":"Pictures",
               "SOUND": "Sound",
               "SPELLING":"Spelling",
+              "REPORT": "Report",
               "REPORTS": "Reports",
               "TYPE-WORD": "Enter the word",
               "CHECK": "check",
@@ -68,6 +70,7 @@
               "ALPHABET":"Alphabet",
               "SYLLABLES":"Syllabes",
               "MATCH-CASE":"Majuscule / Minuscule",
+              "NUMBER":"Chiffre",
               "NUMBERS":"Chiffres",
               "ONSET": "Son initial",
               "ONSETS": "Sons initiales",
@@ -82,6 +85,7 @@
               "PICTURES":"Images",
               "SOUND": "Son",
               "SPELLING":"Épeler",
+              "REPORT": "Rapport",
               "REPORTS": "Rapports",
               "TYPE-WORD": "Entrez le mot",
               "CHECK": "vérifier",
@@ -104,6 +108,7 @@
               "ALPHABET":"Alfabeto",
               "SYLLABLES": "Sílabas",
               "MATCH-CASE":"Maiúscula / Minúscula",
+              "NUMBER":"Número",
               "NUMBERS":"Números",
               "ONSET": "Som inicial",
               "ONSETS": "Sons iniciais",
@@ -118,6 +123,7 @@
               "PICTURES":"Imagens",
               "SOUND": "Som",
               "SPELLING":"Soletrar",
+              "REPORT": "Relatório",
               "REPORTS": "Relatórios",
               "TYPE-WORD": "Digite a palavra",
               "CHECK": "verificar",

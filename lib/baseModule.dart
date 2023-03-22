@@ -16,7 +16,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   int listPosition=0;
 
   // year #: [portuguese module index, math module index]
-  Map<String,int> unlockModuleIndex = {'1-1':0,'1-2':0,'2-1':0,'2-2':0};
+  Map<String,int> unlockModuleIndex = {'0-0':0,'0-1':0,'1-0':0,'1-1':0};
 
   bool isStartPosition = true;
   bool isEndPosition = true;
@@ -27,14 +27,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   int correctCount = 0;
   int wrongCount = 0;
 
-  bool kDebugMode = true;
-
   List<Object> listProcess;
   int numberQuestions;
-  String title;
+  String title = '';
   String mode;
-  int year = 1;
-  int subject = 1; // 1 = portuguese, 2 = math
+  int year = Year.ONE.index;
+  int subject = Subject.PORTUGUESE.index;
   int moduleIndex = 0;
   bool useNavigation = true;
   bool useProgressBar = true;
@@ -64,11 +62,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (_) {
-          print('******** banner loaded: ' + DateTime.now().toString());
+          printDebug('******** banner loaded: ' + DateTime.now().toString());
           isBannerAdReady.value = true;
         },
         onAdFailedToLoad: (ad, err) {
-          print('Failed to load a banner ad: ${err.message}');
+          printDebug('Failed to load a banner ad: ${err.message}');
           isBannerAdReady.value = false;
           ad.dispose();
         },
@@ -83,15 +81,22 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   void didChangeDependencies() {
-    print("************* baseModule: didChangeDependencies");
+    printDebug("************* baseModule: didChangeDependencies");
     try {
       Map args = ModalRoute.of(context).settings.arguments;
+      printDebug("test1");
       title = args['title'] ?? '';
+      printDebug("test2");
       mode = args['mode'];
+      printDebug("test3");
       year = args['year'];
+      printDebug("test4");
       subject = args['subject'];
+      printDebug("test5");
       moduleIndex = args['moduleIndex'];
+      printDebug("test6");
       listProcess = args['list'];
+      printDebug("test7");
       numberQuestions = args['numberQuestions']??listProcess.length.toInt();
       useNavigation = args['useNavigation'] ?? true;
       useProgressBar = args['useProgressBar'] ?? true;
@@ -104,8 +109,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         useNavigation = false;
       setEndPoints();
     } catch (e) {
-      print("dcd error: " + e.toString());
-      print("dcd error moduleIndex: " + moduleIndex.toString());
+      printDebug("dcd error: " + e.toString());
+      printDebug("dcd error moduleIndex: " + moduleIndex.toString());
     }
     getUnlockModuleIndex(year,subject);
     super.didChangeDependencies();
@@ -113,13 +118,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    print("******** baseModule build");
+    printDebug("******** baseModule build");
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
         appBar: AppBar(
           backgroundColor: appBarColor,
-          title: Text(title),
+          title: Text(title??''),
         ),
         drawer: getMenu(),
         body: getBody()
@@ -127,6 +132,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getMenu() {
+
     return () {
       audioStop();
       Menu();
@@ -293,7 +299,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     audioStop();
     if (isEndPosition) {
       moduleIndex++;
-      setUnlockModuleIndex(moduleIndex);
+      printDebug("*********** next");
+      printDebug("moduleIndex: $moduleIndex");
+      printDebug("year: $year");
+      printDebug("subject: $subject");
+      if (moduleIndex > getUnlockModuleIndex(year, subject))
+        setUnlockModuleIndex(moduleIndex);
       // rebirth so lock icon is refreshed...
       // ideally would be to unlock from the previous page
       Navigator.of(context).pop();
@@ -328,13 +339,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     }
   }
 
-  setUnlockModuleIndex (int newIndex, [int year, int subject]) async {
+  setUnlockModuleIndex (int newIndex, [int _year, int _subject]) async {
 
-    year    = (year    == null) ? this.year    : year;
-    subject = (subject == null) ? this.subject : subject;
-
-    print("year: $year");
-    print("subject: $subject");
+    this.year    = (_year    == null) ? this.year    : _year;
+    this.subject = (_subject == null) ? this.subject : _subject;
 
     unlockModuleIndex['$year-$subject'] = newIndex;
     await prefs.setInt('unlockModuleIndex-$year-$subject', newIndex);

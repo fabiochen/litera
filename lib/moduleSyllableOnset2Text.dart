@@ -42,13 +42,4 @@ class _ModuleSyllableOnset2TextState extends BaseOptionTilesState<ModuleSyllable
     );
   }
 
-  @override
-  void next() {
-    if (isEndPosition && mode == 'test') {
-      expandedId = 4;
-      prefs.setInt('expandedId',4);
-    }
-    super.next();
-  }
-
 }

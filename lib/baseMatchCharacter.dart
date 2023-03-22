@@ -94,17 +94,15 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
                   return false;
                 },
                 onAccept: (List<String> data) {
-                  if (kDebugMode) {
-                    print('accepted:${data[1]}');
-                    print('data:${data[0]}');
-                  }
+                  printDebug('accepted:${data[1]}');
+                  printDebug('data:${data[0]}');
                   setState(() {
                     acceptedPositionOriginalMap[data[1]] = true;
                     acceptedPositionTargetList[i] = true;
                     wordScrambled[i] = data[0];
                   });
                 },
-//                onLeave: (data) => print("LEAVE 2!"),
+//                onLeave: (data) => printDebug("LEAVE 2!"),
                 builder: (context, candidateData,
                     rejectedData) {
                   charTarget = (isVisibleTarget) ? wordMain.title[i].toUpperCase() : '';
@@ -229,7 +227,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
     wordScrambled.forEach((item){
       concatenate.write(item);
     });
-    print('concat:' + concatenate.toString());
+    printDebug('concat:' + concatenate.toString());
     isCorrect = wordMain.title == concatenate.toString();
     audioPlay(isCorrect);
     if (mode == 'test') {
@@ -276,7 +274,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
       textList.add(text[i]);
     }
 
-    print('org: ' + text);
+    printDebug('org: ' + text);
     textList.shuffle();
 
     text = '';
@@ -285,7 +283,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
       text = text + textList[i];
     }
 
-    print('shuffled: ' + text);
+    printDebug('shuffled: ' + text);
 
     return text;
   }

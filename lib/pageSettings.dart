@@ -58,19 +58,21 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   showOnOff: false,
                   onToggle: (val) {
                     setState(() {
+                      // only unlock year 1
                       isUnlockModulesYear1 = true;
                       isUnlockModulesYear2 = false;
-                      setUnlockModuleIndex(ModulesYear1Portuguese.values.length, 1, 1);
-                      setUnlockModuleIndex(ModulesYear1Portuguese.values.length, 1, 2);
-                      setUnlockModuleIndex(0, 2, 1);
-                      setUnlockModuleIndex(0, 2, 2);
+                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Year.ONE.index, Subject.PORTUGUESE.index);
+                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Year.ONE.index, Subject.MATH.index);
+                      setUnlockModuleIndex(0, Year.TWO.index, Subject.PORTUGUESE.index);
+                      setUnlockModuleIndex(0, Year.TWO.index, Subject.MATH.index);
                       if (!val) {
+                        // lock all
                         isUnlockModulesYear1 = false;
                         isUnlockModulesYear2 = false;
-                        setUnlockModuleIndex(0, 1, 1);
-                        setUnlockModuleIndex(0, 1, 2);
-                        setUnlockModuleIndex(0, 2, 1);
-                        setUnlockModuleIndex(0, 2, 2);
+                        setUnlockModuleIndex(0, Year.ONE.index, Subject.PORTUGUESE.index);
+                        setUnlockModuleIndex(0, Year.ONE.index, Subject.MATH.index);
+                        setUnlockModuleIndex(0, Year.TWO.index, Subject.PORTUGUESE.index);
+                        setUnlockModuleIndex(0, Year.TWO.index, Subject.MATH.index);
                       }
                     });
                   },
@@ -94,19 +96,21 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   showOnOff: false,
                   onToggle: (val) {
                     setState(() {
+                      // unlock all
                       isUnlockModulesYear1 = true;
                       isUnlockModulesYear2 = true;
-                      setUnlockModuleIndex(ModulesYear1Portuguese.values.length, 1, 1);
-                      setUnlockModuleIndex(ModulesYear1Math.values.length, 1, 2);
-                      setUnlockModuleIndex(ModulesYear2Portuguese.values.length, 2, 1);
-                      setUnlockModuleIndex(ModulesYear2Math.values.length, 2, 2);
+                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Year.ONE.index, Subject.PORTUGUESE.index);
+                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Year.ONE.index, Subject.MATH.index);
+                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Year.TWO.index, Subject.PORTUGUESE.index);
+                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Year.TWO.index, Subject.MATH.index);
                       if (!val) {
+                        // only unlock year 1
                         isUnlockModulesYear1 = true;
                         isUnlockModulesYear2 = false;
-                        setUnlockModuleIndex(ModulesYear1Portuguese.values.length, 1, 1);
-                        setUnlockModuleIndex(ModulesYear1Math.values.length, 1, 2);
-                        setUnlockModuleIndex(0, 2, 1);
-                        setUnlockModuleIndex(0, 2, 2);
+                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Year.ONE.index, Subject.PORTUGUESE.index);
+                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Year.ONE.index, Subject.MATH.index);
+                        setUnlockModuleIndex(0, Year.TWO.index, Subject.PORTUGUESE.index);
+                        setUnlockModuleIndex(0, Year.TWO.index, Subject.MATH.index);
                       }
                     });
                   },

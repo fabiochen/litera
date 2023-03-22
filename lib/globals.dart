@@ -10,10 +10,12 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:litera/word.dart';
+import 'package:litera/module.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 String appOralLanguage;
+String appTitle;
 String devName;
 String devEmail;
 
@@ -33,13 +35,14 @@ Color menuColorLight = Colors.teal[200];
 Color menuColor = Colors.teal;
 Color menuColorDark = Colors.teal[800];
 
+bool debugMode = true;
+
 List<Word> alphabet;
 List<Word> syllableUnique;
 List<Word> listWordOnset;
 List<Word> listVowels;
 List<Word> listAlphabet;
-List<Word> listNumber1t10;
-List<Word> listNumber11t20;
+List<Word> listNumber1t20;
 List<Word> listNumber30t100;
 List<Word> listNumber1t10Ordinal;
 List<Word> listNumber20t100Ordinal;
@@ -62,14 +65,32 @@ Timer t1,t2,t3;
 
 Widget adWidget;
 
-int expandedId = 1;
+//index 0 = year 1; index 1 = year 2;
+List<int> expandedId = [Subject.PORTUGUESE.index, Subject.PORTUGUESE.index];
+
 SharedPreferences prefs;
 
 Future<Map<String, dynamic>> getConfigAssets() async {
   return _assetsConfig;
 }
 
-enum ModulesYear1Portuguese {
+enum ModuleType {
+  LESSON,
+  EXERCISE,
+  TEST
+}
+
+enum Subject {
+  PORTUGUESE,
+  MATH
+}
+
+enum Year {
+  ONE,
+  TWO,
+}
+
+enum ModulePosYear1Por {
   Letters_Lesson_Alphabet,
   Letters_Lesson_Vowels,
   Letters_Exercise_OrderVowels,
@@ -87,18 +108,14 @@ enum ModulesYear1Portuguese {
   Syllables_Test_SyllablesSound,
   Syllables_Test_SyllablesWord,
 }
-enum ModulesYear1Math {
+enum ModulePosYear1Mat {
   Numbers_Lesson_1_10,
   Numbers_Exercise_NumbersPicture,
   Numbers_Exercise_OrderNumbers,
   Numbers_Test_NumbersPicture,
   Numbers_Test_OrderNumbers,
-  Numbers_Lesson_1_10_Full,
-  Numbers_Lesson_11_20_Full,
-  Numbers_Lesson_30_100_Full,
 }
-
-enum ModulesYear2Portuguese {
+enum ModulePosYear2Por {
   Words_Lesson_Words,
   Words_Lesson_WordsOnset,
   Words_Lesson_WordOnsets,
@@ -112,39 +129,52 @@ enum ModulesYear2Portuguese {
   Words_Test_Spelling1,
   Words_Test_Spelling2,
 }
-enum ModulesYear2Math {
-  Numbers_Lesson_1_10_Full,
-  Numbers_Lesson_11_20_Full,
+enum ModulePosYear2Mat {
+  Numbers_Lesson_1_20_Full,
+  Numbers_Exercise_WordNumbers1_20,
+  Numbers_Test_WordNumbers1_20,
   Numbers_Lesson_30_100_Full,
+  Numbers_Exercise_WordNumbers30_100,
+  Numbers_Test_WordNumbers30_100,
   Numbers_Lesson_1_10_Ordinals,
-  Numbers_Lesson_20_100_Ordinals
+  Numbers_Exercise_1_10_Ordinals,
+  Numbers_Test_1_10_Ordinals,
+  Numbers_Lesson_20_100_Ordinals,
+  Numbers_Exercise_20_100_Ordinals,
+  Numbers_Test_20_100_Ordinals,
 }
+
+List<Module> listModulesYear1Por = [];
+List<Module> listModulesYear1Mat = [];
+List<Module> listModulesYear2Por = [];
+List<Module> listModulesYear2Mat = [];
 
 Future populate() async {
 
-  print("******** populate 1");
+  printDebug("******** populate 1");
 
   await rootBundle.loadString('assets/config.json').then((value) {
     _assetsConfig = json.decode(value);
     devName = _assetsConfig['CONFIG']['DEVELOPER']['NAME'];
     devEmail = _assetsConfig['CONFIG']['DEVELOPER']['EMAIL'];
     appOralLanguage = _assetsConfig['CONFIG']['APP']['ORAL-LANGUAGE'];
+    appTitle = _assetsConfig['CONFIG']['APP']['TITLE'];
     int langCount = _assetsConfig['CONFIG']['SETTINGS'].length;
     for (int i=0; i<langCount; i++) {
       settingsNavigationLanguage.add(MapEntry(i, _assetsConfig['CONFIG']['SETTINGS'][i]['NAVIGATION-LANGUAGE']));
     }
   });
 
-  print("******** populate 2");
+  printDebug("******** populate 2");
 
   try {
     String jsonString = await rootBundle.loadString("assets/words.json");
     parsedWords = json.decode(jsonString);
   } catch (e) {
-    print(e.toString());
+    printDebug(e.toString());
   }
 
-  print("******** populate 3");
+  printDebug("******** populate 3");
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   version = packageInfo.version;
@@ -160,35 +190,35 @@ Future populate() async {
 
   parsedWords['LIST']['CATEGORY']['ALPHABET'].forEach((key) {
     int id = int.parse(key.toString());
-    //print("key:" + key.toString());
+    //printDebug("key:" + key.toString());
     final result = listVocab.where((element) => element.id == id);
     Word word;
     if (result.isNotEmpty) {
       word = result.first;
-      // print("id:" + word.id.toString());
-      // print("title:" + word.title);
+      // printDebug("id:" + word.id.toString());
+      // printDebug("title:" + word.title);
       alphabet.add(word);
     } else {
-      print("empty result");
+      printDebug("empty result");
     }
   });
 
   parsedWords['LIST']['CATEGORY']['SYLLABLE-UNIQUE'].forEach((key) {
     int id = int.parse(key.toString());
-    //print("key:" + key.toString());
+    //printDebug("key:" + key.toString());
     final result = listVocab.where((element) => element.id == id);
     Word word;
     if (result.isNotEmpty) {
       word = result.first;
-      // print("id:" + word.id.toString());
-      // print("title:" + word.title);
+      // printDebug("id:" + word.id.toString());
+      // printDebug("title:" + word.title);
       syllableUnique.add(word);
     } else {
-      print("empty result");
+      printDebug("empty result");
     }
   });
 
-  print("******** populate 4");
+  printDebug("******** populate 4");
 
   // populate vowel list
   parsedWords['LIST']['CATEGORY']['ALPHABET-VOWELS'].keys.forEach((key){
@@ -206,40 +236,28 @@ Future populate() async {
     listAlphabet.add(word);
   });
 
-  print("******** populate 5");
+  printDebug("******** populate 5");
 
   // populate number list
-  parsedWords['LIST']['CATEGORY']['NUMBERS_1-10'].keys.forEach((key){
+  parsedWords['LIST']['CATEGORY']['NUMBERS_1-20'].keys.forEach((key){
     int id = int.parse(key);
-    //print('key: ' + key);
-    parsedWords['LIST']['CATEGORY']['NUMBERS_1-10'][id.toString()].keys.forEach((value) {
-      //print('value: ' + value);
-      String title = parsedWords['LIST']['CATEGORY']['NUMBERS_1-10'][id.toString()][value];
-      //print('title: ' + title);
+    //printDebug('key: ' + key);
+    parsedWords['LIST']['CATEGORY']['NUMBERS_1-20'][id.toString()].keys.forEach((value) {
+      //printDebug('value: ' + value);
+      String title = parsedWords['LIST']['CATEGORY']['NUMBERS_1-20'][id.toString()][value];
+      //printDebug('title: ' + title);
       Word word = Word(id, title, value);
-      listNumber1t10.add(word);
-    });
-  });
-
-  parsedWords['LIST']['CATEGORY']['NUMBERS_11-20'].keys.forEach((key){
-    int id = int.parse(key);
-    //print('key: ' + key);
-    parsedWords['LIST']['CATEGORY']['NUMBERS_11-20'][id.toString()].keys.forEach((value) {
-      //print('value: ' + value);
-      String title = parsedWords['LIST']['CATEGORY']['NUMBERS_11-20'][id.toString()][value];
-      //print('title: ' + title);
-      Word word = Word(id, title, value);
-      listNumber11t20.add(word);
+      listNumber1t20.add(word);
     });
   });
 
   parsedWords['LIST']['CATEGORY']['NUMBERS_30-100'].keys.forEach((key){
     int id = int.parse(key);
-    //print('key: ' + key);
+    //printDebug('key: ' + key);
     parsedWords['LIST']['CATEGORY']['NUMBERS_30-100'][id.toString()].keys.forEach((value) {
-      //print('value: ' + value);
+      //printDebug('value: ' + value);
       String title = parsedWords['LIST']['CATEGORY']['NUMBERS_30-100'][id.toString()][value];
-      //print('title: ' + title);
+      //printDebug('title: ' + title);
       Word word = Word(id, title, value);
       listNumber30t100.add(word);
     });
@@ -247,11 +265,11 @@ Future populate() async {
 
   parsedWords['LIST']['CATEGORY']['NUMBERS_1-10_ORDINAL'].keys.forEach((key){
     int id = int.parse(key);
-    //print('key: ' + key);
+    //printDebug('key: ' + key);
     parsedWords['LIST']['CATEGORY']['NUMBERS_1-10_ORDINAL'][id.toString()].keys.forEach((value) {
-      //print('value: ' + value);
+      //printDebug('value: ' + value);
       String title = parsedWords['LIST']['CATEGORY']['NUMBERS_1-10_ORDINAL'][id.toString()][value];
-      //print('title: ' + title);
+      //printDebug('title: ' + title);
       Word word = Word(id, title, value);
       listNumber1t10Ordinal.add(word);
     });
@@ -259,17 +277,17 @@ Future populate() async {
 
   parsedWords['LIST']['CATEGORY']['NUMBERS_20-100_ORDINAL'].keys.forEach((key){
     int id = int.parse(key);
-    //print('key: ' + key);
+    //printDebug('key: ' + key);
     parsedWords['LIST']['CATEGORY']['NUMBERS_20-100_ORDINAL'][id.toString()].keys.forEach((value) {
-      //print('value: ' + value);
+      //printDebug('value: ' + value);
       String title = parsedWords['LIST']['CATEGORY']['NUMBERS_20-100_ORDINAL'][id.toString()][value];
-      //print('title: ' + title);
+      //printDebug('title: ' + title);
       Word word = Word(id, title, value);
       listNumber20t100Ordinal.add(word);
     });
   });
 
-  print("******** populate 6");
+  printDebug("******** populate 6");
 
   // populate alphabet onset
   parsedWords['LIST']['CATEGORY']['ALPHABET-ONSET'].keys.forEach((key){
@@ -303,7 +321,7 @@ Future populate() async {
     lettersMatchCase.add(word);
   });
 
-  print("******** populate 7");
+  printDebug("******** populate 7");
 
   // populate number order list
   parsedWords['LIST']['CATEGORY']['ORDER-NUMBERS_1-10'].keys.forEach((key){
@@ -338,12 +356,12 @@ Future populate() async {
     listSyllables.add(word);
   });
 
-  print("******** populate 8");
+  printDebug("******** populate 8");
 
   parsedWords['LIST']['CATEGORY']['SYLLABLE-MATCH'].forEach((key) {
-    //print("key:"+key.toString());
+    //printDebug("key:"+key.toString());
     String _syllable = key['SYLLABLE'].toString();
-    //print("syllable:"+syllable);
+    //printDebug("syllable:"+syllable);
     List<Word> _listWords = [];
     key['WORDS'].forEach((key) {
       int id= int.parse(key.toString());
@@ -351,24 +369,23 @@ Future populate() async {
       Word word;
       if (result.isNotEmpty) {
         word = result.first;
-        //print("id:" + word.id.toString());
-        //print("title:" + word.title);
+        //printDebug("id:" + word.id.toString());
+        //printDebug("title:" + word.title);
         _listWords.add(word);
       }
     });
-    print("");
     Map<String,List<Word>> map = {_syllable:_listWords};
     try {
       mapSyllableMatch.add(map);
     } catch (e) {
-      print("Error:" + e.toString());
+      printDebug("Error:" + e.toString());
     }
   });
 
   parsedWords['LIST']['CATEGORY']['WORD-MATCH'].forEach((key) {
-    //print("key:"+key.toString());
+    //printDebug("key:"+key.toString());
     String _syllable = key['SYLLABLE'].toString();
-    //print("syllable:"+syllable);
+    //printDebug("syllable:"+syllable);
     List<Word> _listWords = [];
     key['WORDS'].forEach((key) {
       int id= int.parse(key.toString());
@@ -376,8 +393,8 @@ Future populate() async {
       Word word;
       if (result.isNotEmpty) {
         word = result.first;
-        // print("id:" + word.id.toString());
-        // print("title:" + word.title);
+        // printDebug("id:" + word.id.toString());
+        // printDebug("title:" + word.title);
         _listWords.add(word);
       }
     });
@@ -385,31 +402,350 @@ Future populate() async {
     try {
       mapWordMatch.add(map);
     } catch (e) {
-      print("Error:" + e.toString());
+      printDebug("Error:" + e.toString());
     }
   });
 
-  print("******** populate 9");
+  printDebug("******** populate 9");
   parsedWords['LIST']['CATEGORY']['WORD-ONSET'].forEach((key) {
     int id= int.parse(key.toString());
-    //print("key:" + key.toString());
+    //printDebug("key:" + key.toString());
     final result = listVocab.where((element) => element.id == id);
     Word word;
     if (result.isNotEmpty) {
       word = result.first;
-      //print("id:" + word.id.toString());
-      //print("title:" + word.title);
+      //printDebug("id:" + word.id.toString());
+      //printDebug("title:" + word.title);
       listWordOnset.add(word);
     } else {
-      print("empty result");
+      printDebug("empty result");
     }
   });
+  
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Lesson_Alphabet,
+      "Alfabeto",
+      ModuleType.LESSON,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Lesson_Vowels,
+      "Vogais",
+      ModuleType.LESSON,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Exercise_OrderVowels,
+      "Ordem das Vogais",
+      ModuleType.EXERCISE,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Exercise_OrderAlphabet,
+      "Ordem Alfabética",
+      ModuleType.EXERCISE,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Exercise_LettersOnset,
+      "Som inicial / Letras",
+      ModuleType.EXERCISE,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Exercise_MatchCase,
+      "Maiúscula / Minúscula",
+      ModuleType.EXERCISE,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Test_LettersImage,
+      "Imagem / Letras",
+      ModuleType.TEST,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Test_LettersOnset,
+      "Som inicial / Letras",
+      ModuleType.TEST,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Letters_Test_MatchCase,
+      "Maiúscula / Minúscula",
+      ModuleType.TEST,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Syllables_Lesson_Syllables,
+      "Sílabas",
+      ModuleType.LESSON,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Syllables_Lesson_Consonant_Vowels,
+      "Consoantes / Vogais",
+      ModuleType.LESSON,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Syllables_Lesson_Words,
+      "Sílabas / Palavras",
+      ModuleType.LESSON,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Syllables_Exercise_SyllablesSound,
+      "Som / Sílabas",
+      ModuleType.EXERCISE,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Syllables_Exercise_SyllablesWord,
+      "Palavras / Sílabas",
+      ModuleType.EXERCISE,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Syllables_Test_SyllablesSound,
+      "Som / Sílabas",
+      ModuleType.TEST,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear1Por.add(Module(
+      ModulePosYear1Por.Syllables_Test_SyllablesWord,
+      "Palavra / Sílabas",
+      ModuleType.TEST,
+      Year.ONE,
+      Subject.PORTUGUESE
+  ));
+
+  listModulesYear1Mat.add(Module(
+      ModulePosYear1Mat.Numbers_Lesson_1_10,
+      "1 - 10",
+      ModuleType.LESSON,
+      Year.ONE,
+      Subject.MATH
+  ));
+  listModulesYear1Mat.add(Module(
+      ModulePosYear1Mat.Numbers_Exercise_NumbersPicture,
+      getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS'),
+      ModuleType.EXERCISE,
+      Year.ONE,
+      Subject.MATH
+  ));
+  listModulesYear1Mat.add(Module(
+      ModulePosYear1Mat.Numbers_Exercise_OrderNumbers,
+      getAssetsVocab('ORDER-NUMBERS'),
+      ModuleType.EXERCISE,
+      Year.ONE,
+      Subject.MATH
+  ));
+  listModulesYear1Mat.add(Module(
+      ModulePosYear1Mat.Numbers_Test_NumbersPicture,
+      getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS'),
+      ModuleType.TEST,
+      Year.ONE,
+      Subject.MATH
+  ));
+  listModulesYear1Mat.add(Module(
+      ModulePosYear1Mat.Numbers_Test_OrderNumbers,
+      getAssetsVocab('ORDER-NUMBERS'),
+      ModuleType.TEST,
+      Year.ONE,
+      Subject.MATH
+  ));
+
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Lesson_Words,
+      getAssetsVocab('WORDS'),
+      ModuleType.LESSON,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Lesson_WordsOnset,
+      getAssetsVocab('ONSET') + " / " + getAssetsVocab('WORDS'),
+      ModuleType.LESSON,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Lesson_WordOnsets,
+      getAssetsVocab('WORD') + " / " + getAssetsVocab('ONSETS'),
+      ModuleType.LESSON,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Lesson_ConsonantsVowels,
+      getAssetsVocab('CONSONANTS') + " / " + getAssetsVocab('VOWELS'),
+      ModuleType.LESSON,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Exercise_WordsPicture,
+      getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS'),
+      ModuleType.EXERCISE,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Exercise_WordPictures,
+      getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES'),
+      ModuleType.EXERCISE,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Exercise_Spelling1,
+      getAssetsVocab('SPELLING') + " 1",
+      ModuleType.EXERCISE,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Exercise_Spelling2,
+      getAssetsVocab('SPELLING') + " 2",
+      ModuleType.EXERCISE,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Test_WordsPicture,
+      getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS'),
+      ModuleType.TEST,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Test_WordPictures,
+      getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES'),
+      ModuleType.TEST,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Test_Spelling1,
+      getAssetsVocab('SPELLING') + " 1",
+      ModuleType.TEST,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+  listModulesYear2Por.add(Module(
+      ModulePosYear2Por.Words_Test_Spelling2,
+      getAssetsVocab('SPELLING') + ' 2',
+      ModuleType.TEST,
+      Year.TWO,
+      Subject.PORTUGUESE
+  ));
+
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Lesson_1_20_Full,
+      "1 - 20 (extenso)",
+      ModuleType.LESSON,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Exercise_WordNumbers1_20,
+      getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD'),
+      ModuleType.EXERCISE,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Test_WordNumbers1_20,
+      getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD'),
+      ModuleType.TEST,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Lesson_30_100_Full,
+      "30 - 100 (extenso)",
+      ModuleType.LESSON,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Exercise_WordNumbers30_100,
+      getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD'),
+      ModuleType.EXERCISE,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Test_WordNumbers30_100,
+      getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD'),
+      ModuleType.TEST,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Lesson_1_10_Ordinals,
+      "1 - 10 (ordinais)",
+      ModuleType.LESSON,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Exercise_1_10_Ordinals,
+      getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD'),
+      ModuleType.EXERCISE,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Test_1_10_Ordinals,
+      getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD'),
+      ModuleType.TEST,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Lesson_20_100_Ordinals,
+      "20 - 100 (ordinais)",
+      ModuleType.LESSON,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Exercise_20_100_Ordinals,
+      getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD'),
+      ModuleType.EXERCISE,
+      Year.TWO,
+      Subject.MATH
+  ));
+  listModulesYear2Mat.add(Module(
+      ModulePosYear2Mat.Numbers_Test_20_100_Ordinals,
+      getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD'),
+      ModuleType.TEST,
+      Year.TWO,
+      Subject.MATH
+  ));
 
 }
 
 Future init() async {
 
-  print("******** init");
+  printDebug("******** init");
 
   prefs = await SharedPreferences.getInstance();
 
@@ -420,8 +756,7 @@ Future init() async {
   listVowels = [];
   listAlphabet = [];
   listVocab = [];
-  listNumber1t10 = [];
-  listNumber11t20 = [];
+  listNumber1t20 = [];
   listNumber30t100 = [];
   listNumber1t10Ordinal = [];
   listNumber20t100Ordinal = [];
@@ -434,23 +769,31 @@ Future init() async {
   valOrderAlphabet = [];
   mapSyllableMatch = [];
   mapWordMatch = [];
+  listModulesYear1Por = [];
+  listModulesYear1Mat = [];
+  listModulesYear2Por = [];
+  listModulesYear2Mat = [];
 
-  print("******** init 2");
+  printDebug("******** init 2");
 
   settingsNavigationLanguage?.clear();
 
   listSyllables?.clear();
 
-  print("******** init 3");
+  printDebug("******** init 3");
 
   getNavigationLanguage();
 
-  print("******** init 4");
-
-  expandedId = prefs.getInt('expandedId')??1;
-  print("******** init 5");
+  printDebug("******** init 4");
   await populate();
-  print("******** finished populate");
+
+  printDebug("******** init 5");
+  expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index")??Subject.PORTUGUESE.index);
+  printDebug("******** init 6");
+  print("expandedId-0: " + expandedId[0].toString());
+  print("expandedId-1: " + expandedId[1].toString());
+
+  printDebug("******** finished populate");
 }
 
 Icon getLockIcon(bool isModuleLocked) {
@@ -510,7 +853,7 @@ int getNavigationLanguage() {
 }
 
 showBeginningAlertDialog(BuildContext context) {
-  print('alert');
+  printDebug('alert');
   // set up the button
   Widget okButton = TextButton(
     child: Text("OK"),
@@ -539,7 +882,7 @@ showBeginningAlertDialog(BuildContext context) {
 }
 
 showEndAlertDialog(BuildContext context, [String grade='']) {
-  print('alert');
+  printDebug('alert');
   // set up the button
   Widget okButton = TextButton(
     child: Text("OK"),
@@ -649,17 +992,10 @@ ElevatedButton getTextTile(Word word) {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Container(
-              width: 200,
+              width: 250,
               height: 200,
               alignment: Alignment.center,
-              child: Text(
-                word.value,
-                style: TextStyle(
-                  color: Colors.deepOrange,
-                  fontSize: 100,
-                  fontFamily: "Mynerve"
-                ),
-              ),
+              child: getText(word.value),
             ),
           ),
           Positioned(
@@ -681,6 +1017,20 @@ ElevatedButton getTextTile(Word word) {
         ],
       )
   );
+}
+
+Text getText(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+        color: Colors.deepOrange,
+        fontSize: 100,
+    ),
+  );
+}
+
+printDebug (String text) {
+  if (debugMode) print(text);
 }
 
 ElevatedButton getSoundTile(Word word) {
@@ -707,14 +1057,14 @@ ElevatedButton getSoundTile(Word word) {
 }
 
 ElevatedButton getOnsetTile(Word word) {
-  print('********** onset tile 1 word:' + word.title);
-  print('********** onset tile 2 word:' + alphabetOnsetList.length.toString());
+  printDebug('********** onset tile 1 word:' + word.title);
+  printDebug('********** onset tile 2 word:' + alphabetOnsetList.length.toString());
   Word onset;
   try {
     onset = alphabetOnsetList.singleWhere((element) => element.title == word.title.substring(0,1));
-    print('********** onset tile 3 word:' + onset.title);
+    printDebug('********** onset tile 3 word:' + onset.title);
   } catch (e) {
-    print('********** onset error:' + e.toString());
+    printDebug('********** onset error:' + e.toString());
   }
   return ElevatedButton(
       onPressed: () => (word.id==8)?{}:audioPlay(onset.id),

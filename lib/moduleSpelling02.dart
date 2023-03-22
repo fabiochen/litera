@@ -99,6 +99,9 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
   @override
   void next() {
     userInputTextField.text = '';
+    if (isEndPosition && mode == 'test') {
+      prefs.setInt('expandedId2', 2);
+    }
     super.next();
   }
 
