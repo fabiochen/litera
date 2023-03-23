@@ -89,17 +89,20 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("test2");
       mode = args['mode'];
       printDebug("test3");
-      year = args['year'];
+      year = args['year'] ?? Year.ONE.index;
       printDebug("test4");
-      subject = args['subject'];
+      subject = args['subject'] ?? Subject.PORTUGUESE.index;
       printDebug("test5");
-      moduleIndex = args['moduleIndex'];
+      moduleIndex = args['moduleIndex']??0;
       printDebug("test6");
       listProcess = args['list'];
       printDebug("test7");
       numberQuestions = args['numberQuestions']??listProcess.length.toInt();
+      printDebug("test8");
       useNavigation = args['useNavigation'] ?? true;
+      printDebug("test9");
       useProgressBar = args['useProgressBar'] ?? true;
+      printDebug("test10");
 
       if (listProcess.length == 1) {
         useNavigation = false;
@@ -165,6 +168,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getProgressBar() {
+    print("listPosition: $listPosition");
+    print("numberQuestions: $numberQuestions");
+    double percent = (listPosition+1) / numberQuestions;
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.all(10.0),
@@ -172,7 +178,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         lineHeight: 10.0,
         animation: false,
         animationDuration: 1000,
-        percent: (listPosition+1) / numberQuestions,
+        percent: percent,
         leading: Text((listPosition+1).toString() + '  ',
           style: TextStyle(fontSize: 15, color: Colors.black),
         ),

@@ -92,18 +92,17 @@ class _PageYear1State extends BaseModuleState<PageYear1> {
     return listTemp;
   }
 
-  ListTile _getListTile(dynamic context, Module _module) {
+  ListTile _getListTile(dynamic _context, Module _module) {
     String title = _module.title;
-    var modulePos = _module.id;
-    moduleIndex = modulePos.index;
+    var _modulePos = _module.id;
     int subjectIndex = _module.subject.index;
-    int _moduleStatus = moduleIndex.compareTo(getUnlockModuleIndex(year,subjectIndex));
+    int _moduleStatus = _modulePos.index.compareTo(getUnlockModuleIndex(year,subjectIndex));
 
     Icon iconModuleType;
     switch (_module.type) {
-     case ModuleType.LESSON:
-       iconModuleType = getLessonIcon();
-       break;
+      case ModuleType.LESSON:
+        iconModuleType = getLessonIcon();
+        break;
       case ModuleType.EXERCISE:
         iconModuleType = getExerciseIcon();
         break;
@@ -130,7 +129,7 @@ class _PageYear1State extends BaseModuleState<PageYear1> {
         displayFullTextOnTap: true,
         stopPauseOnTap: true,
         onTap: () {
-          _onTap(context, modulePos, _moduleStatus, title);
+          _onTap(_context, _module);
         },
       ) : Text(
         title,
@@ -138,390 +137,22 @@ class _PageYear1State extends BaseModuleState<PageYear1> {
       ),
       trailing: getLockIcon(_moduleStatus > 0),
       onTap: () {
-        _onTap(context, modulePos, _moduleStatus, title);
+        _onTap(_context, _module);
       }
     );
   }
 
-  _onTap(dynamic context, var modulePos, int moduleStatus, title) {
+  _onTap(dynamic _context, Module _module) {
 
-    if (modulePos is ModulePosYear1Por) {
-      switch(modulePos) {
-        case ModulePosYear1Por.Letters_Lesson_Alphabet:
-          if (moduleStatus <= 0) Navigator.pushNamed(
-              context, '/lessonAlphabet',
-              arguments: <String, Object>{
-                'useNavigation':true,
-                'title': getAssetsVocab('LESSON') + ": " + title,
-                'list': alphabet,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index
-              }
-          ).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Por.Letters_Lesson_Vowels:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/lessonLetters',
-              arguments: <String, Object>{
-                'list': listVowels,
-                'title': getAssetsVocab('LESSON') + ": " + title,
-                'year': year,
-                'subject': expandedId[year],
-                'moduleIndex': modulePos.index,
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Por.Letters_Exercise_OrderVowels:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleOrder',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('EXERCISE') + ": " + title,
-                'mode': 'exercise',
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': valOrderVowels
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Por.Letters_Exercise_OrderAlphabet:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleOrder',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('EXERCISE') + ": " + title,
-                'mode': 'exercise',
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': valOrderAlphabet
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Por.Letters_Exercise_LettersOnset:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleLetters2Onset',
-              arguments: <String, Object>{
-                'useNavigation':true,
-                'title': getAssetsVocab('EXERCISE') + ": " + title,
-                'mode': 'exercise',
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': letterOnsetList
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
+    Navigator.pushNamed(_context, _module.routeName,
+        arguments: _module.arguments
+    ).then((_) {
+      // This block runs when you have returned back to the 1st Page from 2nd.
+      setState(() {
+        // Call setState to refresh the page.
+      });
+    });
 
-          break;
-        case ModulePosYear1Por.Letters_Exercise_MatchCase:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleMatchCase',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('EXERCISE') + ": " + title,
-                'mode': 'exercise',
-                'isVisibleTarget':true,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': lettersMatchCase
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-
-          break;
-        case ModulePosYear1Por.Letters_Test_LettersImage:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleLetters2Picture',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('TEST') + ": " + title,
-                'mode': 'test',
-                'numberQuestions': 20,
-                'useNavigation':false,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': alphabet
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-
-          break;
-        case ModulePosYear1Por.Letters_Test_LettersOnset:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleLetters2Onset',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('TEST') + ": " + title,
-                'mode': 'test',
-                'numberQuestions': 20,
-                'useNavigation':false,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': letterOnsetList
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-
-          break;
-        case ModulePosYear1Por.Letters_Test_MatchCase:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleMatchCase',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('TEST') + ": " + title,
-                'mode': 'test',
-                //'numberQuestions': 20,
-                'isVisibleTarget': true,
-                'useNavigation':false,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': lettersMatchCase
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-
-          break;
-        case ModulePosYear1Por.Syllables_Lesson_Syllables:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/LessonSyllables',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('LESSON') + ": " + title,
-                'list': listSyllables,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-
-          break;
-        case ModulePosYear1Por.Syllables_Lesson_Consonant_Vowels:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/LessonSyllablesConsonantsVowels',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('LESSON') + ": " + title,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-
-          break;
-        case ModulePosYear1Por.Syllables_Lesson_Words:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/lessonSyllables2Words',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('LESSON') + ": " + title,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Por.Syllables_Exercise_SyllablesSound:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleSyllableOnset2Text',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('EXERCISE') + ": " + title,
-                'mode': 'exercise',
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': listSyllables
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Por.Syllables_Exercise_SyllablesWord:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleSyllablesWord',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('EXERCISE') + ": " + title,
-                'mode': 'exercise',
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': syllableUnique.where((word) => word.title.length == 4).toList()
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Por.Syllables_Test_SyllablesSound:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleSyllableOnset2Text',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('TEST') + ": " + title,
-                'mode': 'test',
-                'numberQuestions': 20,
-                'useNavigation': false,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': listSyllables
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Por.Syllables_Test_SyllablesWord:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleSyllablesWord',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('EXERCISE') + ": " + title,
-                'mode': 'test',
-                'numberQuestions': 20,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': syllableUnique.where((word) =>
-                word.title.length == 4
-                ).toList()
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              print("back from module");
-              expandedId[year] = 2;
-              subject = expandedId[year];
-              prefs.setInt('expandedId[year]',expandedId[year]);
-              print("expandedId[year]: $expandedId[year]");
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-      }
-    }
-    else {
-      switch(modulePos) {
-      case ModulePosYear1Mat.Numbers_Lesson_1_10:
-        if (moduleStatus <= 0) Navigator.pushNamed(context, '/lessonNumbers',
-            arguments: <String, Object>{
-              'title': getAssetsVocab('LESSON') + ": " + title,
-              'list': listNumber1t20.where((word) => word.id <= 154).toList(),
-              'year': year,
-              'subject': expandedId[year],
-              'moduleIndex': modulePos.index
-            }).then((_) {
-          // This block runs when you have returned back to the 1st Page from 2nd.
-          setState(() {
-            // Call setState to refresh the page.
-          });
-        });
-        break;
-      case ModulePosYear1Mat.Numbers_Exercise_NumbersPicture:
-        if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleNumbers2Picture',
-            arguments: <String, Object>{
-              'title': getAssetsVocab('EXERCISE') + ": " + title,
-              'mode': 'exercise',
-              'list': listNumber1t20.where((word) => word.id <= 154).toList(),
-              'year': year,
-              'subject':expandedId[year],
-              'moduleIndex': modulePos.index,
-            }).then((_) {
-          // This block runs when you have returned back to the 1st Page from 2nd.
-          setState(() {
-            // Call setState to refresh the page.
-          });
-        });
-        break;
-        case ModulePosYear1Mat.Numbers_Exercise_OrderNumbers:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleOrderNumeric',
-              arguments: <String, Object>{
-                // 'useNavigation': false,
-                // 'useProgressBar': false,
-                'title': getAssetsVocab('EXERCISE') + ": " + title,
-                'mode': 'exercise',
-                'year': year,
-                'subject':expandedId[year],
-                'moduleIndex': modulePos.index,
-                'list': valOrderNumbers
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Mat.Numbers_Test_NumbersPicture:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleNumbers2Picture',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('TEST') + ": " + title,
-                'mode': 'test',
-                'list': listNumber1t20.where((word) => word.id <= 154).toList(),
-                'numberQuestions': 20,
-                'useNavigation':false,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-        case ModulePosYear1Mat.Numbers_Test_OrderNumbers:
-          if (moduleStatus <= 0) Navigator.pushNamed(context, '/ModuleOrderNumeric',
-              arguments: <String, Object>{
-                'title': getAssetsVocab('TEST') + ": " + title,
-                'mode': 'test',
-                // 'useNavigation': false,
-                // 'useProgressBar': false,
-                'year': year,
-                'subject': expandedId[year],  // whichever panel is expanded is the subject matter
-                'moduleIndex': modulePos.index,
-                'list': valOrderNumbers
-              }).then((_) {
-            // This block runs when you have returned back to the 1st Page from 2nd.
-            setState(() {
-              // Call setState to refresh the page.
-            });
-          });
-          break;
-      }
-
-    }
   }
 
 }
