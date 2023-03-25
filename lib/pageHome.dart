@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:litera/globals.dart';
 import 'package:litera/menu.dart';
 import 'package:litera/baseModule.dart';
-import 'package:litera/pageYear1.dart';
-import 'package:litera/pageYear2.dart';
+import 'package:litera/pageYear.dart';
 
 class PageHome extends BaseModule {
   @override
@@ -38,147 +37,89 @@ class _PageHomeState extends BaseModuleState<PageHome> {
   
   @override
   Widget getMainTile() {
-    // List<Container> icons = [];
-    // for (int i=58700; i<59800; i++) {
-    //   icons.add(getIcon(i));
-    // }
-    // return ListView(
-    //   physics: const AlwaysScrollableScrollPhysics(),
-    //   children: [
-    //     Column (
-    //       children: icons,
-    //     )
-    //   ],
-    // );
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (c, animation1, animation2) => PageYear1(),
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          const begin = Offset(1.0, 0.0);
-                          const end = Offset.zero;
-                          const curve = Curves.ease;
-
-                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                          return SlideTransition(
-                            position: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                        transitionDuration: Duration(milliseconds: 1000),
-                      ),
-                    ).then((_) {
-                      // This block runs when you have returned back to the 1st Page from 2nd.
-                      print("returned 1");
-                      print("Last PT ModuleIndex: " + ModulePosYear1Por.values.length.toString());
-                      print("Saved PT ModuleIndex: " + getUnlockModuleIndex(1, 1).toString());
-                      print("Last MT ModuleIndex: " + ModulePosYear1Mat.values.length.toString());
-                      print("Saved MT ModuleIndex: " + getUnlockModuleIndex(1, 2).toString());
-                      setState(() {
-                        // Call setState to refresh the page.
-                      });
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.calendar_month,
-                        color: Colors.red.shade200,
-                        size: 100,
-                      ),
-                      Text(
-                        "1º Ano",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontFamily: 'Mynerve'
-                        ),
-                      )
-                    ],
-                  )
-              ),
-            ),  // year 1
-            SizedBox(
-                width: 50,
-                height: 50
-            ),
-            Container(
-              child: InkWell(
-                  onTap: () {
-                    if (
-                      ModulePosYear1Por.values.length <= getUnlockModuleIndex(Year.ONE.index, Subject.PORTUGUESE.index) &&
-                      ModulePosYear1Mat.values.length <= getUnlockModuleIndex(Year.ONE.index, Subject.MATH.index)
-                    )
-                      Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (c, animation1, animation2) => PageYear2(),
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          const begin = Offset(1.0, 0.0);
-                          const end = Offset.zero;
-                          const curve = Curves.ease;
-
-                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                          return SlideTransition(
-                            position: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                        transitionDuration: Duration(milliseconds: 1000),
-                      ),
-                    ).then((_) {
-                      // This block runs when you have returned back to the 1st Page from 2nd.
-                      print("returned 2");
-                      setState(() {
-                        // Call setState to refresh the page.
-                        print("refresh 2");
-                      });
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          Icon(
-                            Icons.calendar_month,
-                            color: Colors.yellow.shade200,
-                            size: 100,
-                          ),
-                          if (
-                            ModulePosYear1Por.values.length > getUnlockModuleIndex(Year.ONE.index, Subject.PORTUGUESE.index) ||
-                            ModulePosYear1Mat.values.length > getUnlockModuleIndex(Year.ONE.index, Subject.MATH.index)
-                          ) getLockIcon(true),
-                        ],
-                      ),
-                      Text(
-                        "2º Ano",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontFamily: 'Mynerve'
-                        ),
-                      )
-                    ],
-                  )
-              ),
-            ),  // year 2
-          ],
+          children: getListYears()
         ),
       ],
     );
+  }
+
+  List<Widget> getListYears() {
+    List<Widget> listContainers = [];
+    listContainers.add(SizedBox(
+        width: 50,
+        height: 50
+    ));
+    for (int i=0; i<listYears.length; i++) {
+      {
+        bool unlockModule =
+            listYears[i].id.index > 0 && (
+            listYears[i-1].subjects[Sub.PORTUGUESE.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, Sub.PORTUGUESE.index) ||
+            listYears[i-1].subjects[Sub.MATH.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, Sub.MATH.index));
+        listContainers.add(Container(
+          child: InkWell(
+              onTap: () {
+                if (!unlockModule) Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (c, animation1, animation2) => PageYear(listYears[i]),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(1.0, 0.0);
+                      const end = Offset.zero;
+                      const curve = Curves.ease;
+
+                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                    transitionDuration: Duration(milliseconds: 1000),
+                  ),
+                ).then((_) {
+                  setState(() {
+                    // Call setState to refresh the page.
+                  });
+                });
+              },
+              child: Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Icon(
+                        Icons.calendar_month,
+                        color: listYears[i].color,
+                        size: 100,
+                      ),
+                      if (unlockModule) getLockIcon(true),
+                    ],
+                  ),
+                  Text(
+                    listYears[i].value,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontFamily: 'Mynerve'
+                    ),
+                  )
+                ],
+              )
+          ),
+        ));
+        listContainers.add(SizedBox(
+            width: 50,
+            height: 50
+        ));
+      }
+    }
+    return listContainers;
   }
 
   Widget getMenu() {

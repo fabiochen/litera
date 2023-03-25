@@ -1,18 +1,19 @@
 library globals;
 
 import 'dart:io';
+import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:package_info/package_info.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'dart:convert';
-import 'dart:async';
 import 'package:litera/word.dart';
 import 'package:litera/module.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:litera/subject.dart';
+import 'package:litera/year.dart';
 
 String appOralLanguage;
 String appTitle;
@@ -66,7 +67,7 @@ Timer t1,t2,t3;
 Widget adWidget;
 
 //index 0 = year 1; index 1 = year 2;
-List<int> expandedId = [Subject.PORTUGUESE.index, Subject.PORTUGUESE.index];
+List<int> expandedId = [Sub.PORTUGUESE.index, Sub.PORTUGUESE.index];
 
 SharedPreferences prefs;
 
@@ -77,15 +78,16 @@ Future<Map<String, dynamic>> getConfigAssets() async {
 enum ModuleType {
   LESSON,
   EXERCISE,
-  TEST
+  TEST,
+  REPORT
 }
 
-enum Subject {
+enum Sub {
   PORTUGUESE,
   MATH
 }
 
-enum Year {
+enum Yr {
   ONE,
   TWO,
 }
@@ -144,10 +146,57 @@ enum ModulePosYear2Mat {
   Numbers_Test_20_100_Ordinals,
 }
 
-List<Module> listModulesYear1Por = [];
-List<Module> listModulesYear1Mat = [];
-List<Module> listModulesYear2Por = [];
-List<Module> listModulesYear2Mat = [];
+List<Year> listYears = [];
+
+Future init() async {
+
+  printDebug("******** init");
+
+  prefs = await SharedPreferences.getInstance();
+
+  alphabet = [];
+  syllableUnique = [];
+  listWordOnset = [];
+  listSyllables = [];
+  listVowels = [];
+  listAlphabet = [];
+  listVocab = [];
+  listNumber1t20 = [];
+  listNumber30t100 = [];
+  listNumber1t10Ordinal = [];
+  listNumber20t100Ordinal = [];
+  alphabetOnsetList = [];
+  letterOnsetList = [];
+  listOnsetConsonants = [];
+  lettersMatchCase = [];
+  valOrderNumbers = [];
+  valOrderVowels = [];
+  valOrderAlphabet = [];
+  mapSyllableMatch = [];
+  mapWordMatch = [];
+  listYears = [];
+
+  printDebug("******** init 2");
+
+  settingsNavigationLanguage?.clear();
+
+  listSyllables?.clear();
+
+  printDebug("******** init 3");
+
+  getNavigationLanguage();
+
+  printDebug("******** init 4");
+  await populate();
+
+  printDebug("******** init 5");
+  expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index")??Sub.PORTUGUESE.index);
+  printDebug("******** init 6");
+  print("expandedId-0: " + expandedId[0].toString());
+  print("expandedId-1: " + expandedId[1].toString());
+
+  printDebug("******** finished populate");
+}
 
 Future populate() async {
 
@@ -338,8 +387,7 @@ Future populate() async {
     Word word = Word(id, title);
     valOrderVowels.add(word);
   });
-
-
+  
   // populate alphabet order list
   parsedWords['LIST']['CATEGORY']['ORDER-ALPHABET'].keys.forEach((key){
     int id = int.parse(key);
@@ -421,12 +469,16 @@ Future populate() async {
       printDebug("empty result");
     }
   });
-  
+
+  List<Module> listModulesYear1Por = [];
+  List<Module> listModulesYear1Mat = [];
+
+  // module 0
   listModulesYear1Por.add(() {
     String _title = "Alfabeto";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Lesson_Alphabet;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -436,19 +488,20 @@ Future populate() async {
       '/lessonAlphabet',
       {
         'useNavigation':true,
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': alphabet,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index
+        'moduleIndex': _modulePos
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Vogais";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Lesson_Vowels;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    print("length: " + listModulesYear1Por.length.toString());
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -457,19 +510,19 @@ Future populate() async {
       _subject,
       '/lessonLetters',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': listVowels,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Ordem das Vogais";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Exercise_OrderVowels;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -478,44 +531,44 @@ Future populate() async {
       _subject,
       '/ModuleOrder',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
+        'title': _title,
         'list': valOrderVowels,
-        'mode': 'exercise',
+        'type': ModuleType.EXERCISE,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Ordem Alfabética";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Exercise_OrderAlphabet;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
       ModuleType.EXERCISE,
-      Year.ONE,
-      Subject.PORTUGUESE,
+      Yr.ONE,
+      Sub.PORTUGUESE,
       '/ModuleOrder',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
+        'title': _title,
+        'type': ModuleType.EXERCISE,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': valOrderAlphabet
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Som inicial / Letras";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Exercise_LettersOnset;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
-      ModulePosYear1Por.Letters_Exercise_LettersOnset,
+      _modulePos,
       _title,
       ModuleType.EXERCISE,
       _year,
@@ -523,20 +576,20 @@ Future populate() async {
       '/ModuleLetters2Onset',
       {
         'useNavigation':true,
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
+        'title': _title,
+        'type': ModuleType.EXERCISE,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': letterOnsetList
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Maiúscula / Minúscula";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Exercise_MatchCase;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -545,21 +598,21 @@ Future populate() async {
       _subject,
       '/ModuleMatchCase',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
+        'title': _title,
+        'type': ModuleType.EXERCISE,
         'isVisibleTarget':true,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': lettersMatchCase
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Imagem / Letras";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Test_LettersImage;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -568,22 +621,21 @@ Future populate() async {
       _subject,
       '/ModuleLetters2Picture',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         'numberQuestions': 20,
         'useNavigation':false,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': alphabet
-      }
+      },
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Som inicial / Letras";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Test_LettersOnset;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -592,22 +644,21 @@ Future populate() async {
       _subject,
       '/ModuleLetters2Onset',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         'numberQuestions': 20,
         'useNavigation':false,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': letterOnsetList
-      }
+      },
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Maiúscula / Minúscula";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Letters_Test_MatchCase;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -616,23 +667,22 @@ Future populate() async {
       _subject,
       '/ModuleMatchCase',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         //'numberQuestions': 20,
         'isVisibleTarget': true,
         'useNavigation':false,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': lettersMatchCase
-      }
+      },
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Sílabas";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Syllables_Lesson_Syllables;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -641,19 +691,19 @@ Future populate() async {
       _subject,
       '/LessonSyllables',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': listSyllables,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index
+        'moduleIndex': _modulePos
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Consoantes / Vogais";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Syllables_Lesson_Consonant_Vowels;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -662,18 +712,18 @@ Future populate() async {
       _subject,
       '/LessonSyllablesConsonantsVowels',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index
+        'moduleIndex': _modulePos
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Sílabas / Palavras";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Syllables_Lesson_Words;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -682,18 +732,18 @@ Future populate() async {
       _subject,
       '/lessonSyllables2Words',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index
+        'moduleIndex': _modulePos
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Som / Sílabas";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Syllables_Exercise_SyllablesSound;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -702,20 +752,19 @@ Future populate() async {
       _subject,
       '/ModuleSyllableOnset2Text',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
+        'title': _title,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': listSyllables
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Palavras / Sílabas";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Syllables_Exercise_SyllablesWord;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -724,20 +773,19 @@ Future populate() async {
       _subject,
       '/ModuleSyllablesWord',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
+        'title': _title,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': syllableUnique.where((word) => word.title.length == 4).toList()
       }
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Som / Sílabas";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Syllables_Test_SyllablesSound;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -746,22 +794,21 @@ Future populate() async {
       _subject,
       '/ModuleSyllableOnset2Text',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         'numberQuestions': 20,
         'useNavigation': false,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': listSyllables
-      }
+      },
     );
   } ());
   listModulesYear1Por.add(() {
     String _title = "Palavra / Sílabas";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear1Por.Syllables_Test_SyllablesWord;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
       _title,
@@ -770,22 +817,21 @@ Future populate() async {
       _subject,
       '/ModuleSyllablesWord',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         'numberQuestions': 20,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': syllableUnique.where((word) => word.title.length == 4).toList()
-      }
+      },
     );
   } ());
 
   listModulesYear1Mat.add(() {
     String _title = "1-10";
-    Year _year = Year.ONE;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear1Mat.Numbers_Lesson_1_10;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear1Mat.length;
     return Module(
         _modulePos,
         _title,
@@ -794,19 +840,19 @@ Future populate() async {
         _subject,
         '/lessonNumbers',
         {
-          'title': getAssetsVocab('LESSON') + ": " + _title,
+          'title': _title,
           'list': listNumber1t20.where((word) => word.id <= 154).toList(),
           'year': _year.index,
           'subject': _subject.index,
-          'moduleIndex': _modulePos.index
+          'moduleIndex': _modulePos
         }
     );
   } ());
   listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS');
-    Year _year = Year.ONE;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear1Mat.Numbers_Exercise_NumbersPicture;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear1Mat.length;
     return Module(
       _modulePos,
       _title,
@@ -815,20 +861,19 @@ Future populate() async {
       _subject,
       '/ModuleNumbers2Picture',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
+        'title': _title,
         'list': listNumber1t20.where((word) => word.id <= 154).toList(),
         'year': _year.index,
         'subject':_subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       }
     );
   } ());
   listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('ORDER-NUMBERS');
-    Year _year = Year.ONE;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear1Mat.Numbers_Exercise_OrderNumbers;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear1Mat.length;
     return Module(
       _modulePos,
       _title,
@@ -837,20 +882,19 @@ Future populate() async {
       _subject,
       '/ModuleOrderNumeric',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
+        'title': _title,
         'list': valOrderNumbers,
-        'mode': 'exercise',
         'year': _year.index,
         'subject':_subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       }
     );
   } ());
   listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS');
-    Year _year = Year.ONE;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear1Mat.Numbers_Test_NumbersPicture;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear1Mat.length;
     return Module(
         _modulePos,
         _title,
@@ -859,22 +903,21 @@ Future populate() async {
         _subject,
         '/ModuleNumbers2Picture',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         'list': listNumber1t20.where((word) => word.id <= 154).toList(),
         'numberQuestions': 20,
         'useNavigation':false,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
-      }
+        'moduleIndex': _modulePos,
+      },
     );
   } ());
   listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('ORDER-NUMBERS');
-    Year _year = Year.ONE;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear1Mat.Numbers_Test_OrderNumbers;
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear1Mat.length;
     return Module(
       _modulePos,
       _title,
@@ -885,21 +928,42 @@ Future populate() async {
       {
         // 'useNavigation': false,
         // 'useProgressBar': false,
-        'title': getAssetsVocab('TEST') + ": " + _title,
+        'title': _title,
         'list': valOrderNumbers,
-        'mode': 'test',
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
-      }
+        'moduleIndex': _modulePos,
+      },
     );
   } ());
 
+  Year year;
+  List<Subject> listSubjects;
+  Subject subjectPor;
+  Subject subjectMat;
+
+  subjectPor = Subject(Sub.PORTUGUESE, "Português", listModulesYear1Por);
+  subjectMat = Subject(Sub.MATH, "Matemática", listModulesYear1Mat);
+
+  listSubjects = [];
+  listSubjects.add(subjectPor);
+  listSubjects.add(subjectMat);
+
+  year = Year(
+      Yr.ONE,
+      "1º Ano",
+      Colors.red.shade200,
+      listSubjects);
+  listYears.add(year);
+
+  List<Module> listModulesYear2Por = [];
+  List<Module> listModulesYear2Mat = [];
+
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('WORDS');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Lesson_Words;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
       _title,
@@ -908,19 +972,19 @@ Future populate() async {
       _subject,
       '/lessonWords',
       {
-        'title': getAssetsVocab('LESSON') + ": $_title",
+        'title': _title,
         'list': alphabet,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       }
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('ONSET') + " / " + getAssetsVocab('WORDS');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Lesson_WordsOnset;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
       _title,
@@ -929,20 +993,19 @@ Future populate() async {
       _subject,
       '/lessonOnset2Words',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': listOnsetConsonants,
-        'mode': 'lesson',
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       }
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('ONSETS');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Lesson_WordOnsets;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
       _title,
@@ -951,20 +1014,19 @@ Future populate() async {
       _subject,
       '/lessonWord2Onsets',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': listWordOnset.where((word) => word.title.length <=6).toList(),
-        'mode': 'lesson',
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index
+        'moduleIndex': _modulePos
       }
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('CONSONANTS') + " / " + getAssetsVocab('VOWELS');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Lesson_ConsonantsVowels;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
         _title,
@@ -973,19 +1035,19 @@ Future populate() async {
         _subject,
         '/LessonWordsConsonantsVowels',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': mapWordMatch,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index
+        'moduleIndex': _modulePos
       }
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Exercise_WordsPicture;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
       _title,
@@ -994,20 +1056,19 @@ Future populate() async {
       _subject,
         '/ModuleWords2Picture',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
+        'title': _title,
         'list': listVocab.where((word) => word.title.length <=5).toList(),
-        'mode': 'exercise',
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       }
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Exercise_WordPictures;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
         _title,
@@ -1016,20 +1077,19 @@ Future populate() async {
         _subject,
         '/ModuleWord2Pictures',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
+        'title': _title,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': alphabet
       }
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('SPELLING') + " 1";
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Exercise_Spelling1;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
         _title,
@@ -1038,20 +1098,19 @@ Future populate() async {
         _subject,
         '/ModuleSpelling01',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + getAssetsVocab('SPELLING') + " 1",
-        'mode': 'exercise',
+        'title': _title,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': alphabet.where((word) => word.title.length <=6).toList()
       }
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('SPELLING') + " 2";
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Exercise_Spelling2;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
         _title,
@@ -1060,20 +1119,19 @@ Future populate() async {
       _subject,
         '/ModuleSpelling02',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + getAssetsVocab('SPELLING') + " 2",
-        'mode': 'exercise',
+        'title': _title,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': alphabet.where((word) => word.title.length <=6).toList()
       }
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Test_WordsPicture;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
         _title,
@@ -1082,21 +1140,20 @@ Future populate() async {
       _subject,
         '/ModuleWords2Picture',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         'numberQuestions': 20,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
-        'list': listVocab.where((word) => word.title.length <=5).toList()
-      }
+        'moduleIndex': _modulePos,
+        'list': alphabet.where((word) => word.title.length <=5).toList()
+      },
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Test_WordPictures;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
         _title,
@@ -1105,21 +1162,20 @@ Future populate() async {
       _subject,
         '/ModuleWord2Pictures',
       {
-        'title': getAssetsVocab('TEST') + ": $_title",
-        'mode': 'test',
+        'title': _title,
         'numberQuestions': 20,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': alphabet
-      }
+      },
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('SPELLING') + " 1";
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Test_Spelling1;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
         _title,
@@ -1128,21 +1184,20 @@ Future populate() async {
       _subject,
         '/ModuleSpelling01',
       {
-        'title': getAssetsVocab('TEST') + ": $_title",
-        'mode': 'test',
+        'title': _title,
         'numberQuestions': 20,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': alphabet.where((word) => word.title.length <=6 && word.title.length >3).toList()
-      }
+      },
     );
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('SPELLING') + ' 2';
-    Year _year = Year.TWO;
-    Subject _subject = Subject.PORTUGUESE;
-    var _modulePos = ModulePosYear2Por.Words_Test_Spelling2;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
         _title,
@@ -1151,22 +1206,21 @@ Future populate() async {
       _subject,
         '/ModuleSpelling02',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         'numberQuestions': 20,
         'year': _year.index,
         'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
         'list': alphabet.where((word) => word.title.length <=6).toList()
-      }
+      },
     );
   } ());
 
   listModulesYear2Mat.add(() {
     String _title = "1 - 20 (extenso)";
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Lesson_1_20_Full;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
     return Module(
         _modulePos,
         _title,
@@ -1175,149 +1229,83 @@ Future populate() async {
         _subject,
         '/lessonNumbersFull',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': listNumber1t20,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index
-      },
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Exercise_WordNumbers1_20;
-    return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        '/ModuleNumbers2Word',
-      {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
-        'list': listNumber1t20,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
-      },
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Test_WordNumbers1_20;
-    return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
-        _year,
-        _subject,
-        '/ModuleNumbers2Word',
-      {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
-        'list': listNumber1t20,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos
       },
     );
   } ());
   listModulesYear2Mat.add(() {
     String _title = "30 - 100 (extenso)";
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Lesson_30_100_Full;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.LESSON,
-        _year,
-        _subject,
-        '/lessonNumbersFull',
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      '/lessonNumbersFull',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': listNumber30t100,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index
-      },
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Exercise_WordNumbers30_100;
-    return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        '/ModuleNumbers2Word',
-      {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
-        'list': listNumber30t100,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
-      },
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Test_WordNumbers30_100;
-    return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
-        _year,
-        _subject,
-        '/ModuleNumbers2Word',
-      {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
-        'list': listNumber30t100,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos
       },
     );
   } ());
   listModulesYear2Mat.add(() {
     String _title = "1 - 10 (ordinais)";
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Lesson_1_10_Ordinals;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.LESSON,
-        _year,
-        _subject,
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
       '/lessonNumbersFull',
       {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
+        'title': _title,
         'list': listNumber1t10Ordinal,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index
+        'moduleIndex': _modulePos
       },
     );
   } ());
   listModulesYear2Mat.add(() {
-    String _title = getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Exercise_1_10_Ordinals;
+    String _title = "20 - 100 (ordinais)";
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      '/lessonNumbersFull',
+      {
+        'title': _title,
+        'list': listNumber20t100Ordinal,
+        'year': _year.index,
+        'subject': _subject.index,
+        'moduleIndex': _modulePos
+      },
+    );
+  } ());
+
+  listModulesYear2Mat.add(() {
+    String _title = "1 - 20 (extenso)";
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
     return Module(
         _modulePos,
         _title,
@@ -1326,63 +1314,61 @@ Future populate() async {
         _subject,
         '/ModuleNumbers2Word',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
-        'list': listNumber1t10Ordinal,
+        'title': _title,
+        'list': listNumber1t20,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       },
     );
   } ());
   listModulesYear2Mat.add(() {
-    String _title = getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Test_1_10_Ordinals;
+    String _title = "30 - 100 (extenso)";
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
     return Module(
         _modulePos,
         _title,
-        ModuleType.TEST,
+        ModuleType.EXERCISE,
         _year,
         _subject,
-      '/ModuleNumbers2Word',
+        '/ModuleNumbers2Word',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
+        'list': listNumber30t100,
+        'year': _year.index,
+        'subject': _subject.index,
+        'moduleIndex': _modulePos,
+      },
+    );
+  } ());
+  listModulesYear2Mat.add(() {
+    String _title = "1 - 10 (ordinais)";
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        '/ModuleNumbers2Word',
+      {
+        'title': _title,
         'list': listNumber1t10Ordinal,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       },
     );
   } ());
   listModulesYear2Mat.add(() {
     String _title = "20 - 100 (ordinais)";
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Lesson_20_100_Ordinals;
-    return Module(
-        _modulePos,
-        _title,
-        ModuleType.LESSON,
-        _year,
-        _subject,
-      '/lessonNumbersFull',
-      {
-        'title': getAssetsVocab('LESSON') + ": " + _title,
-        'list': listNumber20t100Ordinal,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos.index
-      },
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Exercise_20_100_Ordinals;
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
     return Module(
         _modulePos,
         _title,
@@ -1391,20 +1377,82 @@ Future populate() async {
         _subject,
       '/ModuleNumbers2Word',
       {
-        'title': getAssetsVocab('EXERCISE') + ": " + _title,
-        'mode': 'exercise',
+        'title': _title,
         'list': listNumber20t100Ordinal,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       },
     );
   } ());
   listModulesYear2Mat.add(() {
-    String _title = getAssetsVocab('NUMBERS') + " / " + getAssetsVocab('WORD');
-    Year _year = Year.TWO;
-    Subject _subject = Subject.MATH;
-    var _modulePos = ModulePosYear2Mat.Numbers_Test_20_100_Ordinals;
+    String _title = "1 - 20 (extenso)";
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      '/ModuleNumbers2Word',
+      {
+        'title': _title,
+        'list': listNumber1t20,
+        'year': _year.index,
+        'subject': _subject.index,
+        'moduleIndex': _modulePos,
+      },
+    );
+  } ());
+  listModulesYear2Mat.add(() {
+    String _title = "30 - 100 (extenso)";
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      '/ModuleNumbers2Word',
+      {
+        'title': _title,
+        'list': listNumber30t100,
+        'year': _year.index,
+        'subject': _subject.index,
+        'moduleIndex': _modulePos,
+      },
+    );
+  } ());
+  listModulesYear2Mat.add(() {
+    String _title = "1 - 10 (ordinais)";
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      '/ModuleNumbers2Word',
+      {
+        'title': _title,
+        'list': listNumber1t10Ordinal,
+        'year': _year.index,
+        'subject': _subject.index,
+        'moduleIndex': _modulePos,
+      },
+    );
+  } ());
+  listModulesYear2Mat.add(() {
+    String _title = "20 - 100 (ordinais)";
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MATH;
+    int _modulePos = listModulesYear2Mat.length;
     return Module(
         _modulePos,
         _title,
@@ -1413,69 +1461,29 @@ Future populate() async {
         _subject,
       '/ModuleNumbers2Word',
       {
-        'title': getAssetsVocab('TEST') + ": " + _title,
-        'mode': 'test',
+        'title': _title,
         'list': listNumber20t100Ordinal,
         'year': _year.index,
         'subject': _subject.index,
-        'moduleIndex': _modulePos.index,
+        'moduleIndex': _modulePos,
       },
     );
   } ());
 
-}
+  subjectPor = Subject(Sub.PORTUGUESE, "Português", listModulesYear2Por);
+  subjectMat = Subject(Sub.MATH, "Matemática", listModulesYear2Mat);
 
-Future init() async {
+  listSubjects = [];
+  listSubjects.add(subjectPor);
+  listSubjects.add(subjectMat);
 
-  printDebug("******** init");
+  year = Year(
+      Yr.TWO,
+      "2º Ano",
+      Colors.yellow.shade200,
+      listSubjects);
+  listYears.add(year);
 
-  prefs = await SharedPreferences.getInstance();
-
-  alphabet = [];
-  syllableUnique = [];
-  listWordOnset = [];
-  listSyllables = [];
-  listVowels = [];
-  listAlphabet = [];
-  listVocab = [];
-  listNumber1t20 = [];
-  listNumber30t100 = [];
-  listNumber1t10Ordinal = [];
-  listNumber20t100Ordinal = [];
-  alphabetOnsetList = [];
-  letterOnsetList = [];
-  listOnsetConsonants = [];
-  lettersMatchCase = [];
-  valOrderNumbers = [];
-  valOrderVowels = [];
-  valOrderAlphabet = [];
-  mapSyllableMatch = [];
-  mapWordMatch = [];
-  listModulesYear1Por = [];
-  listModulesYear1Mat = [];
-  listModulesYear2Por = [];
-  listModulesYear2Mat = [];
-
-  printDebug("******** init 2");
-
-  settingsNavigationLanguage?.clear();
-
-  listSyllables?.clear();
-
-  printDebug("******** init 3");
-
-  getNavigationLanguage();
-
-  printDebug("******** init 4");
-  await populate();
-
-  printDebug("******** init 5");
-  expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index")??Subject.PORTUGUESE.index);
-  printDebug("******** init 6");
-  print("expandedId-0: " + expandedId[0].toString());
-  print("expandedId-1: " + expandedId[1].toString());
-
-  printDebug("******** finished populate");
 }
 
 Icon getLockIcon(bool isModuleLocked) {
@@ -1493,31 +1501,30 @@ TextStyle getModuleStyle(unlock) {
   );
 }
 
-Icon getLessonIcon() {
+Icon getIcon(ModuleType type) {
+  int code;
+  Color color;
+  switch (type) {
+    case ModuleType.LESSON:
+      code = 59404;
+      color = Colors.blue.shade500;
+      break;
+    case ModuleType.EXERCISE:
+      code = 58740;
+      color = Colors.yellow.shade200;
+      break;
+    case ModuleType.TEST:
+      code = 59485;
+      color = Colors.red.shade200;
+      break;
+    case ModuleType.REPORT:
+      code = 59484;
+      color = Colors.white;
+      break;
+  }
   return Icon(
-    IconData(59404, fontFamily: 'LiteraIcons'),
-    color: Colors.blue.shade500,
-  );
-}
-
-Icon getExerciseIcon() {
-  return Icon(
-    IconData(58740, fontFamily: 'LiteraIcons'),
-    color: Colors.yellow.shade200,
-  );
-}
-
-Icon getTestIcon() {
-  return Icon(
-    IconData(59485, fontFamily: 'LiteraIcons'),
-    color: Colors.red.shade200,
-  );
-}
-
-Icon getReportIcon() {
-  return Icon(
-    IconData(59484, fontFamily: 'LiteraIcons'),
-    color: Colors.white,
+    IconData(code, fontFamily: 'LiteraIcons'),
+    color: color,
   );
 }
 

@@ -73,7 +73,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
                       backgroundColor: Colors.white
                   ),
                   onPressed: () {
-                    if (mode == 'test') {
+                    if (type == ModuleType.TEST) {
                       if (wordMain.id == wordOption.id) {
                         flagCorrect.value = 1;
                         correctCount++;

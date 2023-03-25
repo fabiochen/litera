@@ -1,17 +1,18 @@
 import 'package:litera/globals.dart';
 
 class Module {
-  var id;
+  int id;
   String title;
   ModuleType type;
-  Year year;
-  Subject subject;
+  Yr year;
+  Sub subject;
   String routeName;
-  Object args;
+  Map<String,Object> args;
 
-  Module(var this.id, String this.title, ModuleType this.type, Year this.year, Subject this.subject, [String this.routeName, Object this.args]);
+  Module(var this.id, String this.title, ModuleType this.type, Yr this.year, Sub this.subject, String this.routeName, Map<String,Object> this.args);
 
-  Object get arguments {
+  Map<String,Object> get arguments {
+    args['type'] = this.type;
     return args;
   }
 

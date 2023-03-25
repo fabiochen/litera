@@ -8,8 +8,6 @@ import 'package:litera/moduleLetters2Picture.dart';
 import 'package:litera/moduleWord2Pictures.dart';
 
 import 'package:litera/pageHome.dart';
-import 'package:litera/pageYear1.dart';
-import 'package:litera/pageYear2.dart';
 
 import 'package:litera/pageAbout.dart';
 import 'package:litera/pageContact.dart';
@@ -33,9 +31,6 @@ import 'package:litera/moduleSyllablesWord.dart';
 import 'package:litera/lessonOnset2Words.dart';
 import 'package:litera/lessonWord2Onsets.dart';
 import 'package:litera/lessonWordsConsonantsVowels.dart';
-import 'package:litera/reportPicture2Letters.dart';
-import 'package:litera/reportPicture2Numbers.dart';
-import 'package:litera/reportSyllableSound2Text.dart';
 import 'package:litera/moduleWords2Picture.dart';
 import 'package:litera/moduleNumbers2Picture.dart';
 import 'package:litera/moduleNumbers2Word.dart';
@@ -43,6 +38,8 @@ import 'package:litera/moduleLetters2Onset.dart';
 import 'package:litera/moduleSpelling01.dart';
 import 'package:litera/moduleSpelling02.dart';
 
+import 'package:litera/reportPicture2Numbers.dart';
+import 'package:litera/reportSyllableSound2Text.dart';
 import 'package:litera/reportMatchCase.dart';
 import 'package:litera/reportOnset2Letters.dart';
 
@@ -81,8 +78,6 @@ class MyApp extends StatelessWidget {
               initialRoute: '/',
               routes: {
                 '/'                          : (context) => PageHome(),
-                '/pageYear1'                 : (context) => PageYear1(),
-                '/pageYear2'                 : (context) => PageYear2(),
                 '/pageAbout'                 : (context) => PageAbout(),
                 '/pageContact'               : (context) => PageContact(),
                 '/pageConfigure'             : (context) => PageSettings(),
@@ -106,7 +101,6 @@ class MyApp extends StatelessWidget {
                 '/lessonAlphabet'            : (context) => LessonAlphabet(),
                 '/ModuleLetters2Picture'     : (context) => ModuleLetters2Picture(),
                 '/ModuleLetters2Onset'       : (context) => ModuleLetters2Onset(),
-                '/ReportLetters2Onset'       : (context) => ReportLetters2Onset(),
                 '/ModuleNumbers2Picture'     : (context) => ModuleNumbers2Picture(),
                 '/ModuleNumbers2Word'        : (context) => ModuleNumbers2Word(),
                 '/ModuleWords2Picture'       : (context) => ModuleWords2Picture(),
@@ -114,7 +108,7 @@ class MyApp extends StatelessWidget {
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),
                 '/ModuleSpelling02'          : (context) => ModuleSpelling02(),
                 '/reportMatchCase'           : (context) => ReportMatchCase(),
-                '/reportPicture2Letters'     : (context) => ReportPicture2Letters(),
+                '/ReportLetters2Onset'       : (context) => ReportLetters2Onset(),
                 '/ReportNumbers2Picture'     : (context) => ReportNumbers2Picture(),
                 '/ReportSyllableSound2Text'  : (context) => ReportSyllableSound2Text(),
               }

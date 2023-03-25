@@ -30,9 +30,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   List<Object> listProcess;
   int numberQuestions;
   String title = '';
-  String mode;
-  int year = Year.ONE.index;
-  int subject = Subject.PORTUGUESE.index;
+  ModuleType type = ModuleType.LESSON;
+  int yearIndex = Yr.ONE.index;
+  int subject = Sub.PORTUGUESE.index;
   int moduleIndex = 0;
   bool useNavigation = true;
   bool useProgressBar = true;
@@ -87,11 +87,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("test1");
       title = args['title'] ?? '';
       printDebug("test2");
-      mode = args['mode'];
+      type = args['type']??ModuleType.LESSON;
       printDebug("test3");
-      year = args['year'] ?? Year.ONE.index;
+      yearIndex = args['year'] ?? Yr.ONE.index;
       printDebug("test4");
-      subject = args['subject'] ?? Subject.PORTUGUESE.index;
+      subject = args['subject'] ?? Sub.PORTUGUESE.index;
       printDebug("test5");
       moduleIndex = args['moduleIndex']??0;
       printDebug("test6");
@@ -108,14 +108,27 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         useNavigation = false;
         useProgressBar = false;
       }
-      if (mode == 'test')
-        useNavigation = false;
+      switch (type) {
+        case ModuleType.LESSON:
+          title = getAssetsVocab('LESSON') + ": $title";
+          break;
+        case ModuleType.EXERCISE:
+          title = getAssetsVocab('EXERCISE') + ": $title";
+          break;
+        case ModuleType.TEST:
+          title = getAssetsVocab('TEST') + ": $title";
+          useNavigation = false;
+          break;
+        case ModuleType.REPORT:
+          title = getAssetsVocab('REPORT') + ": $title";
+          break;
+      }
       setEndPoints();
     } catch (e) {
       printDebug("dcd error: " + e.toString());
       printDebug("dcd error moduleIndex: " + moduleIndex.toString());
     }
-    getUnlockModuleIndex(year,subject);
+    getUnlockModuleIndex(yearIndex,subject);
     super.didChangeDependencies();
   }
 
@@ -291,10 +304,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   void saveCorrectionValues () async {
-    String correctKey = 'reports-$year-$subject-$moduleIndex-' + wordMain.id.toString() + '-correct';
+    String correctKey = 'reports-$yearIndex-$subject-$moduleIndex-' + wordMain.id.toString() + '-correct';
+    print("CorrectKey: $correctKey = " + flagCorrect.value.toString());
     int correctValue = (prefs.getInt(correctKey) ?? 0) + flagCorrect.value;
     await prefs.setInt(correctKey, correctValue);
-    String wrongKey = 'reports-$year-$subject-$moduleIndex-' + wordMain.id.toString() + '-wrong';
+    String wrongKey = 'reports-$yearIndex-$subject-$moduleIndex-' + wordMain.id.toString() + '-wrong';
+    print("WrongKey: $wrongKey =" + flagWrong.value.toString());
     int wrongValue = (prefs.getInt(wrongKey) ?? 0) + flagWrong.value;
     await prefs.setInt(wrongKey, wrongValue);
     flagCorrect.value = 0;
@@ -307,9 +322,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       moduleIndex++;
       printDebug("*********** next");
       printDebug("moduleIndex: $moduleIndex");
-      printDebug("year: $year");
+      printDebug("year: $yearIndex");
       printDebug("subject: $subject");
-      if (moduleIndex > getUnlockModuleIndex(year, subject))
+      if (moduleIndex > getUnlockModuleIndex(yearIndex, subject))
         setUnlockModuleIndex(moduleIndex);
       // rebirth so lock icon is refreshed...
       // ideally would be to unlock from the previous page
@@ -347,11 +362,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   setUnlockModuleIndex (int newIndex, [int _year, int _subject]) async {
 
-    this.year    = (_year    == null) ? this.year    : _year;
+    this.yearIndex    = (_year    == null) ? this.yearIndex    : _year;
     this.subject = (_subject == null) ? this.subject : _subject;
 
-    unlockModuleIndex['$year-$subject'] = newIndex;
-    await prefs.setInt('unlockModuleIndex-$year-$subject', newIndex);
+    unlockModuleIndex['$yearIndex-$subject'] = newIndex;
+    await prefs.setInt('unlockModuleIndex-$yearIndex-$subject', newIndex);
   }
 
   int getUnlockModuleIndex (int _year, int _subject) {

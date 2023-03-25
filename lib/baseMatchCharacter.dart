@@ -89,7 +89,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           itemBuilder: (BuildContext context, int i) {
             return DragTarget<List<String>>(
                 onWillAccept: (data) {
-                  if (mode == 'test') return true;
+                  if (type == 'test') return true;
                   if (data[0] == wordMain.title[i]) return true;
                   return false;
                 },
@@ -230,7 +230,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
     printDebug('concat:' + concatenate.toString());
     isCorrect = wordMain.title == concatenate.toString();
     audioPlay(isCorrect);
-    if (mode == 'test') {
+    if (type == ModuleType.TEST) {
         if (isCorrect) {
             correctCount++;
             flagCorrect.value = 1;

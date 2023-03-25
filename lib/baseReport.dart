@@ -37,11 +37,11 @@ class BaseReportState<T extends BaseReport> extends BaseModuleState<T> {
                   itemBuilder: (BuildContext context, int index) {
                     wordMain = listProcess[index];
                     int correctCount = projectSnap.data.get(
-                        'reports-$year-$subject-$moduleIndex-' + wordMain.id.toString() + '-correct') ?? 0;
+                        'reports-$yearIndex-$subject-$moduleIndex-' + wordMain.id.toString() + '-correct') ?? 0;
                     print('correct count:' + correctCount.toString());
                     print('id:' + wordMain.id.toString());
                     int wrongCount = projectSnap.data.get(
-                        'reports-$year-$subject-$moduleIndex-' + wordMain.id.toString() + '-wrong') ?? 0;
+                        'reports-$yearIndex-$subject-$moduleIndex-' + wordMain.id.toString() + '-wrong') ?? 0;
                     double totalCount = correctCount + wrongCount + 0.0001;
                     return Container(
                         child: Row(

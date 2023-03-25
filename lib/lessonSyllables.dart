@@ -44,10 +44,10 @@ class _LessonSyllablesState extends BaseModuleState<LessonSyllables> {
   void next() {
     if (isEndPosition) {
       moduleIndex++;
-      if (moduleIndex > getUnlockModuleIndex(year, subject))
+      if (moduleIndex > getUnlockModuleIndex(yearIndex, subject))
         setUnlockModuleIndex(moduleIndex);
       moduleIndex++;
-      if (moduleIndex > getUnlockModuleIndex(year, subject))
+      if (moduleIndex > getUnlockModuleIndex(yearIndex, subject))
         setUnlockModuleIndex(moduleIndex);
     }
     super.next();
