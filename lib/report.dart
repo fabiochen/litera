@@ -5,12 +5,12 @@ import 'package:litera/baseModule.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-class BaseReport extends BaseModule {
+class Report extends BaseModule {
   @override
   BaseReportState createState() => BaseReportState();
 }
 
-class BaseReportState<T extends BaseReport> extends BaseModuleState<T> {
+class BaseReportState<T extends Report> extends BaseModuleState<T> {
 
   Comparator<Object> criteria = (a, b) => (a as Word).id.compareTo((b as Word).id);
 

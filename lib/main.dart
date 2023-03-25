@@ -13,11 +13,10 @@ import 'package:litera/pageAbout.dart';
 import 'package:litera/pageContact.dart';
 import 'package:litera/pageSettings.dart';
 
-import 'package:litera/baseReport.dart';
+import 'package:litera/report.dart';
 
 import 'package:litera/lessonAlphabet.dart';
 import 'package:litera/lessonLetters.dart';
-import 'package:litera/baseMatchCharacter.dart';
 import 'package:litera/lessonNumbers.dart';
 import 'package:litera/lessonNumbersFull.dart';
 import 'package:litera/moduleOrder.dart';
@@ -37,11 +36,6 @@ import 'package:litera/moduleNumbers2Word.dart';
 import 'package:litera/moduleLetters2Onset.dart';
 import 'package:litera/moduleSpelling01.dart';
 import 'package:litera/moduleSpelling02.dart';
-
-import 'package:litera/reportPicture2Numbers.dart';
-import 'package:litera/reportSyllableSound2Text.dart';
-import 'package:litera/reportMatchCase.dart';
-import 'package:litera/reportOnset2Letters.dart';
 
 void main() {
   runApp(
@@ -81,36 +75,32 @@ class MyApp extends StatelessWidget {
                 '/pageAbout'                 : (context) => PageAbout(),
                 '/pageContact'               : (context) => PageContact(),
                 '/pageConfigure'             : (context) => PageSettings(),
+                '/lessonAlphabet'            : (context) => LessonAlphabet(),
                 '/lessonLetters'             : (context) => LessonLetters(),
-                '/BaseMatchCharacter'        : (context) => BaseMatchCharacter(),
-                '/ModuleMatchCase'           : (context) => ModuleMatchCase(),
-                '/ModuleWord2Pictures'       : (context) => ModuleWord2Pictures(),
-                '/lessonNumbers'             : (context) => LessonNumbers(),
-                '/lessonNumbersFull'         : (context) => LessonNumbersFull(),
                 '/ModuleOrder'               : (context) => ModuleOrder(),
-                '/ModuleOrderNumeric'        : (context) => ModuleOrderNumeric(),
-                '/lessonWords'               : (context) => LessonWords(),
+                '/ModuleLetters2Onset'       : (context) => ModuleLetters2Onset(),
+                '/ModuleMatchCase'           : (context) => ModuleMatchCase(),
+                '/ModuleLetters2Picture'     : (context) => ModuleLetters2Picture(),
                 '/LessonSyllables'           : (context) => LessonSyllables(),
                 '/LessonSyllablesConsonantsVowels' : (context) => LessonSyllablesConsonantsVowels(),
                 '/lessonSyllables2Words'     : (context) => LessonSyllables2Words(),
                 '/ModuleSyllableOnset2Text'  : (context) => ModuleSyllableOnset2Text(),
                 '/ModuleSyllablesWord'        : (context) => ModuleSyllablesWord(),
-                '/lessonOnset2Words'         : (context) => LessonOnset2Words(),
-                '/lessonWord2Onsets'         : (context) => LessonWord2Onsets(),
-                '/LessonWordsConsonantsVowels' : (context) => LessonWordsConsonantsVowels(),
-                '/lessonAlphabet'            : (context) => LessonAlphabet(),
-                '/ModuleLetters2Picture'     : (context) => ModuleLetters2Picture(),
-                '/ModuleLetters2Onset'       : (context) => ModuleLetters2Onset(),
+                '/LessonNumbers'             : (context) => LessonNumbers(),
                 '/ModuleNumbers2Picture'     : (context) => ModuleNumbers2Picture(),
-                '/ModuleNumbers2Word'        : (context) => ModuleNumbers2Word(),
+                '/ModuleOrderNumeric'        : (context) => ModuleOrderNumeric(),
+                '/LessonWords'               : (context) => LessonWords(),
+                '/LessonOnset2Words'         : (context) => LessonOnset2Words(),
+                '/LessonWord2Onsets'         : (context) => LessonWord2Onsets(),
+                '/LessonWordsConsonantsVowels' : (context) => LessonWordsConsonantsVowels(),
                 '/ModuleWords2Picture'       : (context) => ModuleWords2Picture(),
-                '/BaseReport'                : (context) => BaseReport(),
+                '/ModuleWord2Pictures'       : (context) => ModuleWord2Pictures(),
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),
                 '/ModuleSpelling02'          : (context) => ModuleSpelling02(),
-                '/reportMatchCase'           : (context) => ReportMatchCase(),
-                '/ReportLetters2Onset'       : (context) => ReportLetters2Onset(),
-                '/ReportNumbers2Picture'     : (context) => ReportNumbers2Picture(),
-                '/ReportSyllableSound2Text'  : (context) => ReportSyllableSound2Text(),
+                '/LessonNumbersFull'         : (context) => LessonNumbersFull(),
+                '/ModuleNumbers2Word'        : (context) => ModuleNumbers2Word(),
+
+                '/BaseReport'                : (context) => Report(),
               }
           );
         }

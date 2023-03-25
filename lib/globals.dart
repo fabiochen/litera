@@ -838,7 +838,7 @@ Future populate() async {
         ModuleType.LESSON,
         _year,
         _subject,
-        '/lessonNumbers',
+        '/LessonNumbers',
         {
           'title': _title,
           'list': listNumber1t20.where((word) => word.id <= 154).toList(),
@@ -970,7 +970,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonWords',
+      '/LessonWords',
       {
         'title': _title,
         'list': alphabet,
@@ -991,7 +991,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonOnset2Words',
+      '/LessonOnset2Words',
       {
         'title': _title,
         'list': listOnsetConsonants,
@@ -1012,7 +1012,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonWord2Onsets',
+      '/LessonWord2Onsets',
       {
         'title': _title,
         'list': listWordOnset.where((word) => word.title.length <=6).toList(),
@@ -1227,7 +1227,7 @@ Future populate() async {
         ModuleType.LESSON,
         _year,
         _subject,
-        '/lessonNumbersFull',
+        '/LessonNumbersFull',
       {
         'title': _title,
         'list': listNumber1t20,
@@ -1248,7 +1248,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonNumbersFull',
+      '/LessonNumbersFull',
       {
         'title': _title,
         'list': listNumber30t100,
@@ -1269,7 +1269,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonNumbersFull',
+      '/LessonNumbersFull',
       {
         'title': _title,
         'list': listNumber1t10Ordinal,
@@ -1290,7 +1290,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonNumbersFull',
+      '/LessonNumbersFull',
       {
         'title': _title,
         'list': listNumber20t100Ordinal,
