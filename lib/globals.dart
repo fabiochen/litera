@@ -485,7 +485,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonAlphabet',
+      '/LessonAlphabet',
       {
         'useNavigation':true,
         'title': _title,
@@ -508,7 +508,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonLetters',
+      '/LessonLetters',
       {
         'title': _title,
         'list': listVowels,
@@ -730,7 +730,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      '/lessonSyllables2Words',
+      '/LessonSyllables2Words',
       {
         'title': _title,
         'year': _year.index,

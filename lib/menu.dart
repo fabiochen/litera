@@ -72,7 +72,7 @@ class _MenuState extends BaseModuleState<Menu> {
           title: Text(
               getAssetsVocab('ABOUT')),
           onTap: () {
-            Navigator.pushNamed(context, '/pageAbout');
+            Navigator.pushNamed(context, '/PageAbout');
           },
         ),
       ));
@@ -86,7 +86,7 @@ class _MenuState extends BaseModuleState<Menu> {
           title: Text(
               getAssetsVocab('CONTACT')),
           onTap: () {
-            Navigator.pushNamed(context, '/pageContact');
+            Navigator.pushNamed(context, '/PageContact');
           },
         ),
       ));
@@ -112,7 +112,7 @@ class _MenuState extends BaseModuleState<Menu> {
           title: Text(
               getAssetsVocab('SETTINGS')),
           onTap: () {
-            Navigator.pushNamed(context, '/pageConfigure');
+            Navigator.pushNamed(context, '/PageSettings');
           },
         ),
       ));
