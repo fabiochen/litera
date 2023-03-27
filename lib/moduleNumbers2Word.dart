@@ -15,7 +15,7 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
   @override
   Widget getMainTile() {
     listProcess.shuffle();
-    wordMain = listProcess[Random().nextInt(4)];
+    wordMain = listProcess[Random().nextInt(4)] as Word;
     return super.getMainTile();
   }
 

@@ -14,7 +14,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
 
   int _selectedSyllable = 0;
   int _selectedWord = 0;
-  FixedExtentScrollController controller;
+  late FixedExtentScrollController controller;
 
   @override
   void initState() {
@@ -166,7 +166,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
   }
 
   void _audioPlaySyllable() {
-    int itemId;
+    late int itemId;
     Map<String,List> map = mapSyllableMatch.elementAt(_selectedSyllable);
     String _syllable = map.keys.first.toString();
 

@@ -12,9 +12,9 @@ class BaseMatchCharacter extends BaseModule {
 
 class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleState<T> {
 
-  Offset position;
+  late Offset position;
   Map<String, bool> acceptedPositionOriginalMap = Map();
-  List<bool> acceptedPositionTargetList;
+  late List<bool> acceptedPositionTargetList;
   List wordScrambled = [];
   String titleShuffled = '';
 
@@ -34,7 +34,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Map args = ModalRoute.of(context)?.settings?.arguments as Map;
+    Map args = ModalRoute.of(context)?.settings.arguments as Map;
     isVisibleTarget = args['isVisibleTarget'] ?? false;
     load();
   }
@@ -61,7 +61,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           ),
           itemCount: wordMain.title.length,
           itemBuilder: (BuildContext context, int i) {
-            if (!acceptedPositionOriginalMap[i.toString()]) {
+            if (!acceptedPositionOriginalMap[i.toString()]!) {
               return Draggable<List<String>>(
                   feedback: getLetterModel(
                       titleShuffled[i], Colors.yellow),
@@ -90,7 +90,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
             return DragTarget<List<String>>(
                 onWillAccept: (data) {
                   if (type == 'test') return true;
-                  if (data[0] == wordMain.title[i]) return true;
+                  if (data![0] == wordMain.title[i]) return true;
                   return false;
                 },
                 onAccept: (List<String> data) {

@@ -15,7 +15,7 @@ class _LessonSyllablesState extends BaseModuleState<LessonSyllables> {
   Comparator<Word> criteria = (a, b) => a.id.compareTo(b.id);
 
   Widget getMainTile() {
-    wordMain = listProcess[listPosition];
+    wordMain = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -43,12 +43,12 @@ class _LessonSyllablesState extends BaseModuleState<LessonSyllables> {
 
   void next() {
     if (isEndPosition) {
-      moduleIndex++;
-      if (moduleIndex > getUnlockModuleIndex(yearIndex, subject))
-        setUnlockModuleIndex(moduleIndex);
-      moduleIndex++;
-      if (moduleIndex > getUnlockModuleIndex(yearIndex, subject))
-        setUnlockModuleIndex(moduleIndex);
+      modulePos++;
+      if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
+        setUnlockModuleIndex(modulePos);
+      modulePos++;
+      if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
+        setUnlockModuleIndex(modulePos);
     }
     super.next();
   }

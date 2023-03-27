@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,61 +15,61 @@ import 'package:litera/module.dart';
 import 'package:litera/subject.dart';
 import 'package:litera/year.dart';
 
-String appOralLanguage;
-String appTitle;
-String devName;
-String devEmail;
+late String appOralLanguage;
+late String appTitle;
+late String devName;
+late String devEmail;
 
-int navigationLanguage;
+late int navigationLanguage;
 
-String buildNumber;
-String version;
+late String buildNumber;
+late String version;
 
 List<MapEntry> settingsNavigationLanguage = [];
-Map<String, dynamic> _assetsConfig;
+late Map<String, dynamic> _assetsConfig;
 
-Color appBarColorLight = Colors.teal[200];
+Color? appBarColorLight = Colors.teal[200];
 Color appBarColor = Colors.teal;
-Color appBarColorDark = Colors.teal[800];
+Color? appBarColorDark = Colors.teal[800];
 
-Color menuColorLight = Colors.teal[200];
+Color? menuColorLight = Colors.teal[200];
 Color menuColor = Colors.teal;
-Color menuColorDark = Colors.teal[800];
+Color? menuColorDark = Colors.teal[800];
 
 bool debugMode = true;
 
-List<Word> alphabet;
-List<Word> syllableUnique;
-List<Word> listWordOnset;
-List<Word> listVowels;
-List<Word> listAlphabet;
-List<Word> listNumber1t20;
-List<Word> listNumber30t100;
-List<Word> listNumber1t10Ordinal;
-List<Word> listNumber20t100Ordinal;
-List<Word> listVocab;
-List<Word> alphabetOnsetList;
-List<Word> letterOnsetList;
-List<Word> listOnsetConsonants; // list of alphabet letters used for onset lesson
-List<Word> lettersMatchCase;
-List<Word> valOrderNumbers;
-List<Word> valOrderVowels;
-List<Word> valOrderAlphabet;
-List<Word> listSyllables;
-List<Map<String, List<Word>>> mapSyllableMatch;
-List<Map<String, List<Word>>> mapWordMatch;
+late List<Word> alphabet;
+late List<Word> syllableUnique;
+late List<Word> listWordOnset;
+late List<Word> listVowels;
+late List<Word> listAlphabet;
+late List<Word> listNumber1t20;
+late List<Word> listNumber30t100;
+late List<Word> listNumber1t10Ordinal;
+late List<Word> listNumber20t100Ordinal;
+late List<Word> listVocab;
+late List<Word> alphabetOnsetList;
+late List<Word> letterOnsetList;
+late List<Word> listOnsetConsonants; // list of alphabet letters used for onset lesson
+late List<Word> lettersMatchCase;
+late List<Word> valOrderNumbers;
+late List<Word> valOrderVowels;
+late List<Word> valOrderAlphabet;
+late List<Word> listSyllables;
+late List<Map<String, List<Word>>> mapSyllableMatch;
+late List<Map<String, List<Word>>> mapWordMatch;
 
-Map<String, dynamic> parsedWords;
+late Map<String, dynamic> parsedWords;
 
 AudioPlayer audioPlayer = AudioPlayer();
-Timer t1,t2,t3;
+Timer? t1,t2,t3 = Timer(Duration(seconds: 1), () {});
 
-Widget adWidget;
+late Widget adWidget;
 
 //index 0 = year 1; index 1 = year 2;
 List<int> expandedId = [Sub.PORTUGUESE.index, Sub.PORTUGUESE.index];
 
-SharedPreferences prefs;
+late SharedPreferences prefs;
 
 Future<Map<String, dynamic>> getConfigAssets() async {
   return _assetsConfig;
@@ -178,9 +178,9 @@ Future init() async {
 
   printDebug("******** init 2");
 
-  settingsNavigationLanguage?.clear();
+  settingsNavigationLanguage.clear();
 
-  listSyllables?.clear();
+  listSyllables.clear();
 
   printDebug("******** init 3");
 
@@ -485,15 +485,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      alphabet,
       '/LessonAlphabet',
-      {
-        'useNavigation':true,
-        'title': _title,
-        'list': alphabet,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -508,14 +501,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      listVowels,
       '/LessonLetters',
-      {
-        'title': _title,
-        'list': listVowels,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -529,15 +516,8 @@ Future populate() async {
       ModuleType.EXERCISE,
       _year,
       _subject,
+      valOrderVowels,
       '/ModuleOrder',
-      {
-        'title': _title,
-        'list': valOrderVowels,
-        'type': ModuleType.EXERCISE,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -549,17 +529,10 @@ Future populate() async {
       _modulePos,
       _title,
       ModuleType.EXERCISE,
-      Yr.ONE,
-      Sub.PORTUGUESE,
+      _year,
+      _subject,
+      valOrderAlphabet,
       '/ModuleOrder',
-      {
-        'title': _title,
-        'type': ModuleType.EXERCISE,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': valOrderAlphabet
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -573,16 +546,8 @@ Future populate() async {
       ModuleType.EXERCISE,
       _year,
       _subject,
+      letterOnsetList,
       '/ModuleLetters2Onset',
-      {
-        'useNavigation':true,
-        'title': _title,
-        'type': ModuleType.EXERCISE,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': letterOnsetList
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -596,16 +561,8 @@ Future populate() async {
       ModuleType.EXERCISE,
       _year,
       _subject,
+      lettersMatchCase,
       '/ModuleMatchCase',
-      {
-        'title': _title,
-        'type': ModuleType.EXERCISE,
-        'isVisibleTarget':true,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': lettersMatchCase
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -619,16 +576,8 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      alphabet,
       '/ModuleLetters2Picture',
-      {
-        'title': _title,
-        'numberQuestions': 20,
-        'useNavigation':false,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': alphabet
-      },
     );
   } ());
   listModulesYear1Por.add(() {
@@ -642,15 +591,11 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      letterOnsetList,
       '/ModuleLetters2Onset',
       {
-        'title': _title,
         'numberQuestions': 20,
         'useNavigation':false,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': letterOnsetList
       },
     );
   } ());
@@ -665,16 +610,11 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      lettersMatchCase,
       '/ModuleMatchCase',
       {
-        'title': _title,
-        //'numberQuestions': 20,
         'isVisibleTarget': true,
         'useNavigation':false,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': lettersMatchCase
       },
     );
   } ());
@@ -689,14 +629,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      listSyllables,
       '/LessonSyllables',
-      {
-        'title': _title,
-        'list': listSyllables,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -710,13 +644,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      null,
       '/LessonSyllablesConsonantsVowels',
-      {
-        'title': _title,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -730,13 +659,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      null,
       '/LessonSyllables2Words',
-      {
-        'title': _title,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -750,14 +674,8 @@ Future populate() async {
       ModuleType.EXERCISE,
       _year,
       _subject,
+      listSyllables,
       '/ModuleSyllableOnset2Text',
-      {
-        'title': _title,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': listSyllables
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -771,14 +689,8 @@ Future populate() async {
       ModuleType.EXERCISE,
       _year,
       _subject,
+      syllableUnique.where((word) => word.title.length == 4).toList(),
       '/ModuleSyllablesWord',
-      {
-        'title': _title,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': syllableUnique.where((word) => word.title.length == 4).toList()
-      }
     );
   } ());
   listModulesYear1Por.add(() {
@@ -792,16 +704,8 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      listSyllables,
       '/ModuleSyllableOnset2Text',
-      {
-        'title': _title,
-        'numberQuestions': 20,
-        'useNavigation': false,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': listSyllables
-      },
     );
   } ());
   listModulesYear1Por.add(() {
@@ -815,14 +719,10 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      syllableUnique.where((word) => word.title.length == 4).toList(),
       '/ModuleSyllablesWord',
       {
-        'title': _title,
         'numberQuestions': 20,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': syllableUnique.where((word) => word.title.length == 4).toList()
       },
     );
   } ());
@@ -838,14 +738,8 @@ Future populate() async {
         ModuleType.LESSON,
         _year,
         _subject,
+        listNumber1t20.where((word) => word.id <= 154).toList(),
         '/LessonNumbers',
-        {
-          'title': _title,
-          'list': listNumber1t20.where((word) => word.id <= 154).toList(),
-          'year': _year.index,
-          'subject': _subject.index,
-          'moduleIndex': _modulePos
-        }
     );
   } ());
   listModulesYear1Mat.add(() {
@@ -859,14 +753,8 @@ Future populate() async {
       ModuleType.EXERCISE,
       _year,
       _subject,
+      listNumber1t20.where((word) => word.id <= 154).toList(),
       '/ModuleNumbers2Picture',
-      {
-        'title': _title,
-        'list': listNumber1t20.where((word) => word.id <= 154).toList(),
-        'year': _year.index,
-        'subject':_subject.index,
-        'moduleIndex': _modulePos,
-      }
     );
   } ());
   listModulesYear1Mat.add(() {
@@ -880,14 +768,8 @@ Future populate() async {
       ModuleType.EXERCISE,
       _year,
       _subject,
+      valOrderNumbers,
       '/ModuleOrderNumeric',
-      {
-        'title': _title,
-        'list': valOrderNumbers,
-        'year': _year.index,
-        'subject':_subject.index,
-        'moduleIndex': _modulePos,
-      }
     );
   } ());
   listModulesYear1Mat.add(() {
@@ -901,15 +783,11 @@ Future populate() async {
         ModuleType.TEST,
         _year,
         _subject,
+        listNumber1t20.where((word) => word.id <= 154).toList(),
         '/ModuleNumbers2Picture',
       {
-        'title': _title,
-        'list': listNumber1t20.where((word) => word.id <= 154).toList(),
         'numberQuestions': 20,
         'useNavigation':false,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
       },
     );
   } ());
@@ -924,16 +802,8 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      valOrderNumbers,
       '/ModuleOrderNumeric',
-      {
-        // 'useNavigation': false,
-        // 'useProgressBar': false,
-        'title': _title,
-        'list': valOrderNumbers,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
 
@@ -970,14 +840,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      alphabet,
       '/LessonWords',
-      {
-        'title': _title,
-        'list': alphabet,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      }
     );
   } ());
   listModulesYear2Por.add(() {
@@ -991,14 +855,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      listOnsetConsonants,
       '/LessonOnset2Words',
-      {
-        'title': _title,
-        'list': listOnsetConsonants,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-      }
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1012,14 +870,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      listWordOnset.where((word) => word.title.length <=6).toList(),
       '/LessonWord2Onsets',
-      {
-        'title': _title,
-        'list': listWordOnset.where((word) => word.title.length <=6).toList(),
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos
-      }
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1033,14 +885,8 @@ Future populate() async {
         ModuleType.LESSON,
         _year,
         _subject,
+        mapWordMatch,
         '/LessonWordsConsonantsVowels',
-      {
-        'title': _title,
-        'list': mapWordMatch,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos
-      }
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1054,14 +900,8 @@ Future populate() async {
       ModuleType.EXERCISE,
       _year,
       _subject,
-        '/ModuleWords2Picture',
-      {
-        'title': _title,
-        'list': listVocab.where((word) => word.title.length <=5).toList(),
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-      }
+      listVocab.where((word) => word.title.length <=5).toList(),
+      '/ModuleWords2Picture',
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1075,14 +915,8 @@ Future populate() async {
         ModuleType.EXERCISE,
         _year,
         _subject,
+        alphabet,
         '/ModuleWord2Pictures',
-      {
-        'title': _title,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': alphabet
-      }
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1096,14 +930,8 @@ Future populate() async {
         ModuleType.EXERCISE,
         _year,
         _subject,
+        alphabet.where((word) => word.title.length <=6).toList(),
         '/ModuleSpelling01',
-      {
-        'title': _title,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': alphabet.where((word) => word.title.length <=6).toList()
-      }
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1115,16 +943,10 @@ Future populate() async {
         _modulePos,
         _title,
         ModuleType.EXERCISE,
-      _year,
-      _subject,
+        _year,
+        _subject,
+        alphabet.where((word) => word.title.length <=6).toList(),
         '/ModuleSpelling02',
-      {
-        'title': _title,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': alphabet.where((word) => word.title.length <=6).toList()
-      }
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1133,19 +955,15 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
+      _modulePos,
+      _title,
+      ModuleType.TEST,
       _year,
       _subject,
-        '/ModuleWords2Picture',
+      alphabet.where((word) => word.title.length <=5).toList(),
+      '/ModuleWords2Picture',
       {
-        'title': _title,
         'numberQuestions': 20,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': alphabet.where((word) => word.title.length <=5).toList()
       },
     );
   } ());
@@ -1155,19 +973,15 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
+      _modulePos,
+      _title,
+      ModuleType.TEST,
       _year,
       _subject,
-        '/ModuleWord2Pictures',
+      alphabet,
+      '/ModuleWord2Pictures',
       {
-        'title': _title,
         'numberQuestions': 20,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': alphabet
       },
     );
   } ());
@@ -1177,19 +991,15 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
+      _modulePos,
+      _title,
+      ModuleType.TEST,
       _year,
       _subject,
+      alphabet.where((word) => word.title.length <=6 && word.title.length >3).toList(),
         '/ModuleSpelling01',
       {
-        'title': _title,
         'numberQuestions': 20,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': alphabet.where((word) => word.title.length <=6 && word.title.length >3).toList()
       },
     );
   } ());
@@ -1199,19 +1009,15 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
+      _modulePos,
+      _title,
+      ModuleType.TEST,
       _year,
       _subject,
-        '/ModuleSpelling02',
+      alphabet.where((word) => word.title.length <=6).toList(),
+      '/ModuleSpelling02',
       {
-        'title': _title,
         'numberQuestions': 20,
-        'year': _year.index,
-        'subject': _subject.index,  // whichever panel is expanded is the subject matter
-        'moduleIndex': _modulePos,
-        'list': alphabet.where((word) => word.title.length <=6).toList()
       },
     );
   } ());
@@ -1227,14 +1033,8 @@ Future populate() async {
         ModuleType.LESSON,
         _year,
         _subject,
+        listNumber1t20,
         '/LessonNumbersFull',
-      {
-        'title': _title,
-        'list': listNumber1t20,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1248,14 +1048,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      listNumber30t100,
       '/LessonNumbersFull',
-      {
-        'title': _title,
-        'list': listNumber30t100,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1269,14 +1063,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      listNumber1t10Ordinal,
       '/LessonNumbersFull',
-      {
-        'title': _title,
-        'list': listNumber1t10Ordinal,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1290,14 +1078,8 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
+      listNumber20t100Ordinal,
       '/LessonNumbersFull',
-      {
-        'title': _title,
-        'list': listNumber20t100Ordinal,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos
-      },
     );
   } ());
 
@@ -1312,14 +1094,8 @@ Future populate() async {
         ModuleType.EXERCISE,
         _year,
         _subject,
+        listNumber1t20,
         '/ModuleNumbers2Word',
-      {
-        'title': _title,
-        'list': listNumber1t20,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1333,14 +1109,8 @@ Future populate() async {
         ModuleType.EXERCISE,
         _year,
         _subject,
+        listNumber30t100,
         '/ModuleNumbers2Word',
-      {
-        'title': _title,
-        'list': listNumber30t100,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1354,14 +1124,8 @@ Future populate() async {
         ModuleType.EXERCISE,
         _year,
         _subject,
+        listNumber1t10Ordinal,
         '/ModuleNumbers2Word',
-      {
-        'title': _title,
-        'list': listNumber1t10Ordinal,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1370,19 +1134,13 @@ Future populate() async {
     Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listNumber20t100Ordinal,
       '/ModuleNumbers2Word',
-      {
-        'title': _title,
-        'list': listNumber20t100Ordinal,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1396,14 +1154,8 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      listNumber1t20,
       '/ModuleNumbers2Word',
-      {
-        'title': _title,
-        'list': listNumber1t20,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1417,14 +1169,8 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      listNumber30t100,
       '/ModuleNumbers2Word',
-      {
-        'title': _title,
-        'list': listNumber30t100,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1438,14 +1184,8 @@ Future populate() async {
       ModuleType.TEST,
       _year,
       _subject,
+      listNumber1t10Ordinal,
       '/ModuleNumbers2Word',
-      {
-        'title': _title,
-        'list': listNumber1t10Ordinal,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1454,19 +1194,13 @@ Future populate() async {
     Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
-        _year,
-        _subject,
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listNumber20t100Ordinal,
       '/ModuleNumbers2Word',
-      {
-        'title': _title,
-        'list': listNumber20t100Ordinal,
-        'year': _year.index,
-        'subject': _subject.index,
-        'moduleIndex': _modulePos,
-      },
     );
   } ());
 
@@ -1486,7 +1220,7 @@ Future populate() async {
 
 }
 
-Icon getLockIcon(bool isModuleLocked) {
+Icon? getLockIcon(bool isModuleLocked) {
   if (!isModuleLocked) return null;
   return Icon(
     IconData(59545, fontFamily: 'LiteraIcons'),
@@ -1533,7 +1267,7 @@ String getAssetsVocab(String key) {
 }
 
 int getNavigationLanguage() {
-  var temp = prefs.get("settings-language");
+  var temp = 2;
 
   navigationLanguage = temp;
 
@@ -1604,7 +1338,7 @@ showEndAlertDialog(BuildContext context, [String grade='']) {
 void audioPlay(Object itemId, [int duration=100]) {
   AudioCache audioCache = AudioCache();
   if (Platform.isIOS)
-    audioCache.fixedPlayer?.notificationService?.startHeadlessService();
+    audioCache.fixedPlayer?.notificationService.startHeadlessService();
   audioStop();
   t1 = Timer(Duration(milliseconds: duration), () async {
     audioPlayer = await audioCache.play('audios/$itemId.mp3');
@@ -1617,7 +1351,7 @@ void audioPlayOnset(String onset) {
 }
 
 void audioStop() {
-  audioPlayer?.stop();
+  audioPlayer.stop();
   t1?.cancel();
   t2?.cancel();
   t3?.cancel();
@@ -1748,7 +1482,7 @@ ElevatedButton getSoundTile(Word word) {
 ElevatedButton getOnsetTile(Word word) {
   printDebug('********** onset tile 1 word:' + word.title);
   printDebug('********** onset tile 2 word:' + alphabetOnsetList.length.toString());
-  Word onset;
+  late Word onset;
   try {
     onset = alphabetOnsetList.singleWhere((element) => element.title == word.title.substring(0,1));
     printDebug('********** onset tile 3 word:' + onset.title);

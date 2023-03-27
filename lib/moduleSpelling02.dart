@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:litera/globals.dart';
 import 'package:litera/baseModule.dart';
+import 'package:litera/word.dart';
 
 class ModuleSpelling02 extends BaseModule {
   @override
@@ -21,7 +22,7 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
   }
 
   Widget getMainTile() {
-    wordMain = listProcess[listPosition];
+    wordMain = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[

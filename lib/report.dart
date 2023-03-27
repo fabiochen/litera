@@ -4,6 +4,7 @@ import 'package:litera/baseModule.dart';
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Report extends BaseModule {
   @override
@@ -35,13 +36,14 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
                       ? 0
                       : listProcess.length,
                   itemBuilder: (BuildContext context, int index) {
-                    wordMain = listProcess[index];
-                    int correctCount = projectSnap.data.get(
-                        'reports-$yearIndex-$subject-$moduleIndex-' + wordMain.id.toString() + '-correct') ?? 0;
+                    wordMain = listProcess[index] as Word;
+                    String keyCorrect = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-correct';
+                    SharedPreferences pref = projectSnap.data as SharedPreferences;
+                    int correctCount = pref.getInt(keyCorrect) ?? 0;
                     print('correct count:' + correctCount.toString());
                     print('id:' + wordMain.id.toString());
-                    int wrongCount = projectSnap.data.get(
-                        'reports-$yearIndex-$subject-$moduleIndex-' + wordMain.id.toString() + '-wrong') ?? 0;
+                    String keyWrong = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-wrong';
+                    int wrongCount = pref.getInt(keyWrong) ?? 0;
                     double totalCount = correctCount + wrongCount + 0.0001;
                     return Container(
                         child: Row(

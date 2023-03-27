@@ -27,20 +27,20 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   int correctCount = 0;
   int wrongCount = 0;
 
-  List<Object> listProcess;
-  int numberQuestions;
-  String title = '';
-  ModuleType type = ModuleType.LESSON;
+  List<Object> listProcess = [];
+  late int numberQuestions;
+  late String title;
+  ModuleType? type;
   int yearIndex = Yr.ONE.index;
-  int subject = Sub.PORTUGUESE.index;
-  int moduleIndex = 0;
+  int subjectIndex = Sub.PORTUGUESE.index;
+  int modulePos = 0;
   bool useNavigation = true;
   bool useProgressBar = true;
 
-  Word wordMain;
-  Color backgroundColor = Colors.grey[200];
+  late Word wordMain;
+  Color? backgroundColor = Colors.grey[200];
 
-  BannerAd bannerAd;
+  late BannerAd bannerAd;
   final isBannerAdReady = ValueNotifier<bool>(false);
 
   void initState() {
@@ -83,31 +83,32 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   void didChangeDependencies() {
     printDebug("************* baseModule: didChangeDependencies");
     try {
-      Map args = ModalRoute.of(context).settings.arguments;
+      Map? args = ModalRoute.of(context)?.settings.arguments as Map?;
       printDebug("test1");
-      title = args['title'] ?? '';
+      title = args?['title']??title;
       printDebug("test2");
-      type = args['type']??ModuleType.LESSON;
+      type = args?['type'];
       printDebug("test3");
-      yearIndex = args['year'] ?? Yr.ONE.index;
+      yearIndex = args?['year'] ?? Yr.ONE.index;
       printDebug("test4");
-      subject = args['subject'] ?? Sub.PORTUGUESE.index;
+      subjectIndex = args?['subject'] ?? Sub.PORTUGUESE.index;
       printDebug("test5");
-      moduleIndex = args['moduleIndex']??0;
+      modulePos = args?['modulePos']??0;
       printDebug("test6");
-      listProcess = args['list'];
+      listProcess = args?['list']??[];
       printDebug("test7");
-      numberQuestions = args['numberQuestions']??listProcess.length.toInt();
+      numberQuestions = args?['numberQuestions']??listProcess.length.toInt();
       printDebug("test8");
-      useNavigation = args['useNavigation'] ?? true;
+      useNavigation = args?['useNavigation'] ?? true;
       printDebug("test9");
-      useProgressBar = args['useProgressBar'] ?? true;
+      useProgressBar = args?['useProgressBar'] ?? true;
       printDebug("test10");
 
-      if (listProcess.length == 1) {
+      if (listProcess.length <= 1) {
         useNavigation = false;
         useProgressBar = false;
       }
+      printDebug("test11: " + getAssetsVocab('LESSON'));
       switch (type) {
         case ModuleType.LESSON:
           title = getAssetsVocab('LESSON') + ": $title";
@@ -122,13 +123,16 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         case ModuleType.REPORT:
           title = getAssetsVocab('REPORT') + ": $title";
           break;
+        default:
+          break;
       }
+      printDebug("test12");
       setEndPoints();
     } catch (e) {
       printDebug("dcd error: " + e.toString());
-      printDebug("dcd error moduleIndex: " + moduleIndex.toString());
+      printDebug("dcd error modulePos: " + modulePos.toString());
     }
-    getUnlockModuleIndex(yearIndex,subject);
+    getUnlockModuleIndex(yearIndex,subjectIndex);
     super.didChangeDependencies();
   }
 
@@ -138,21 +142,17 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
-        appBar: AppBar(
-          backgroundColor: appBarColor,
-          title: Text(title??''),
-        ),
-        drawer: getMenu(),
+        appBar: getAppBar(),
+        drawer: Menu(),
         body: getBody()
     );
   }
 
-  Widget getMenu() {
-
-    return () {
-      audioStop();
-      Menu();
-    } ();
+  PreferredSizeWidget getAppBar() {
+    return AppBar(
+      backgroundColor: appBarColor,
+      title: Text(title),
+    );
   }
 
   Widget getBody() {
@@ -183,7 +183,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   Widget getProgressBar() {
     print("listPosition: $listPosition");
     print("numberQuestions: $numberQuestions");
-    double percent = (listPosition+1) / numberQuestions;
+    double percent = (numberQuestions>0)?(listPosition+1) / numberQuestions:0;
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.all(10.0),
@@ -219,7 +219,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getMainTile() {
-    wordMain = listProcess[listPosition];
+    wordMain = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -304,11 +304,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   void saveCorrectionValues () async {
-    String correctKey = 'reports-$yearIndex-$subject-$moduleIndex-' + wordMain.id.toString() + '-correct';
+    String correctKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-correct';
     print("CorrectKey: $correctKey = " + flagCorrect.value.toString());
     int correctValue = (prefs.getInt(correctKey) ?? 0) + flagCorrect.value;
     await prefs.setInt(correctKey, correctValue);
-    String wrongKey = 'reports-$yearIndex-$subject-$moduleIndex-' + wordMain.id.toString() + '-wrong';
+    String wrongKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-wrong';
     print("WrongKey: $wrongKey =" + flagWrong.value.toString());
     int wrongValue = (prefs.getInt(wrongKey) ?? 0) + flagWrong.value;
     await prefs.setInt(wrongKey, wrongValue);
@@ -319,13 +319,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   void next() {
     audioStop();
     if (isEndPosition) {
-      moduleIndex++;
+      modulePos++;
       printDebug("*********** next");
-      printDebug("moduleIndex: $moduleIndex");
+      printDebug("modulePos: $modulePos");
       printDebug("year: $yearIndex");
-      printDebug("subject: $subject");
-      if (moduleIndex > getUnlockModuleIndex(yearIndex, subject))
-        setUnlockModuleIndex(moduleIndex);
+      printDebug("subject: $subjectIndex");
+      if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
+        setUnlockModuleIndex(modulePos);
       // rebirth so lock icon is refreshed...
       // ideally would be to unlock from the previous page
       Navigator.of(context).pop();
@@ -360,13 +360,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     }
   }
 
-  setUnlockModuleIndex (int newIndex, [int _year, int _subject]) async {
+  setUnlockModuleIndex (int newIndex, [int? _year, int? _subject]) async {
 
     this.yearIndex    = (_year    == null) ? this.yearIndex    : _year;
-    this.subject = (_subject == null) ? this.subject : _subject;
+    this.subjectIndex = (_subject == null) ? this.subjectIndex : _subject;
 
-    unlockModuleIndex['$yearIndex-$subject'] = newIndex;
-    await prefs.setInt('unlockModuleIndex-$yearIndex-$subject', newIndex);
+    unlockModuleIndex['$yearIndex-$subjectIndex'] = newIndex;
+    await prefs.setInt('unlockModuleIndex-$yearIndex-$subjectIndex', newIndex);
   }
 
   int getUnlockModuleIndex (int _year, int _subject) {

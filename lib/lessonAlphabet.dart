@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:litera/baseModule.dart';
 import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
+import 'package:litera/menu.dart';
 
 class LessonAlphabet extends BaseModule {
   @override
@@ -21,7 +22,7 @@ class _LessonAlphabetState extends BaseModuleState<LessonAlphabet> {
 
   @override
   Widget getMainTile() {
-    wordMain = listProcess[listPosition];
+    wordMain = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -29,6 +30,18 @@ class _LessonAlphabetState extends BaseModuleState<LessonAlphabet> {
         getMainText(60), // letter
         getOnsetTile(wordMain), // image
       ],
+    );
+  }
+
+  @override
+  PreferredSizeWidget getAppBar() {
+    return AppBar(
+      backgroundColor: appBarColor,
+      title: Text(title),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () => Navigator.pop(context),
+      ),
     );
   }
 

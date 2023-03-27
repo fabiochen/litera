@@ -17,7 +17,7 @@ class _ModuleLetters2OnsetState extends BaseOptionTilesState<ModuleLetters2Onset
     listProcess.shuffle();
     listProcess.sort((a, b) => (a as Word).processed?1:0);
     int i= Random().nextInt(4);
-    wordMain = listProcess[i];
+    wordMain = listProcess[i] as Word;
     wordMain.processed = true;
     listProcess[i] = wordMain;
     audioPlay(wordMain.id);

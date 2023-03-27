@@ -15,11 +15,11 @@ class LessonOnset2Words extends BaseOptionTiles {
 }
 
 class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
-  int _testWordId;
+  late int _testWordId;
 
   @override
   ButtonTheme getOptionTile(int optionId, [int type=0]) {
-    Word onset = listProcess[listPosition];
+    Word onset = listProcess[listPosition] as Word;
     List<Word> filteredList = listVocab.where((word) => word.title.startsWith(onset.title)).toList();
     Word word = filteredList[optionId];
 
@@ -90,18 +90,18 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
 
   @override
   Widget getCenterTile() {
-    Word onset = listProcess[listPosition];
+    Word onset = listProcess[listPosition] as Word;
     audioPlayOnset(onset.title);
     return getOnsetTile(onset);
   }
 
   void _playTileAudio(Object itemId) {
-    Word onset = listProcess[listPosition];
+    Word onset = listProcess[listPosition] as Word;
     Word testWord = alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset.title));
     _testWordId = testWord.id;
     AudioCache audioCache = AudioCache();
     if (Platform.isIOS)
-      audioCache.fixedPlayer?.notificationService?.startHeadlessService();
+      audioCache.fixedPlayer?.notificationService.startHeadlessService();
     audioStop();
     audioPlay(_testWordId);
     t2 = Timer(Duration(milliseconds: 1000), () async {

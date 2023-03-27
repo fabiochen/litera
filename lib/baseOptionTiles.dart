@@ -46,7 +46,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
   }
 
   ButtonTheme getOptionTile(int pos) {
-    Word wordOption = listProcess[pos];
+    Word wordOption = listProcess[pos] as Word;
     return ButtonTheme(
         child: Expanded(
           child: Column(

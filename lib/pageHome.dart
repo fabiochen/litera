@@ -12,14 +12,13 @@ class PageHome extends BaseModule {
 
 class _PageHomeState extends BaseModuleState<PageHome> {
 
-  String title = appTitle;
-  Color backgroundColor = Colors.teal;
-
   @override
   void initState() {
     super.initState();
     useNavigation = false;
     useProgressBar = false;
+    title = "Litera Brasil";
+    backgroundColor = Colors.teal;
     bannerAd.load();
   }
 
@@ -92,14 +91,7 @@ class _PageHomeState extends BaseModuleState<PageHome> {
                 children: [
                   Stack(
                     alignment: Alignment.topRight,
-                    children: [
-                      Icon(
-                        Icons.calendar_month,
-                        color: listYears[i].color,
-                        size: 100,
-                      ),
-                      if (unlockModule) getLockIcon(true),
-                    ],
+                    children: getYearIcon(i, unlockModule),
                   ),
                   Text(
                     listYears[i].value,
@@ -122,6 +114,18 @@ class _PageHomeState extends BaseModuleState<PageHome> {
     return listContainers;
   }
 
+  List<Widget> getYearIcon(i,unlockModule) {
+    List<Widget> list = [];
+      list.add(Icon(
+        Icons.calendar_month,
+        color: listYears[i].color,
+        size: 100,
+      ));
+      if (unlockModule)list.add(getLockIcon(true) as Widget);
+    return list;
+  }
+
+  @override
   Widget getMenu() {
     return Menu();
   }

@@ -15,7 +15,7 @@ class _LessonNumbersFullState extends BaseModuleState<LessonNumbersFull> {
   Comparator<Word> criteria = (a, b) => a.value.compareTo(b.value);
 
   Widget getMainTile() {
-    Word word = listProcess[listPosition];
+    Word word = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

@@ -16,7 +16,7 @@ class _ModuleSyllableOnset2TextState extends BaseOptionTilesState<ModuleSyllable
     listProcess.shuffle();
     listProcess.sort((a, b) => (a as Word).processed?1:0);
     int i= Random().nextInt(4);
-    wordMain = listProcess[i];
+    wordMain = listProcess[i] as Word;
     wordMain.processed = true;
     listProcess[i] = wordMain;
     return super.getMainTile();

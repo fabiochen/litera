@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
 import 'package:litera/globals.dart';
+import 'package:litera/word.dart';
 
 class LessonLetters extends BaseModule {
   @override
@@ -12,7 +13,7 @@ class _LessonLettersState extends BaseModuleState<LessonLetters> {
 
   @override
   Widget getMainTile() {
-    wordMain = listProcess[listPosition];
+    wordMain = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

@@ -193,9 +193,9 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
   }
 
   void _playSyllableAudio() {
-    int itemId;
+    late int itemId;
     String _syllable = listOnsetConsonants[_selectedConsonant].title + listVowels[_selectedVowel].title;
-    listSyllables?.forEach((element) {
+    listSyllables.forEach((element) {
       if (element.title == _syllable) itemId=element.id;
     });
     audioPlay(itemId);

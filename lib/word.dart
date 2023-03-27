@@ -1,8 +1,8 @@
 class Word {
-  String title;
-  int id;
-  String value;
-  bool processed;
+  late String title;
+  late int id;
+  late String value;
+  late bool processed;
 
   Word(int id, String title, [String value = '', bool processed = false]) {
     this.title = title;

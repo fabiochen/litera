@@ -106,18 +106,18 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_phoenix
-      sha256: ab31abe902069564539b12c5beec3033234bc42265cd78dc05af1552bd80c8e6
+      sha256: "39589dac934ea476d0e43fb60c1ddfba58f14960743640c8250dea11c4333378"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "1.1.1"
   flutter_switch:
     dependency: "direct dev"
     description:
       name: flutter_switch
-      sha256: "5f452093de6de83e143545776fe9d7709a792f5e04b9bbf675521892d93ba894"
+      sha256: b91477f926bba135d2d203d7b24367492662d8d9c3aa6adb960b14c1087d3c41
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.5"
+    version: "0.3.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -192,14 +192,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  package_info:
+  package_info_plus:
     dependency: "direct dev"
     description:
-      name: package_info
-      sha256: "131eac71f589d1f7c52794ebf300bfc0a52c88ea26a0c89f2bbd90935774b7d6"
+      name: package_info_plus
+      sha256: "8df5ab0a481d7dc20c0e63809e90a588e496d276ba53358afc4c4443d0a00697"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.3+4"
+    version: "3.0.3"
+  package_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: package_info_plus_platform_interface
+      sha256: "9bc8ba46813a4cc42c66ab781470711781940780fd8beddd0c3da62506d3a6c6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   path:
     dependency: transitive
     description:
@@ -260,10 +268,10 @@ packages:
     dependency: "direct dev"
     description:
       name: percent_indicator
-      sha256: "647a14d6964fb07cf3668625730001f05f668e9564750e3e08c5160f86936b46"
+      sha256: c37099ad833a883c9d71782321cb65c3a848c21b6939b6185f0ff6640d05814c
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.9+1"
+    version: "4.2.3"
   platform:
     dependency: transitive
     description:
@@ -300,10 +308,10 @@ packages:
     dependency: "direct dev"
     description:
       name: shared_preferences
-      sha256: ee6257848f822b8481691f20c3e6d2bfee2e9eccb2a3d249907fcfb198c55b41
+      sha256: "78528fd87d0d08ffd3e69551173c026e8eacc7b7079c82eb6a77413957b7e394"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.18"
+    version: "2.0.20"
   shared_preferences_android:
     dependency: transitive
     description:
@@ -510,5 +518,5 @@ packages:
     source: hosted
     version: "1.0.0"
 sdks:
-  dart: ">=2.18.0 <3.0.0"
+  dart: ">=2.19.4 <3.0.0"
   flutter: ">=3.3.0"

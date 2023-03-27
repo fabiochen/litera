@@ -19,7 +19,7 @@ class PageYear extends BaseModule {
 
 class _PageYearState extends BaseModuleState<PageYear> {
 
-  Year year;
+  late Year year;
 
   @override
   void initState() {
@@ -31,6 +31,18 @@ class _PageYearState extends BaseModuleState<PageYear> {
     yearIndex = year.id.index;
     title = "$appTitle: " + (yearIndex+1).toString() +"º Ano";
     bannerAd.load();
+  }
+
+  @override
+  PreferredSizeWidget getAppBar() {
+    return AppBar(
+      backgroundColor: appBarColor,
+      title: Text(title),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () => Navigator.pop(context),
+      ),
+    );
   }
 
   @override
@@ -81,7 +93,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
 
   ListTile _getListTile(dynamic _context, Module _module) {
     String _moduleTitle = _module.title;
-    var _modulePos = _module.id;
+    var _modulePos = _module.pos;
     int _subjectIndex = _module.subject.index;
     int _moduleStatus = _modulePos.compareTo(getUnlockModuleIndex(yearIndex,_subjectIndex));
 

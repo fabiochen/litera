@@ -12,7 +12,7 @@ class LessonWord2Onsets extends BaseModule {
 class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
 
   Widget getMainTile() {
-    wordMain = listProcess[listPosition];
+    wordMain = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -24,7 +24,7 @@ class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
   }
 
   Widget _getOnsetsTile() {
-    Word word = listProcess[listPosition];
+    Word word = listProcess[listPosition] as Word;
     audioPlay(word.id);
     return Container(
       alignment: Alignment.center,

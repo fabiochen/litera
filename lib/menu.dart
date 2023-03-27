@@ -112,7 +112,7 @@ class _MenuState extends BaseModuleState<Menu> {
           title: Text(
               getAssetsVocab('SETTINGS')),
           onTap: () {
-            Navigator.pushNamed(context, '/PageSettings');
+            Navigator.pushNamed(context, '/PageConfigure');
           },
         ),
       ));

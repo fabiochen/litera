@@ -12,7 +12,7 @@ class LessonWordsConsonantsVowels extends BaseModule {
 class _LessonWordsConsonantsVowelsState extends BaseModuleState<LessonWordsConsonantsVowels> {
 
   int _selectedChars = 0;
-  FixedExtentScrollController controller;
+  late FixedExtentScrollController controller;
 
   @override
   void initState() {
