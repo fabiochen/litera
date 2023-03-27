@@ -22,6 +22,21 @@ class _PageHomeState extends BaseModuleState<PageHome> {
     bannerAd.load();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    printDebug("******** baseModule build");
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: backgroundColor,
+        appBar: AppBar(
+          backgroundColor: appBarColor,
+          title: Text(title),
+        ),
+        drawer: Menu(),
+        body: getBody()
+    );
+  }
+
   Container getIcon(id) {
     return Container(
       child: ListTile(
@@ -123,11 +138,6 @@ class _PageHomeState extends BaseModuleState<PageHome> {
       ));
       if (unlockModule)list.add(getLockIcon(true) as Widget);
     return list;
-  }
-
-  @override
-  Widget getMenu() {
-    return Menu();
   }
 
   TextStyle getModuleStyle(unlock) {

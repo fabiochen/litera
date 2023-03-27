@@ -142,16 +142,14 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
-        appBar: getAppBar(),
-        drawer: Menu(),
+        appBar: AppBar(
+          backgroundColor: appBarColor,
+          title: Text(title),
+        ),
+        drawer: () {
+          Menu;
+        } (),
         body: getBody()
-    );
-  }
-
-  PreferredSizeWidget getAppBar() {
-    return AppBar(
-      backgroundColor: appBarColor,
-      title: Text(title),
     );
   }
 
