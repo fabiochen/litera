@@ -367,8 +367,4 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     await prefs.setInt('unlockModuleIndex-$yearIndex-$subjectIndex', newIndex);
   }
 
-  int getUnlockModuleIndex (int _year, int _subject) {
-    return prefs.getInt('unlockModuleIndex-$_year-$_subject')??0;
-  }
-
 }

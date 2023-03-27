@@ -20,6 +20,7 @@ class PageYear extends BaseModule {
 class _PageYearState extends BaseModuleState<PageYear> {
 
   late Year year;
+  late int yearIndex;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
     useProgressBar = false;
     year = this.widget.year;
     yearIndex = year.id.index;
+    print("test 1 yearIndex $yearIndex");
     title = "$appTitle: " + (yearIndex+1).toString() +"º Ano";
     bannerAd.load();
   }
@@ -47,6 +49,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
 
   @override
   Widget getMainTile() {
+    print("test 1.5 yearIndex $yearIndex");
     return SingleChildScrollView(
       child: ExpansionPanelList.radio(
         initialOpenPanelValue: expandedId[yearIndex],
@@ -63,6 +66,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
         headerBuilder: (BuildContext context, bool isExpanded) {
           if (isExpanded) {
             expandedId[yearIndex] = subject.id.index;
+            print("test 2 yearIndex $yearIndex");
             prefs.setInt('expandedId-$yearIndex',expandedId[yearIndex]);
           }
           return ListTile(
@@ -84,7 +88,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
     });
     return listExpansionPanelRadio;
   }
-  
+
   List<ListTile> _getListListTiles(context, List<Module> listModules) {
     List<ListTile> listTemp = [];
     listModules.forEach((_module) { listTemp.add(_getListTile(context, _module));});
@@ -96,8 +100,8 @@ class _PageYearState extends BaseModuleState<PageYear> {
     var _modulePos = _module.pos;
     int _subjectIndex = _module.subject.index;
     int _moduleStatus = _modulePos.compareTo(getUnlockModuleIndex(yearIndex,_subjectIndex));
-
     Icon iconModuleType = getIcon(_module.type);
+    print("$yearIndex module: " + getUnlockModuleIndex(yearIndex,_subjectIndex).toString());
 
     return ListTile(
       leading: iconModuleType,

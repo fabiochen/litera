@@ -12,7 +12,6 @@ class PageSettings extends BaseModule {
 
 class _PageSettingsState extends BaseModuleState<PageSettings> {
 
-  int dropdownKey = navigationLanguage;
   bool resetApp = false;
   bool isUnlockModulesYear1 = false;
   bool isUnlockModulesYear2 = false;
@@ -48,34 +47,38 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   "1º Ano",
                   style: TextStyle(color: Colors.black),
                 ),
-                trailing: FlutterSwitch(
+                trailing: SizedBox(
                   width: 50.0,
                   height: 25.0,
-                  toggleSize: 15.0,
-                  value: isUnlockModulesYear1,
-                  borderRadius: 30.0,
-                  padding: 5.0,
-                  showOnOff: false,
-                  onToggle: (val) {
-                    setState(() {
-                      // only unlock year 1
-                      isUnlockModulesYear1 = true;
-                      isUnlockModulesYear2 = false;
-                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
-                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                      setUnlockModuleIndex(0, Yr.TWO.index, Sub.PORTUGUESE.index);
-                      setUnlockModuleIndex(0, Yr.TWO.index, Sub.MATH.index);
-                      if (!val) {
-                        // lock all
-                        isUnlockModulesYear1 = false;
+                  child: FlutterSwitch(
+                    width: 50.0,
+                    height: 25.0,
+                    toggleSize: 15.0,
+                    value: isUnlockModulesYear1,
+                    borderRadius: 30.0,
+                    padding: 5.0,
+                    showOnOff: false,
+                    onToggle: (val) {
+                      setState(() {
+                        // only unlock year 1
+                        isUnlockModulesYear1 = true;
                         isUnlockModulesYear2 = false;
-                        setUnlockModuleIndex(0, Yr.ONE.index, Sub.PORTUGUESE.index);
-                        setUnlockModuleIndex(0, Yr.ONE.index, Sub.MATH.index);
+                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
+                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
                         setUnlockModuleIndex(0, Yr.TWO.index, Sub.PORTUGUESE.index);
                         setUnlockModuleIndex(0, Yr.TWO.index, Sub.MATH.index);
-                      }
-                    });
-                  },
+                        if (!val) {
+                          // lock all
+                          isUnlockModulesYear1 = false;
+                          isUnlockModulesYear2 = false;
+                          setUnlockModuleIndex(0, Yr.ONE.index, Sub.PORTUGUESE.index);
+                          setUnlockModuleIndex(0, Yr.ONE.index, Sub.MATH.index);
+                          setUnlockModuleIndex(0, Yr.TWO.index, Sub.PORTUGUESE.index);
+                          setUnlockModuleIndex(0, Yr.TWO.index, Sub.MATH.index);
+                        }
+                      });
+                    },
+                  ),
                 ),
               ),  // ano 1
               ListTile(
@@ -86,34 +89,38 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   "2º Ano",
                   style: TextStyle(color: Colors.black),
                 ),
-                trailing: FlutterSwitch(
+                trailing: SizedBox(
                   width: 50.0,
                   height: 25.0,
-                  toggleSize: 15.0,
-                  value: isUnlockModulesYear2,
-                  borderRadius: 30.0,
-                  padding: 5.0,
-                  showOnOff: false,
-                  onToggle: (val) {
-                    setState(() {
-                      // unlock all
-                      isUnlockModulesYear1 = true;
-                      isUnlockModulesYear2 = true;
-                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
-                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.PORTUGUESE.index);
-                      setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.MATH.index);
-                      if (!val) {
-                        // only unlock year 1
+                  child: FlutterSwitch(
+                    width: 50.0,
+                    height: 25.0,
+                    toggleSize: 15.0,
+                    value: isUnlockModulesYear2,
+                    borderRadius: 30.0,
+                    padding: 5.0,
+                    showOnOff: false,
+                    onToggle: (val) {
+                      setState(() {
+                        // unlock all
                         isUnlockModulesYear1 = true;
-                        isUnlockModulesYear2 = false;
+                        isUnlockModulesYear2 = true;
                         setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
                         setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                        setUnlockModuleIndex(0, Yr.TWO.index, Sub.PORTUGUESE.index);
-                        setUnlockModuleIndex(0, Yr.TWO.index, Sub.MATH.index);
-                      }
-                    });
-                  },
+                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.PORTUGUESE.index);
+                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.MATH.index);
+                        if (!val) {
+                          // only unlock year 1
+                          isUnlockModulesYear1 = true;
+                          isUnlockModulesYear2 = false;
+                          setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
+                          setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
+                          setUnlockModuleIndex(0, Yr.TWO.index, Sub.PORTUGUESE.index);
+                          setUnlockModuleIndex(0, Yr.TWO.index, Sub.MATH.index);
+                        }
+                      });
+                    },
+                  ),
                 ),
               ),  // ano 2
               ListTile(
@@ -125,19 +132,23 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   'Reset (inclue apagar relatórios)',
                   style: TextStyle(color: Colors.red),
                 ),
-                trailing: FlutterSwitch(
+                trailing: SizedBox(
                   width: 50.0,
                   height: 25.0,
-                  toggleSize: 15.0,
-                  value: resetApp,
-                  borderRadius: 30.0,
-                  padding: 5.0,
-                  showOnOff: false,
-                  onToggle: (val) {
-                    setState(() {
-                      resetApp = val;
-                    });
-                  },
+                  child: FlutterSwitch(
+                    width: 50.0,
+                    height: 25.0,
+                    toggleSize: 15.0,
+                    value: resetApp,
+                    borderRadius: 30.0,
+                    padding: 5.0,
+                    showOnOff: false,
+                    onToggle: (val) {
+                      setState(() {
+                        resetApp = val;
+                      });
+                    },
+                  ),
                 ),
               ),
               ListTile(

@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'package:litera/globals.dart';
 import 'package:litera/menu.dart';
-import 'package:litera/baseModule.dart';
 import 'package:litera/pageYear.dart';
 
-class PageHome extends BaseModule {
+class PageHome extends StatefulWidget {
   @override
   _PageHomeState createState() => _PageHomeState();
 }
 
-class _PageHomeState extends BaseModuleState<PageHome> {
+class _PageHomeState<T extends PageHome> extends State<T> {
+
+  bool useNavigation = true;
+  bool useProgressBar = true;
+  Color? backgroundColor = Colors.grey[200];
+  late BannerAd bannerAd;
+  final isBannerAdReady = ValueNotifier<bool>(false);
+
+  late String title;
 
   @override
   void initState() {
@@ -19,7 +27,25 @@ class _PageHomeState extends BaseModuleState<PageHome> {
     useProgressBar = false;
     title = "Litera Brasil";
     backgroundColor = Colors.teal;
+    bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
+      //adUnitId: 'ca-app-pub-3940256099942544/6300978111', //test id
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          printDebug('******** banner loaded: ' + DateTime.now().toString());
+          isBannerAdReady.value = true;
+        },
+        onAdFailedToLoad: (ad, err) {
+          printDebug('Failed to load a banner ad: ${err.message}');
+          isBannerAdReady.value = false;
+          ad.dispose();
+        },
+      ),
+    );
     bannerAd.load();
+
   }
 
   @override
@@ -34,6 +60,36 @@ class _PageHomeState extends BaseModuleState<PageHome> {
         ),
         drawer: Menu(),
         body: getBody()
+    );
+  }
+
+  Widget getBody() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+            child: getMainTile()
+        ),
+        ValueListenableBuilder(
+            valueListenable: isBannerAdReady,
+            builder: (context, value, widget) {
+              return getAd();
+            }
+        )
+      ],
+    );
+  }
+
+  Widget getAd() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: StatefulBuilder(
+        builder: (context, setState) => Container(
+          width: bannerAd.size.width.toDouble(),
+          height: bannerAd.size.height.toDouble(),
+          child: AdWidget(ad: bannerAd),
+        ),
+      ),
     );
   }
 
@@ -71,14 +127,18 @@ class _PageHomeState extends BaseModuleState<PageHome> {
     ));
     for (int i=0; i<listYears.length; i++) {
       {
-        bool unlockModule =
+        bool unlockYear =
             listYears[i].id.index > 0 && (
             listYears[i-1].subjects[Sub.PORTUGUESE.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, Sub.PORTUGUESE.index) ||
             listYears[i-1].subjects[Sub.MATH.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, Sub.MATH.index));
+        if (listYears[i].id.index > 0) {
+          // print("$i last portuguese module: " + getUnlockModuleIndex(listYears[i-1].id.index, Sub.PORTUGUESE.index).toString());
+          // print("$i total portuguese module count: " + listYears[i-1].subjects[Sub.PORTUGUESE.index].modules.length.toString());
+        }
         listContainers.add(Container(
           child: InkWell(
               onTap: () {
-                if (!unlockModule) Navigator.push(
+                if (!unlockYear) Navigator.push(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (c, animation1, animation2) => PageYear(listYears[i]),
@@ -106,7 +166,7 @@ class _PageHomeState extends BaseModuleState<PageHome> {
                 children: [
                   Stack(
                     alignment: Alignment.topRight,
-                    children: getYearIcon(i, unlockModule),
+                    children: getYearIcon(i, unlockYear),
                   ),
                   Text(
                     listYears[i].value,

@@ -1522,3 +1522,7 @@ ElevatedButton getOnsetTile(Word word) {
       )
   );
 }
+
+int getUnlockModuleIndex (int _year, int _subject) {
+  return prefs.getInt('unlockModuleIndex-$_year-$_subject')??0;
+}
