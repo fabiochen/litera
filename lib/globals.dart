@@ -563,6 +563,7 @@ Future populate() async {
       _subject,
       lettersMatchCase,
       '/ModuleMatchCase',
+      isVisibleTarget: true,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -593,10 +594,8 @@ Future populate() async {
       _subject,
       letterOnsetList,
       '/ModuleLetters2Onset',
-      {
-        'numberQuestions': 20,
-        'useNavigation':false,
-      },
+      numberQuestions: 20,
+      useNavigation:false,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -612,10 +611,8 @@ Future populate() async {
       _subject,
       lettersMatchCase,
       '/ModuleMatchCase',
-      {
-        'isVisibleTarget': true,
-        'useNavigation':false,
-      },
+      isVisibleTarget: true,
+      useNavigation:false,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -644,7 +641,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      null,
+      [],
       '/LessonSyllablesConsonantsVowels',
     );
   } ());
@@ -659,7 +656,7 @@ Future populate() async {
       ModuleType.LESSON,
       _year,
       _subject,
-      null,
+      [],
       '/LessonSyllables2Words',
     );
   } ());
@@ -721,9 +718,7 @@ Future populate() async {
       _subject,
       syllableUnique.where((word) => word.title.length == 4).toList(),
       '/ModuleSyllablesWord',
-      {
-        'numberQuestions': 20,
-      },
+      numberQuestions:20,
     );
   } ());
 
@@ -785,10 +780,8 @@ Future populate() async {
         _subject,
         listNumber1t20.where((word) => word.id <= 154).toList(),
         '/ModuleNumbers2Picture',
-      {
-        'numberQuestions': 20,
-        'useNavigation':false,
-      },
+        numberQuestions: 20,
+        useNavigation: false,
     );
   } ());
   listModulesYear1Mat.add(() {
@@ -962,9 +955,7 @@ Future populate() async {
       _subject,
       alphabet.where((word) => word.title.length <=5).toList(),
       '/ModuleWords2Picture',
-      {
-        'numberQuestions': 20,
-      },
+      numberQuestions : 20,
     );
   } ());
   listModulesYear2Por.add(() {
@@ -980,9 +971,7 @@ Future populate() async {
       _subject,
       alphabet,
       '/ModuleWord2Pictures',
-      {
-        'numberQuestions': 20,
-      },
+      numberQuestions : 20,
     );
   } ());
   listModulesYear2Por.add(() {
@@ -998,9 +987,7 @@ Future populate() async {
       _subject,
       alphabet.where((word) => word.title.length <=6 && word.title.length >3).toList(),
         '/ModuleSpelling01',
-      {
-        'numberQuestions': 20,
-      },
+      numberQuestions : 20,
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1016,9 +1003,7 @@ Future populate() async {
       _subject,
       alphabet.where((word) => word.title.length <=6).toList(),
       '/ModuleSpelling02',
-      {
-        'numberQuestions': 20,
-      },
+      numberQuestions : 20
     );
   } ());
 
@@ -1526,3 +1511,8 @@ ElevatedButton getOnsetTile(Word word) {
 int getUnlockModuleIndex (int _year, int _subject) {
   return prefs.getInt('unlockModuleIndex-$_year-$_subject')??0;
 }
+
+setUnlockModuleIndex (int newIndex, [int? _year, int? _subject]) async {
+  await prefs.setInt('unlockModuleIndex-$_year-$_subject', newIndex);
+}
+

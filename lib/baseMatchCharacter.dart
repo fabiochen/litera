@@ -34,7 +34,8 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Map args = ModalRoute.of(context)?.settings.arguments as Map;
+    Map? args = ModalRoute.of(context)?.settings.arguments as Map;
+    print("args: " + args.toString());
     isVisibleTarget = args['isVisibleTarget'] ?? false;
     load();
   }
@@ -89,7 +90,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           itemBuilder: (BuildContext context, int i) {
             return DragTarget<List<String>>(
                 onWillAccept: (data) {
-                  if (type == 'test') return true;
+                  if (type == ModuleType.TEST) return true;
                   if (data![0] == wordMain.title[i]) return true;
                   return false;
                 },
@@ -148,7 +149,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
                   ),
                 ),
               ), // check result button,
-            ),
+            ),  // check button
             ValueListenableBuilder(
               valueListenable: flagWrong,
               builder: (context, value, widget) {
@@ -158,7 +159,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
             ),
           ],
         ), // image,
-      )
+      )  // check button
     ];
   }
 

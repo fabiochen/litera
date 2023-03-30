@@ -8,7 +8,10 @@ class Module {
   Sub subject;
   String routeName;
   List<Object>? list;
-  Map<String,Object> args = <String,Object>{};
+  bool isVisibleTarget;
+  int? numberQuestions;
+  bool useNavigation;
+  Map<String,Object>? args = {};
 
   Module(
       var this.pos,
@@ -18,16 +21,23 @@ class Module {
       Sub this.subject,
       List<Object>? this.list,
       String this.routeName,
-      [Object? args]
+      {
+        bool this.isVisibleTarget = false,
+        int? this.numberQuestions,
+        bool this.useNavigation = true
+      }
   );
 
-  Map<String,Object> get arguments {
-    args['modulePos'] = this.pos;
-    args['title'] = this.title;
-    args['type'] = this.type;
-    args['year'] = this.year.index;
-    args['subject'] = this.subject.index;
-    args['list'] = this.list as Object;
+  Map<String,Object>? get arguments {
+    args!['modulePos'] = this.pos;
+    args!['title'] = this.title;
+    args!['type'] = this.type;
+    args!['year'] = this.year.index;
+    args!['subject'] = this.subject.index;
+    args!['list'] = this.list as Object;
+    args!['isVisibleTarget'] = this.isVisibleTarget;
+    if (this.numberQuestions != null) args!['numberQuestions'] = this.numberQuestions as Object;
+    args!['useNavigation'] = this.useNavigation;
     return args;
   }
 

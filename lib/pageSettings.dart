@@ -63,18 +63,18 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                         // only unlock year 1
                         isUnlockModulesYear1 = true;
                         isUnlockModulesYear2 = false;
-                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
-                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                        setUnlockModuleIndex(0, Yr.TWO.index, Sub.PORTUGUESE.index);
-                        setUnlockModuleIndex(0, Yr.TWO.index, Sub.MATH.index);
+                        setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
+                        setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
+                        setUnlockModule(0, Yr.TWO.index, Sub.PORTUGUESE.index);
+                        setUnlockModule(0, Yr.TWO.index, Sub.MATH.index);
                         if (!val) {
                           // lock all
                           isUnlockModulesYear1 = false;
                           isUnlockModulesYear2 = false;
-                          setUnlockModuleIndex(0, Yr.ONE.index, Sub.PORTUGUESE.index);
-                          setUnlockModuleIndex(0, Yr.ONE.index, Sub.MATH.index);
-                          setUnlockModuleIndex(0, Yr.TWO.index, Sub.PORTUGUESE.index);
-                          setUnlockModuleIndex(0, Yr.TWO.index, Sub.MATH.index);
+                          setUnlockModule(0, Yr.ONE.index, Sub.PORTUGUESE.index);
+                          setUnlockModule(0, Yr.ONE.index, Sub.MATH.index);
+                          setUnlockModule(0, Yr.TWO.index, Sub.PORTUGUESE.index);
+                          setUnlockModule(0, Yr.TWO.index, Sub.MATH.index);
                         }
                       });
                     },
@@ -105,18 +105,18 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                         // unlock all
                         isUnlockModulesYear1 = true;
                         isUnlockModulesYear2 = true;
-                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
-                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.PORTUGUESE.index);
-                        setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.MATH.index);
+                        setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
+                        setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
+                        setUnlockModule(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.PORTUGUESE.index);
+                        setUnlockModule(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.MATH.index);
                         if (!val) {
                           // only unlock year 1
                           isUnlockModulesYear1 = true;
                           isUnlockModulesYear2 = false;
-                          setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
-                          setUnlockModuleIndex(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                          setUnlockModuleIndex(0, Yr.TWO.index, Sub.PORTUGUESE.index);
-                          setUnlockModuleIndex(0, Yr.TWO.index, Sub.MATH.index);
+                          setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
+                          setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
+                          setUnlockModule(0, Yr.TWO.index, Sub.PORTUGUESE.index);
+                          setUnlockModule(0, Yr.TWO.index, Sub.MATH.index);
                         }
                       });
                     },

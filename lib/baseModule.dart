@@ -323,7 +323,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("year: $yearIndex");
       printDebug("subject: $subjectIndex");
       if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
-        setUnlockModuleIndex(modulePos);
+        setUnlockModule(modulePos);
       // rebirth so lock icon is refreshed...
       // ideally would be to unlock from the previous page
       Navigator.of(context).pop();
@@ -358,13 +358,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     }
   }
 
-  setUnlockModuleIndex (int newIndex, [int? _year, int? _subject]) async {
+  setUnlockModule (int newIndex, [int? _year, int? _subject]) async {
 
     this.yearIndex    = (_year    == null) ? this.yearIndex    : _year;
     this.subjectIndex = (_subject == null) ? this.subjectIndex : _subject;
 
     unlockModuleIndex['$yearIndex-$subjectIndex'] = newIndex;
-    await prefs.setInt('unlockModuleIndex-$yearIndex-$subjectIndex', newIndex);
+    await setUnlockModuleIndex(newIndex, yearIndex, subjectIndex);
   }
 
 }
