@@ -64,12 +64,10 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           itemBuilder: (BuildContext context, int i) {
             if (!acceptedPositionOriginalMap[i.toString()]!) {
               return Draggable<List<String>>(
-                  feedback: getLetterModel(
-                      titleShuffled[i], Colors.yellow),
+                  feedback: getLetterModel(titleShuffled[i], Colors.yellow),
                   childWhenDragging: Container(),
                   data: [titleShuffled[i], i.toString()],
-                  child: getLetterModel(
-                      titleShuffled[i], Colors.yellow));
+                  child: getLetterModel(titleShuffled[i], Colors.yellow));
             } else {
               return Container();
             }
@@ -89,10 +87,11 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           itemCount: wordMain.title.length,
           itemBuilder: (BuildContext context, int i) {
             return DragTarget<List<String>>(
+                // condition to accept dragged item
                 onWillAccept: (data) {
-                  if (type == ModuleType.TEST) return true;
-                  if (data![0] == wordMain.title[i]) return true;
-                  return false;
+                  // if (type == ModuleType.TEST) return true;
+                  // if (data![0] == wordMain.title[i]) return true;
+                  return true;
                 },
                 onAccept: (List<String> data) {
                   printDebug('accepted:${data[1]}');
@@ -165,8 +164,8 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
 
   Container getLetterModel(String letter, Color color) {
     return Container(
-      width: 60,
-      height: 60,
+      width: 100,
+      height: 100,
       margin: EdgeInsets.all(12),
       decoration: BoxDecoration(
         shape: BoxShape.circle,

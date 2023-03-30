@@ -162,9 +162,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
             child: getMainTile()
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: (useNavigation)? MainAxisAlignment.spaceBetween : MainAxisAlignment.spaceAround,
           children: [
-            if (useNavigation) getNavButtonPrevious(), // navigation previous
+            if (useNavigation) getNavButtonPrevious(),
+            if (type == ModuleType.TEST) showGrade(),// navigation previous
             if (useNavigation) getNavButtonNext(),// navigation next
           ],
         ),
@@ -178,6 +179,17 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
+  Widget showGrade() {
+    Text grade = Text (
+      "Acertos: $correctCount/$numberQuestions (" + (correctCount/numberQuestions*100).toInt().toString() + "%)",
+      style: TextStyle(
+        color: Colors.redAccent,
+        fontSize: 30,
+      ),
+    );
+    return grade;
+  }
+
   Widget getProgressBar() {
     print("listPosition: $listPosition");
     print("numberQuestions: $numberQuestions");
@@ -187,18 +199,18 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       padding: const EdgeInsets.all(10.0),
       child: LinearPercentIndicator(
         lineHeight: 10.0,
-        animation: false,
-        animationDuration: 1000,
+        animation: true,
+        animationDuration: 500,
         percent: percent,
+        animateFromLastPercent: true,
         leading: Text((listPosition+1).toString() + '  ',
           style: TextStyle(fontSize: 15, color: Colors.black),
         ),
-        trailing: Text('  ' + numberQuestions.toString(),
+        trailing: Text(numberQuestions.toString() + '  ',
           style: TextStyle(fontSize: 15, color: Colors.black),
         ),
         progressColor: appBarColor,
         backgroundColor: backgroundColor,
-        linearStrokeCap: LinearStrokeCap.roundAll,
       ),
     );
   }
@@ -322,8 +334,18 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("modulePos: $modulePos");
       printDebug("year: $yearIndex");
       printDebug("subject: $subjectIndex");
-      if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
+      if (
+        type == ModuleType.TEST &&
+        correctCount/numberQuestions*100 >= int.parse(percentUnlock)  &&
+        modulePos > getUnlockModuleIndex(yearIndex, subjectIndex)
+      ) {
         setUnlockModule(modulePos);
+      } else if (
+        type != ModuleType.TEST &&
+        modulePos > getUnlockModuleIndex(yearIndex, subjectIndex)
+      ) {
+        setUnlockModule(modulePos);
+      }
       // rebirth so lock icon is refreshed...
       // ideally would be to unlock from the previous page
       Navigator.of(context).pop();
@@ -365,6 +387,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
     unlockModuleIndex['$yearIndex-$subjectIndex'] = newIndex;
     await setUnlockModuleIndex(newIndex, yearIndex, subjectIndex);
+  }
+
+  @override
+  void dispose() {
+    audioStop();
+    super.dispose();
   }
 
 }

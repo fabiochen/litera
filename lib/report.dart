@@ -32,9 +32,7 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
                         color: Colors.grey[800],
                         thickness: 2,
                       ),
-                  itemCount: listProcess == null
-                      ? 0
-                      : listProcess.length,
+                  itemCount: listProcess.length,
                   itemBuilder: (BuildContext context, int index) {
                     wordMain = listProcess[index] as Word;
                     String keyCorrect = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-correct';
@@ -70,7 +68,6 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
                                     center: Text((correctCount/totalCount*100).round().toString() + '%'),
                                     progressColor: Colors.green,
                                     backgroundColor: Colors.black,
-                                    linearStrokeCap: LinearStrokeCap.butt,
                                   ),
                                   LinearPercentIndicator(
                                     lineHeight: 15.0,
@@ -80,7 +77,6 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
                                     center: Text((wrongCount/totalCount*100).round().toString() + '%'),
                                     progressColor: Colors.red,
                                     backgroundColor: Colors.black,
-                                    linearStrokeCap: LinearStrokeCap.butt,
                                   ),
                                 ],
                               ),

@@ -71,6 +71,8 @@ List<int> expandedId = [Sub.PORTUGUESE.index, Sub.PORTUGUESE.index];
 
 late SharedPreferences prefs;
 
+String percentUnlock = "80";
+
 Future<Map<String, dynamic>> getConfigAssets() async {
   return _assetsConfig;
 }
@@ -194,6 +196,8 @@ Future init() async {
   printDebug("******** init 6");
   print("expandedId-0: " + expandedId[0].toString());
   print("expandedId-1: " + expandedId[1].toString());
+
+  percentUnlock = prefs.getString('percentUnlock')??percentUnlock;
 
   printDebug("******** finished populate");
 }
@@ -780,7 +784,7 @@ Future populate() async {
         _subject,
         listNumber1t20.where((word) => word.id <= 154).toList(),
         '/ModuleNumbers2Picture',
-        numberQuestions: 20,
+        numberQuestions: 10,
         useNavigation: false,
     );
   } ());
@@ -1252,11 +1256,7 @@ String getAssetsVocab(String key) {
 }
 
 int getNavigationLanguage() {
-  var temp = 2;
-
-  navigationLanguage = temp;
-
-  if (temp == null) navigationLanguage=2;
+  navigationLanguage = 2;
   return navigationLanguage;// portuguese as default
 }
 
@@ -1343,7 +1343,7 @@ void audioStop() {
 }
 
 Future<SharedPreferences> getPrefs() async {
-  if (prefs == null) prefs = await SharedPreferences.getInstance();
+  prefs = await SharedPreferences.getInstance();
   return prefs;
 }
 

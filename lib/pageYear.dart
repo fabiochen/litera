@@ -9,7 +9,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 
 class PageYear extends BaseModule {
 
-  Year year;
+  final Year year;
 
   PageYear(this.year);
 
@@ -35,7 +35,6 @@ class _PageYearState extends BaseModuleState<PageYear> {
     bannerAd.load();
   }
 
-  @override
   PreferredSizeWidget getAppBar() {
     return AppBar(
       backgroundColor: appBarColor,

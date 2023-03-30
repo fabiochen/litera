@@ -104,8 +104,7 @@ class _PageHomeState<T extends PageHome> extends State<T> {
       ),
     );
   }
-  
-  @override
+
   Widget getMainTile() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -15,6 +15,26 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
   bool resetApp = false;
   bool isUnlockModulesYear1 = false;
   bool isUnlockModulesYear2 = false;
+  List<DropdownMenuItem<String>> listPercentUnlock = [
+    DropdownMenuItem(
+        value: "0",
+        child: Text("0")),
+    DropdownMenuItem(
+        value: "20",
+        child: Text("20")),
+    DropdownMenuItem(
+        value: "40",
+        child: Text("40")),
+    DropdownMenuItem(
+        value: "60",
+        child: Text("60")),
+    DropdownMenuItem(
+          value: "80",
+      child: Text("80")),
+    DropdownMenuItem(
+        value: "100",
+        child: Text("100")),
+  ];
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,6 +144,48 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                 ),
               ),  // ano 2
               ListTile(
+                leading: Icon(null),
+                title: Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        flex: 5,
+                          child: Text(
+                        "Acertos para desbloqueio de módulo",
+                        style: TextStyle(
+                            color: Colors.black
+                        ),
+                      )),
+                      Flexible(
+                          child: DropdownButton<String>(
+                        dropdownColor: Colors.white,
+                        isExpanded: true,
+                        value: percentUnlock,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.black),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            percentUnlock = newValue!;
+                          });
+                        },
+                        items: listPercentUnlock,
+                      )),
+                      Text(
+                        "    %",
+                        style: TextStyle(
+                            color: Colors.black
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),  // percent
+              ListTile(
                 leading: Icon(
                   IconData(58837, fontFamily: 'LiteraIcons'),
                   color: Colors.black,
@@ -150,7 +212,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                     },
                   ),
                 ),
-              ),
+              ),  // reset
               ListTile(
                 trailing: ElevatedButton(
                     onPressed: () => saveSettings(),
@@ -168,7 +230,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                         )
                     )
                 ),
-              ), // save button
+              ),  // save button
             ],
           ),
         ),
@@ -182,6 +244,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
       await clearSettings('unlockModuleIndex');
       prefs.setInt('expandedId',1);
     }
+    prefs.setString('percentUnlock',percentUnlock);
     Phoenix.rebirth(context);
   }
 
