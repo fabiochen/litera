@@ -243,11 +243,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     return wordMain.title;
   }
 
-  Text getMainText(double fontSize) {
+  Text getMainText(double fontSize, [String font = "Litera-Regular"]) {
     return Text(
       getMainLabel(),
       textAlign: TextAlign.center,
       style: TextStyle(
+        fontFamily: font,
         fontSize: fontSize,
         color: Colors.teal,
       )

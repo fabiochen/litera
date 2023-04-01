@@ -66,7 +66,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   style: TextStyle(color: Colors.black),
                 ),
               ),
-              getYearTiles() as Widget,
+              getYearTiles(),
               ListTile(
                 leading: Icon(null),
                 title: Padding(
@@ -208,7 +208,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
             },
           ),
         ),
-      );  // ano 1
+      );  // nº ano
       listListTiles.add(listTile);
     });
     Column col = Column(

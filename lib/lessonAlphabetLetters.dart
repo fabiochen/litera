@@ -26,7 +26,7 @@ class _LessonAlphabetLettersState extends BaseModuleState<LessonAlphabetLetters>
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        getMainText(100), // letter
+        getMainText(100, "Maria_lucia"), // letter
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

@@ -79,6 +79,6 @@ flutter:
     - family: Mynerve
       fonts:
         - asset: assets/fonts/Mynerve-Regular.ttf
-    - family: LearningCurve
+    - family: Maria_lucia
       fonts:
-        - asset: assets/fonts/LearningCurve.ttf
+        - asset: assets/fonts/Maria_lucia.ttf

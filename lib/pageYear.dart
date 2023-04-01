@@ -129,7 +129,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
       ),
       trailing: getLockIcon(_moduleStatus > 0),
       onTap: () {
-        _onTap(_context, _module);
+        if (_moduleStatus < 0) _onTap(_context, _module);
       }
     );
   }

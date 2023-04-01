@@ -194,8 +194,14 @@ Future init() async {
 
   printDebug("******** init 4");
   await populate();
-
-  getYearInfo();
+  printDebug("******** init 4.1");
+  getYear1Pt();
+  printDebug("******** init 4.2");
+  getYear1Mt();
+  printDebug("******** init 4.3");
+  getYear2Pt();
+  printDebug("******** init 4.4");
+  getYear2Mt();
 
   printDebug("******** init 5");
   expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index")??Sub.PORTUGUESE.index);
@@ -489,15 +495,27 @@ Future populate() async {
   });
 }
 
-void getYearInfo() {
+void getYear1Pt() {
+  Yr _year = Yr.ONE;
+  Sub _subject = Sub.PORTUGUESE;
+  printDebug("******** init 4.1.1");
+  List<Subject> listSubjects = [];
+  printDebug("******** init 4.1.2");
   List<Module> listModulesYear1Por = [];
-  List<Module> listModulesYear1Mat = [];
+
+  Year year = Year(
+      _year,
+      "1º Ano",
+      Colors.red.shade200,
+      listSubjects);
+
+  printDebug("******** init 4.1.3");
+
+  listYears.add(year);
 
   // module 0
   listModulesYear1Por.add(() {
     String _title = "Alfabeto (Palavras)";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -511,8 +529,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Alfabeto (Letras)";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -526,8 +542,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Vogais";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     print("length: " + listModulesYear1Por.length.toString());
     int _modulePos = listModulesYear1Por.length;
     return Module(
@@ -542,8 +556,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Ordem das Vogais";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -557,8 +569,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Ordem Alfabética";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -572,8 +582,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Som inicial / Letras";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -587,8 +595,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Maiúscula / Minúscula";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -603,8 +609,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Imagem / Letras";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -618,8 +622,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Som inicial / Letras";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -635,8 +637,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Maiúscula / Minúscula";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -652,8 +652,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Sílabas";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -667,8 +665,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Consoantes / Vogais";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -682,8 +678,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Sílabas / Palavras";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -697,8 +691,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Som / Sílabas";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -712,8 +704,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Palavras / Sílabas";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -727,8 +717,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Som / Sílabas";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -742,8 +730,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Por.add(() {
     String _title = "Palavra / Sílabas";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -757,10 +743,17 @@ void getYearInfo() {
     );
   } ());
 
+  listYears[_year.index].subjects.add(Subject(_subject, "Português", listModulesYear1Por));
+
+}
+
+void getYear1Mt() {
+  Yr _year = Yr.ONE;
+  Sub _subject = Sub.MATH;
+  List<Module> listModulesYear1Mat = [];
+
   listModulesYear1Mat.add(() {
     String _title = "1-10";
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear1Mat.length;
     return Module(
       _modulePos,
@@ -774,8 +767,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS');
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear1Mat.length;
     return Module(
       _modulePos,
@@ -789,8 +780,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('ORDER-NUMBERS');
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear1Mat.length;
     return Module(
       _modulePos,
@@ -804,8 +793,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS');
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear1Mat.length;
     return Module(
       _modulePos,
@@ -821,8 +808,6 @@ void getYearInfo() {
   } ());
   listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('ORDER-NUMBERS');
-    Yr _year = Yr.ONE;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear1Mat.length;
     return Module(
       _modulePos,
@@ -835,32 +820,39 @@ void getYearInfo() {
     );
   } ());
 
-  Year year;
-  List<Subject> listSubjects;
-  Subject subjectPor;
-  Subject subjectMat;
+  listYears[_year.index].subjects.add(Subject(_subject, "Matemática", listModulesYear1Mat));
 
-  subjectPor = Subject(Sub.PORTUGUESE, "Português", listModulesYear1Por);
-  subjectMat = Subject(Sub.MATH, "Matemática", listModulesYear1Mat);
+}
 
-  listSubjects = [];
-  listSubjects.add(subjectPor);
-  listSubjects.add(subjectMat);
+void getYear2Pt() {
+  Yr _year = Yr.TWO;
+  Sub _subject = Sub.PORTUGUESE;
+  List<Subject> listSubjects = [];
+  List<Module> listModulesYear2Por = [];
 
-  year = Year(
-      Yr.ONE,
-      "1º Ano",
-      Colors.red.shade200,
+  Year year = Year(
+      _year,
+      "2º Ano",
+      Colors.yellow.shade200,
       listSubjects);
   listYears.add(year);
 
-  List<Module> listModulesYear2Por = [];
-  List<Module> listModulesYear2Mat = [];
+  listModulesYear2Por.add(() {
+    String _title = "Alfabeto (Cursiva)";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      alphabetLetterList,
+      '/LessonAlphabetLetters',
+    );
+  } ());
 
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('WORDS');
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -874,8 +866,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('ONSET') + " / " + getAssetsVocab('WORDS');
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -889,8 +879,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('ONSETS');
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -904,8 +892,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('CONSONANTS') + " / " + getAssetsVocab('VOWELS');
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -919,8 +905,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS');
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -934,8 +918,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -949,8 +931,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('SPELLING') + " 1";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -964,8 +944,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('SPELLING') + " 2";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -979,8 +957,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS');
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -995,8 +971,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -1011,8 +985,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('SPELLING') + " 1";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -1027,8 +999,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Por.add(() {
     String _title = getAssetsVocab('SPELLING') + ' 2';
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
         _modulePos,
@@ -1042,10 +1012,17 @@ void getYearInfo() {
     );
   } ());
 
+  listYears[_year.index].subjects.add(Subject(_subject, "Português", listModulesYear2Por));
+
+}
+
+void getYear2Mt() {
+  Yr _year = Yr.TWO;
+  Sub _subject = Sub.MATH;
+  List<Module> listModulesYear2Mat = [];
+
   listModulesYear2Mat.add(() {
     String _title = "1 - 20 (extenso)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1059,8 +1036,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "30 - 100 (extenso)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1074,8 +1049,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "1 - 10 (ordinais)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1089,8 +1062,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "20 - 100 (ordinais)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1105,8 +1076,6 @@ void getYearInfo() {
 
   listModulesYear2Mat.add(() {
     String _title = "1 - 20 (extenso)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1120,8 +1089,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "30 - 100 (extenso)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1135,8 +1102,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "1 - 10 (ordinais)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1150,8 +1115,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "20 - 100 (ordinais)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1165,8 +1128,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "1 - 20 (extenso)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1180,8 +1141,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "30 - 100 (extenso)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1195,8 +1154,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "1 - 10 (ordinais)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1210,8 +1167,6 @@ void getYearInfo() {
   } ());
   listModulesYear2Mat.add(() {
     String _title = "20 - 100 (ordinais)";
-    Yr _year = Yr.TWO;
-    Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
       _modulePos,
@@ -1224,19 +1179,7 @@ void getYearInfo() {
     );
   } ());
 
-  subjectPor = Subject(Sub.PORTUGUESE, "Português", listModulesYear2Por);
-  subjectMat = Subject(Sub.MATH, "Matemática", listModulesYear2Mat);
-
-  listSubjects = [];
-  listSubjects.add(subjectPor);
-  listSubjects.add(subjectMat);
-
-  year = Year(
-      Yr.TWO,
-      "2º Ano",
-      Colors.yellow.shade200,
-      listSubjects);
-  listYears.add(year);
+  listYears[_year.index].subjects.add(Subject(_subject, "Matemática", listModulesYear2Mat));
 
 }
 
