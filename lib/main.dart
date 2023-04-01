@@ -16,6 +16,7 @@ import 'package:litera/pageSettings.dart';
 import 'package:litera/report.dart';
 
 import 'package:litera/lessonAlphabet.dart';
+import 'package:litera/lessonAlphabetLetters.dart';
 import 'package:litera/lessonLetters.dart';
 import 'package:litera/lessonNumbers.dart';
 import 'package:litera/lessonNumbersFull.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
                 '/PageAbout'                 : (context) => PageAbout(),
                 '/PageContact'               : (context) => PageContact(),
                 '/PageSettings'              : (context) => PageSettings(),
+                '/LessonAlphabetLetters'     : (context) => LessonAlphabetLetters(),
                 '/LessonAlphabet'            : (context) => LessonAlphabet(),
                 '/LessonLetters'             : (context) => LessonLetters(),
                 '/ModuleOrder'               : (context) => ModuleOrder(),

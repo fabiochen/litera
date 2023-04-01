@@ -13,8 +13,7 @@ class PageSettings extends BaseModule {
 class _PageSettingsState extends BaseModuleState<PageSettings> {
 
   bool resetApp = false;
-  bool isUnlockModulesYear1 = false;
-  bool isUnlockModulesYear2 = false;
+  List<bool> isUnlockModulesYear = [];
   List<DropdownMenuItem<String>> listPercentUnlock = [
     DropdownMenuItem(
         value: "0",
@@ -35,6 +34,14 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
         value: "100",
         child: Text("100")),
   ];
+
+  @override
+  initState() {
+    listYears.forEach((year) {
+      isUnlockModulesYear.add(false);
+    });
+    super.initState();
+}
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,90 +66,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   style: TextStyle(color: Colors.black),
                 ),
               ),
-              ListTile(
-                leading: Icon(
-                  null,
-                ),
-                title: Text(
-                  "1º Ano",
-                  style: TextStyle(color: Colors.black),
-                ),
-                trailing: SizedBox(
-                  width: 50.0,
-                  height: 25.0,
-                  child: FlutterSwitch(
-                    width: 50.0,
-                    height: 25.0,
-                    toggleSize: 15.0,
-                    value: isUnlockModulesYear1,
-                    borderRadius: 30.0,
-                    padding: 5.0,
-                    showOnOff: false,
-                    onToggle: (val) {
-                      setState(() {
-                        // only unlock year 1
-                        isUnlockModulesYear1 = true;
-                        isUnlockModulesYear2 = false;
-                        setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
-                        setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                        setUnlockModule(0, Yr.TWO.index, Sub.PORTUGUESE.index);
-                        setUnlockModule(0, Yr.TWO.index, Sub.MATH.index);
-                        if (!val) {
-                          // lock all
-                          isUnlockModulesYear1 = false;
-                          isUnlockModulesYear2 = false;
-                          setUnlockModule(0, Yr.ONE.index, Sub.PORTUGUESE.index);
-                          setUnlockModule(0, Yr.ONE.index, Sub.MATH.index);
-                          setUnlockModule(0, Yr.TWO.index, Sub.PORTUGUESE.index);
-                          setUnlockModule(0, Yr.TWO.index, Sub.MATH.index);
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ),  // ano 1
-              ListTile(
-                leading: Icon(
-                  null,
-                ),
-                title: Text(
-                  "2º Ano",
-                  style: TextStyle(color: Colors.black),
-                ),
-                trailing: SizedBox(
-                  width: 50.0,
-                  height: 25.0,
-                  child: FlutterSwitch(
-                    width: 50.0,
-                    height: 25.0,
-                    toggleSize: 15.0,
-                    value: isUnlockModulesYear2,
-                    borderRadius: 30.0,
-                    padding: 5.0,
-                    showOnOff: false,
-                    onToggle: (val) {
-                      setState(() {
-                        // unlock all
-                        isUnlockModulesYear1 = true;
-                        isUnlockModulesYear2 = true;
-                        setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
-                        setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                        setUnlockModule(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.PORTUGUESE.index);
-                        setUnlockModule(ModulePosYear1Por.values.length, Yr.TWO.index, Sub.MATH.index);
-                        if (!val) {
-                          // only unlock year 1
-                          isUnlockModulesYear1 = true;
-                          isUnlockModulesYear2 = false;
-                          setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.PORTUGUESE.index);
-                          setUnlockModule(ModulePosYear1Por.values.length, Yr.ONE.index, Sub.MATH.index);
-                          setUnlockModule(0, Yr.TWO.index, Sub.PORTUGUESE.index);
-                          setUnlockModule(0, Yr.TWO.index, Sub.MATH.index);
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ),  // ano 2
+              getYearTiles() as Widget,
               ListTile(
                 leading: Icon(null),
                 title: Padding(
@@ -236,6 +160,70 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
         ),
       ),
     );
+  }
+
+  Column getYearTiles() {
+    List<ListTile> listListTiles = [];
+    listYears.forEach((year) {
+      ListTile listTile = ListTile(
+        leading: Icon(
+          null,
+        ),
+        title: Text(
+          listYears[year.id.index].value + "º Ano",
+          style: TextStyle(color: Colors.black),
+        ),
+        trailing: SizedBox(
+          width: 50.0,
+          height: 25.0,
+          child: FlutterSwitch(
+            width: 50.0,
+            height: 25.0,
+            toggleSize: 15.0,
+            value: isUnlockModulesYear[year.id.index],
+            borderRadius: 30.0,
+            padding: 5.0,
+            showOnOff: false,
+            onToggle: (val) {
+              setState(() {
+                // unlock all
+                lockAll();
+                for (int j=0; j<=year.id.index; j++) {
+                  isUnlockModulesYear[j] = true;
+                  listYears[j].subjects.forEach((subject) {
+                    setUnlockModule(subject.modules.length, j, subject.id.index);
+                  });
+                }
+                if (!val) {
+                  lockAll();
+                  for (int j=0; j<year.id.index; j++) {
+                    isUnlockModulesYear[j] = true;
+                    listYears[j].subjects.forEach((subject) {
+                      setUnlockModule(subject.modules.length, j, subject.id.index);
+                    });
+                  }
+                  // only unlock year 1
+                }
+              });
+            },
+          ),
+        ),
+      );  // ano 1
+      listListTiles.add(listTile);
+    });
+    Column col = Column(
+      children: listListTiles,
+    );
+    return col;
+  }
+
+  void lockAll() {
+    listYears.forEach((year) {
+      isUnlockModulesYear[year.id.index] = false;
+      year.subjects.forEach((subject) {
+        setUnlockModule(0, year.id.index, subject.id.index);
+      });
+    });
   }
 
   void saveSettings() async {

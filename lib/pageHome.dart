@@ -126,14 +126,15 @@ class _PageHomeState<T extends PageHome> extends State<T> {
     ));
     for (int i=0; i<listYears.length; i++) {
       {
-        bool unlockYear =
-            listYears[i].id.index > 0 && (
-            listYears[i-1].subjects[Sub.PORTUGUESE.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, Sub.PORTUGUESE.index) ||
-            listYears[i-1].subjects[Sub.MATH.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, Sub.MATH.index));
-        if (listYears[i].id.index > 0) {
-          // print("$i last portuguese module: " + getUnlockModuleIndex(listYears[i-1].id.index, Sub.PORTUGUESE.index).toString());
-          // print("$i total portuguese module count: " + listYears[i-1].subjects[Sub.PORTUGUESE.index].modules.length.toString());
+        bool unlockYear = true;
+        List<bool> unlockSubjects = [];
+        if (i>0) {
+          // unlock year if all modules from previous years are unlocked, i.e., if saved unlock index is equal to length of module list
+          listYears[i].subjects.forEach((subject) {
+            unlockSubjects.add(listYears[i-1].subjects[subject.id.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, subject.id.index));
+          });
         }
+        unlockYear = listYears[i].id.index > 0 && !(unlockSubjects.where((item) => item == false).length>0);
         listContainers.add(Container(
           child: InkWell(
               onTap: () {

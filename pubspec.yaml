@@ -79,3 +79,6 @@ flutter:
     - family: Mynerve
       fonts:
         - asset: assets/fonts/Mynerve-Regular.ttf
+    - family: LearningCurve
+      fonts:
+        - asset: assets/fonts/LearningCurve.ttf

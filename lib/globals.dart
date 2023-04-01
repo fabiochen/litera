@@ -49,6 +49,7 @@ late List<Word> listNumber1t10Ordinal;
 late List<Word> listNumber20t100Ordinal;
 late List<Word> listVocab;
 late List<Word> alphabetOnsetList;
+late List<Word> alphabetLetterList;
 late List<Word> letterOnsetList;
 late List<Word> listOnsetConsonants; // list of alphabet letters used for onset lesson
 late List<Word> lettersMatchCase;
@@ -86,7 +87,8 @@ enum ModuleType {
 
 enum Sub {
   PORTUGUESE,
-  MATH
+  MATH,
+  OTHERS,
 }
 
 enum Yr {
@@ -94,59 +96,60 @@ enum Yr {
   TWO,
 }
 
-enum ModulePosYear1Por {
-  Letters_Lesson_Alphabet,
-  Letters_Lesson_Vowels,
-  Letters_Exercise_OrderVowels,
-  Letters_Exercise_OrderAlphabet,
-  Letters_Exercise_LettersOnset,
-  Letters_Exercise_MatchCase,
-  Letters_Test_LettersImage,
-  Letters_Test_LettersOnset,
-  Letters_Test_MatchCase,
-  Syllables_Lesson_Syllables,
-  Syllables_Lesson_Consonant_Vowels,
-  Syllables_Lesson_Words,
-  Syllables_Exercise_SyllablesSound,
-  Syllables_Exercise_SyllablesWord,
-  Syllables_Test_SyllablesSound,
-  Syllables_Test_SyllablesWord,
-}
-enum ModulePosYear1Mat {
-  Numbers_Lesson_1_10,
-  Numbers_Exercise_NumbersPicture,
-  Numbers_Exercise_OrderNumbers,
-  Numbers_Test_NumbersPicture,
-  Numbers_Test_OrderNumbers,
-}
-enum ModulePosYear2Por {
-  Words_Lesson_Words,
-  Words_Lesson_WordsOnset,
-  Words_Lesson_WordOnsets,
-  Words_Lesson_ConsonantsVowels,
-  Words_Exercise_WordsPicture,
-  Words_Exercise_WordPictures,
-  Words_Exercise_Spelling1,
-  Words_Exercise_Spelling2,
-  Words_Test_WordsPicture,
-  Words_Test_WordPictures,
-  Words_Test_Spelling1,
-  Words_Test_Spelling2,
-}
-enum ModulePosYear2Mat {
-  Numbers_Lesson_1_20_Full,
-  Numbers_Exercise_WordNumbers1_20,
-  Numbers_Test_WordNumbers1_20,
-  Numbers_Lesson_30_100_Full,
-  Numbers_Exercise_WordNumbers30_100,
-  Numbers_Test_WordNumbers30_100,
-  Numbers_Lesson_1_10_Ordinals,
-  Numbers_Exercise_1_10_Ordinals,
-  Numbers_Test_1_10_Ordinals,
-  Numbers_Lesson_20_100_Ordinals,
-  Numbers_Exercise_20_100_Ordinals,
-  Numbers_Test_20_100_Ordinals,
-}
+// enum ModulePosYear1Por {
+//   Letters_Lesson_Alphabet,
+//   Letters_Lesson_Vowels,
+//   Letters_Exercise_OrderVowels,
+//   Letters_Exercise_OrderAlphabet,
+//   Letters_Exercise_LettersOnset,
+//   Letters_Exercise_MatchCase,
+//   Letters_Test_LettersImage,
+//   Letters_Test_LettersOnset,
+//   Letters_Test_MatchCase,
+//   Syllables_Lesson_Syllables,
+//   Syllables_Lesson_Consonant_Vowels,
+//   Syllables_Lesson_Words,
+//   Syllables_Exercise_SyllablesSound,
+//   Syllables_Exercise_SyllablesWord,
+//   Syllables_Test_SyllablesSound,
+//   Syllables_Test_SyllablesWord,
+// }
+
+// enum ModulePosYear1Mat {
+//   Numbers_Lesson_1_10,
+//   Numbers_Exercise_NumbersPicture,
+//   Numbers_Exercise_OrderNumbers,
+//   Numbers_Test_NumbersPicture,
+//   Numbers_Test_OrderNumbers,
+// }
+// enum ModulePosYear2Por {
+//   Words_Lesson_Words,
+//   Words_Lesson_WordsOnset,
+//   Words_Lesson_WordOnsets,
+//   Words_Lesson_ConsonantsVowels,
+//   Words_Exercise_WordsPicture,
+//   Words_Exercise_WordPictures,
+//   Words_Exercise_Spelling1,
+//   Words_Exercise_Spelling2,
+//   Words_Test_WordsPicture,
+//   Words_Test_WordPictures,
+//   Words_Test_Spelling1,
+//   Words_Test_Spelling2,
+// }
+// enum ModulePosYear2Mat {
+//   Numbers_Lesson_1_20_Full,
+//   Numbers_Exercise_WordNumbers1_20,
+//   Numbers_Test_WordNumbers1_20,
+//   Numbers_Lesson_30_100_Full,
+//   Numbers_Exercise_WordNumbers30_100,
+//   Numbers_Test_WordNumbers30_100,
+//   Numbers_Lesson_1_10_Ordinals,
+//   Numbers_Exercise_1_10_Ordinals,
+//   Numbers_Test_1_10_Ordinals,
+//   Numbers_Lesson_20_100_Ordinals,
+//   Numbers_Exercise_20_100_Ordinals,
+//   Numbers_Test_20_100_Ordinals,
+// }
 
 List<Year> listYears = [];
 
@@ -168,6 +171,7 @@ Future init() async {
   listNumber1t10Ordinal = [];
   listNumber20t100Ordinal = [];
   alphabetOnsetList = [];
+  alphabetLetterList = [];
   letterOnsetList = [];
   listOnsetConsonants = [];
   lettersMatchCase = [];
@@ -190,6 +194,8 @@ Future init() async {
 
   printDebug("******** init 4");
   await populate();
+
+  getYearInfo();
 
   printDebug("******** init 5");
   expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index")??Sub.PORTUGUESE.index);
@@ -350,6 +356,14 @@ Future populate() async {
     alphabetOnsetList.add(word);
   });
 
+  // populate alphabet onset
+  parsedWords['LIST']['CATEGORY']['ALPHABET-LETTER-SOUND'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['ALPHABET-LETTER-SOUND'][key];
+    Word word = Word(id, title);
+    alphabetLetterList.add(word);
+  });
+
   // populate letter onset
   parsedWords['LIST']['CATEGORY']['LETTER-ONSET'].keys.forEach((key){
     int id = int.parse(key);
@@ -473,13 +487,15 @@ Future populate() async {
       printDebug("empty result");
     }
   });
+}
 
+void getYearInfo() {
   List<Module> listModulesYear1Por = [];
   List<Module> listModulesYear1Mat = [];
 
   // module 0
   listModulesYear1Por.add(() {
-    String _title = "Alfabeto";
+    String _title = "Alfabeto (Palavras)";
     Yr _year = Yr.ONE;
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear1Por.length;
@@ -491,6 +507,21 @@ Future populate() async {
       _subject,
       alphabet,
       '/LessonAlphabet',
+    );
+  } ());
+  listModulesYear1Por.add(() {
+    String _title = "Alfabeto (Letras)";
+    Yr _year = Yr.ONE;
+    Sub _subject = Sub.PORTUGUESE;
+    int _modulePos = listModulesYear1Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      alphabetLetterList,
+      '/LessonAlphabetLetters',
     );
   } ());
   listModulesYear1Por.add(() {
@@ -732,13 +763,13 @@ Future populate() async {
     Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear1Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.LESSON,
-        _year,
-        _subject,
-        listNumber1t20.where((word) => word.id <= 154).toList(),
-        '/LessonNumbers',
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listNumber1t20.where((word) => word.id <= 154).toList(),
+      '/LessonNumbers',
     );
   } ());
   listModulesYear1Mat.add(() {
@@ -777,15 +808,15 @@ Future populate() async {
     Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear1Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
-        _year,
-        _subject,
-        listNumber1t20.where((word) => word.id <= 154).toList(),
-        '/ModuleNumbers2Picture',
-        numberQuestions: 10,
-        useNavigation: false,
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listNumber1t20.where((word) => word.id <= 154).toList(),
+      '/ModuleNumbers2Picture',
+      numberQuestions: 10,
+      useNavigation: false,
     );
   } ());
   listModulesYear1Mat.add(() {
@@ -877,13 +908,13 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.LESSON,
-        _year,
-        _subject,
-        mapWordMatch,
-        '/LessonWordsConsonantsVowels',
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      mapWordMatch,
+      '/LessonWordsConsonantsVowels',
     );
   } ());
   listModulesYear2Por.add(() {
@@ -907,13 +938,13 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        alphabet,
-        '/ModuleWord2Pictures',
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      alphabet,
+      '/ModuleWord2Pictures',
     );
   } ());
   listModulesYear2Por.add(() {
@@ -922,13 +953,13 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        alphabet.where((word) => word.title.length <=6).toList(),
-        '/ModuleSpelling01',
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      alphabet.where((word) => word.title.length <=6).toList(),
+      '/ModuleSpelling01',
     );
   } ());
   listModulesYear2Por.add(() {
@@ -937,13 +968,13 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        alphabet.where((word) => word.title.length <=6).toList(),
-        '/ModuleSpelling02',
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      alphabet.where((word) => word.title.length <=6).toList(),
+      '/ModuleSpelling02',
     );
   } ());
   listModulesYear2Por.add(() {
@@ -990,7 +1021,7 @@ Future populate() async {
       _year,
       _subject,
       alphabet.where((word) => word.title.length <=6 && word.title.length >3).toList(),
-        '/ModuleSpelling01',
+      '/ModuleSpelling01',
       numberQuestions : 20,
     );
   } ());
@@ -1000,14 +1031,14 @@ Future populate() async {
     Sub _subject = Sub.PORTUGUESE;
     int _modulePos = listModulesYear2Por.length;
     return Module(
-      _modulePos,
-      _title,
-      ModuleType.TEST,
-      _year,
-      _subject,
-      alphabet.where((word) => word.title.length <=6).toList(),
-      '/ModuleSpelling02',
-      numberQuestions : 20
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        alphabet.where((word) => word.title.length <=6).toList(),
+        '/ModuleSpelling02',
+        numberQuestions : 20
     );
   } ());
 
@@ -1017,13 +1048,13 @@ Future populate() async {
     Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.LESSON,
-        _year,
-        _subject,
-        listNumber1t20,
-        '/LessonNumbersFull',
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listNumber1t20,
+      '/LessonNumbersFull',
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1078,13 +1109,13 @@ Future populate() async {
     Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        listNumber1t20,
-        '/ModuleNumbers2Word',
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listNumber1t20,
+      '/ModuleNumbers2Word',
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1093,13 +1124,13 @@ Future populate() async {
     Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        listNumber30t100,
-        '/ModuleNumbers2Word',
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listNumber30t100,
+      '/ModuleNumbers2Word',
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1108,13 +1139,13 @@ Future populate() async {
     Sub _subject = Sub.MATH;
     int _modulePos = listModulesYear2Mat.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        listNumber1t10Ordinal,
-        '/ModuleNumbers2Word',
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listNumber1t10Ordinal,
+      '/ModuleNumbers2Word',
     );
   } ());
   listModulesYear2Mat.add(() {
