@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 
@@ -12,16 +13,37 @@ class BaseOptionTiles extends BaseModule {
 
 class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T> {
 
+  List<Word> option1 = [];
+  List<Word> option2 = [];
+  List<Word> option3 = [];
+  List<Word> option4 = [];
+  List<Word> optionMain = [];
+
   @override
   Widget getMainTile() {
+
+    listProcess.shuffle();
+    if (listPosition == 0 || listPosition >= option1.length) {
+      int i= Random().nextInt(4);
+      wordMain = listProcess[i] as Word;
+      option1.add(listProcess[0] as Word);
+      option2.add(listProcess[1] as Word);
+      option3.add(listProcess[2] as Word);
+      option4.add(listProcess[3] as Word);
+      optionMain.add(wordMain);
+    }
+    audioPlay(optionMain[listPosition].id);
+
+    wordMain = optionMain[listPosition];
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            getOptionTile(0),
-            getOptionTile(1)
+            getOptionTileByWord(option1[listPosition]),
+            getOptionTileByWord(option2[listPosition])
           ],
         ),
         Row(
@@ -33,8 +55,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            getOptionTile(2),
-            getOptionTile(3)
+            getOptionTileByWord(option3[listPosition]),
+            getOptionTileByWord(option4[listPosition])
           ],
         ),
       ],
@@ -42,56 +64,55 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
   }
 
   Widget getCenterTile() {
-    return getImageTile(wordMain.id);
+    return getImageTile(optionMain[listPosition].id);
   }
 
-  ButtonTheme getOptionTile(int pos) {
-    Word wordOption = listProcess[pos] as Word;
+  ButtonTheme getOptionTileByWord(Word wordOption) {
     return ButtonTheme(
         child: Expanded(
-          child: Column(
-            children: [
-              ValueListenableBuilder(
-                valueListenable: flagCorrect,
-                builder: (context, value, widget) {
-                  saveCorrectionValues();
-                  return SizedBox.shrink();
-                },
-              ),
-              ValueListenableBuilder(
-                valueListenable: flagWrong,
-                builder: (context, value, widget) {
-                  saveCorrectionValues();
-                  return SizedBox.shrink();
-                },
-              ),
-              SizedBox(
-                width: 150,
-                height: 100,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white
-                  ),
-                  onPressed: () {
-                    if (type == ModuleType.TEST) {
-                      if (wordMain.id == wordOption.id) {
-                        flagCorrect.value = 1;
-                        correctCount++;
-                      } else {
-                        flagWrong.value = 1;
-                        wrongCount++;
-                      }
-                    }
-                    audioPlay(wordMain.id == wordOption.id);
-                    Timer(Duration(milliseconds: 1000), () async {
-                      next();
-                    });
+            child: Column(
+              children: [
+                ValueListenableBuilder(
+                  valueListenable: flagCorrect,
+                  builder: (context, value, widget) {
+                    saveCorrectionValues();
+                    return SizedBox.shrink();
                   },
-                  child: getOptionValue(wordOption),
                 ),
-              ),
-            ],
-          )
+                ValueListenableBuilder(
+                  valueListenable: flagWrong,
+                  builder: (context, value, widget) {
+                    saveCorrectionValues();
+                    return SizedBox.shrink();
+                  },
+                ),
+                SizedBox(
+                  width: 150,
+                  height: 100,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white
+                    ),
+                    onPressed: () {
+                      if (type == ModuleType.TEST) {
+                        if (wordMain.id == wordOption.id) {
+                          flagCorrect.value = 1;
+                          correctCount++;
+                        } else {
+                          flagWrong.value = 1;
+                          wrongCount++;
+                        }
+                      }
+                      audioPlay(wordMain.id == wordOption.id);
+                      Timer(Duration(milliseconds: 1000), () async {
+                        next();
+                      });
+                    },
+                    child: getOptionValue(wordOption),
+                  ),
+                ),
+              ],
+            )
         )
     );
   }

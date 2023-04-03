@@ -538,6 +538,7 @@ void getYear1Pt() {
       _subject,
       alphabetLetterList,
       '/LessonAlphabetLetters',
+      fontFamily: "LiteraIcons",
     );
   } ());
   listModulesYear1Por.add(() {
@@ -848,11 +849,12 @@ void getYear2Pt() {
       _subject,
       alphabetLetterList,
       '/LessonAlphabetLetters',
+      fontFamily: "Maria_lucia",
     );
   } ());
 
   listModulesYear2Por.add(() {
-    String _title = getAssetsVocab('WORDS');
+    String _title = "Alfabeto (Palavras)";
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,

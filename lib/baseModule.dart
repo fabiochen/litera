@@ -36,6 +36,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   int modulePos = 0;
   bool useNavigation = true;
   bool useProgressBar = true;
+  String fontFamily = "LiteraIcons";
 
   late Word wordMain;
   Color? backgroundColor = Colors.grey[200];
@@ -103,6 +104,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("test9");
       useProgressBar = args?['useProgressBar'] ?? true;
       printDebug("test10");
+      fontFamily = args?['fontFamily'] ?? "LiteraIcons";
 
       if (listProcess.length <= 1) {
         useNavigation = false;

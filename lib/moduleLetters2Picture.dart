@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:litera/baseOptionTiles.dart';
 import 'package:litera/word.dart';
@@ -10,18 +8,6 @@ class ModuleLetters2Picture extends BaseOptionTiles {
 }
 
 class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleLetters2Picture> {
-
-  Widget getMainTile() {
-    // listProcess.shuffle();
-    // wordMain = listProcess[Random().nextInt(4)];
-    listProcess.shuffle();
-    listProcess.sort((a, b) => (a as Word).processed?1:0);
-    int i= Random().nextInt(4);
-    wordMain = listProcess[i] as Word;
-    wordMain.processed = true;
-    listProcess[i] = wordMain;
-    return super.getMainTile();
-  }
 
   @override
   Widget getOptionValue(Word word) {

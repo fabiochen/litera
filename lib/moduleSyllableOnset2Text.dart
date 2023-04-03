@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:litera/baseOptionTiles.dart';
 import 'package:litera/globals.dart';
@@ -11,16 +9,6 @@ class ModuleSyllableOnset2Text extends BaseOptionTiles {
 }
 
 class _ModuleSyllableOnset2TextState extends BaseOptionTilesState<ModuleSyllableOnset2Text> {
-
-  Widget getMainTile() {
-    listProcess.shuffle();
-    listProcess.sort((a, b) => (a as Word).processed?1:0);
-    int i= Random().nextInt(4);
-    wordMain = listProcess[i] as Word;
-    wordMain.processed = true;
-    listProcess[i] = wordMain;
-    return super.getMainTile();
-  }
 
   Widget getCenterTile() {
     audioPlay(wordMain.id);

@@ -12,6 +12,7 @@ class Module {
   int? numberQuestions;
   bool useNavigation;
   Map<String,Object>? args = {};
+  String fontFamily;
 
   Module(
       var this.pos,
@@ -24,7 +25,8 @@ class Module {
       {
         bool this.isVisibleTarget = false,
         int? this.numberQuestions,
-        bool this.useNavigation = true
+        bool this.useNavigation = true,
+        String this.fontFamily = "LiteraIcons"
       }
   );
 
@@ -38,6 +40,7 @@ class Module {
     args!['isVisibleTarget'] = this.isVisibleTarget;
     if (this.numberQuestions != null) args!['numberQuestions'] = this.numberQuestions as Object;
     args!['useNavigation'] = this.useNavigation;
+    args!['fontFamily'] = this.fontFamily;
     return args;
   }
 
