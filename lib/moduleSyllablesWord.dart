@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:litera/baseOptionTiles.dart';
-import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class ModuleSyllablesWord extends BaseOptionTiles {
@@ -22,7 +21,7 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
     return super.getMainTile();
   }
 
-  Widget getCenterTile() {
+  Widget getCenterTile(word) {
     //audioPlay(wordMain.id);
     return Row(
       children: [
@@ -31,12 +30,12 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white
             ),
-            child: getImage(wordMain.id,100)),
+            child: getImage(word.id,100)),
         SizedBox(width: 50),
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: Text(
-            "__" + wordMain.title.substring(2),
+            "__" + word.title.substring(2),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.teal,
@@ -49,7 +48,7 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
   }
 
   @override
-  Widget getOptionValue(Word word) {
+  Widget getOptionValue(Word word, [double fontSize=50]) {
     print(word.title);
     return Padding(
       padding: const EdgeInsets.all(15.0),

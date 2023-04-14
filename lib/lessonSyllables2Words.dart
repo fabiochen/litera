@@ -161,7 +161,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
 
   void _audioPlayWord() {
     List<Word> listWord = mapSyllableMatch.elementAt(_selectedSyllable).values.first;
-    String itemId = listWord[_selectedWord].id.toString();
+    int itemId = listWord[_selectedWord].id;
     audioPlay(itemId);
   }
 

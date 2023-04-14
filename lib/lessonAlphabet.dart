@@ -11,31 +11,32 @@ class LessonAlphabet extends BaseModule {
 
 class _LessonAlphabetState extends BaseModuleState<LessonAlphabet> {
 
-  Comparator<Object> criteria = (a, b) => (a as Word).title.compareTo((b as Word).title);
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    listProcess.sort(criteria);
-  }
-
+  // Comparator<Object> criteria = (a, b) => (a as Word).title.compareTo((b as Word).title);
+  //
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   listProcess.sort(criteria);
+  // }
+  //
   @override
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
+    audioPlay(wordMain.id);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         getImageTile(wordMain.id), // image
-        getMainText(60), // letter
+        getMainText(wordMain,60), // letter
         getOnsetTile(wordMain), // image
       ],
     );
   }
 
   @override
-  String getMainLabel() {
-    audioPlay(wordMain.id);
-    return wordMain.title.substring(0,1).toUpperCase() + ' ' + wordMain.title.substring(0,1);
+  String getMainLabel(word) {
+    audioPlay(word.id);
+    return word.title.substring(0,1).toUpperCase() + ' ' + word.title.substring(0,1);
   }
 
 }

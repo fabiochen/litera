@@ -53,7 +53,7 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   padding: EdgeInsets.all(10),
-                                  child: _getMainText(),
+                                  child: _getMainText(wordMain),
                                 ),
                               )),
                             Flexible(
@@ -99,11 +99,11 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
     );
   }
 
-  String getMainLabel() {
-    return wordMain.title;
+  String getMainLabel(word) {
+    return word.title;
   }
 
-  Text _getMainText() {
-    return super.getMainText(15);
+  Text _getMainText(word) {
+    return super.getMainText(word, 15);
   }
 }

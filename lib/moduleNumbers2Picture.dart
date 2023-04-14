@@ -18,7 +18,7 @@ class _ModuleNumbers2PictureState extends BaseOptionTilesState<ModuleNumbers2Pic
     return super.getMainTile();
   }
 
-  Widget getOptionValue(Word word) {
+  Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(

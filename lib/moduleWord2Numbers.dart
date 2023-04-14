@@ -1,26 +1,17 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:litera/globals.dart';
-import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
+import 'package:litera/word.dart';
+import 'package:litera/globals.dart';
 
-class ModuleNumbers2Word extends BaseOptionTiles {
+class ModuleWord2Numbers extends BaseOptionTiles {
   @override
-  _ModuleNumbers2WordState createState() => _ModuleNumbers2WordState();
+  _ModuleLetters2PictureState createState() => _ModuleLetters2PictureState();
 }
 
-class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> {
+class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Numbers> {
 
-  @override
-  Widget getMainTile() {
-    listProcess.shuffle();
-    wordMain = listProcess[Random().nextInt(4)] as Word;
-    return super.getMainTile();
-  }
-
-  @override
   Widget getCenterTile(word) {
+    audioPlay(word.id);
     return getTextTile(word);
   }
 
@@ -36,10 +27,10 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                width: 300,
+                width: 250,
                 height: 100,
                 alignment: Alignment.center,
-                child: getText(word.title,40,Colors.deepOrange),
+                child: getText(word.title, fontSize, color),
               ),
             ),
             Positioned(
@@ -63,6 +54,7 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
     );
   }
 
+  @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
@@ -71,7 +63,7 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: 30,
+          fontSize: 50,
         ),
       ),
     );

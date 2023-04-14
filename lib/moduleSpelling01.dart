@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:litera/globals.dart';
 import 'package:litera/baseMatchCharacter.dart';
 
 class ModuleSpelling01 extends BaseMatchCharacter {

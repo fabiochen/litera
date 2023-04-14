@@ -1,13 +1,12 @@
-import 'dart:io';
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+
+import 'package:assets_audio_player/assets_audio_player.dart';
 
 import 'package:litera/word.dart';
 import 'package:litera/globals.dart';
 import 'package:litera/baseOptionTiles.dart';
 
-import 'package:audioplayers/audioplayers.dart';
+//import 'package:audioplayers/audioplayers.dart';
 
 class LessonOnset2Words extends BaseOptionTiles {
   @override
@@ -17,12 +16,16 @@ class LessonOnset2Words extends BaseOptionTiles {
 class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
   late int _testWordId;
 
-  @override
-  ButtonTheme getOptionTile(int optionId, [int type=0]) {
-    Word onset = listProcess[listPosition] as Word;
-    List<Word> filteredList = listVocab.where((word) => word.title.startsWith(onset.title)).toList();
-    Word word = filteredList[optionId];
+  Widget getMainTile() {
+    Word onset = listOriginal[listPosition] as Word;
+    print("onset0: " + onset.title);
+    listProcess = listVocab.where((word) => word.title.startsWith(onset.title)).toList();
+    return super.getMainTile();
+  }
 
+  ButtonTheme getOptionTile(Word word, [double _width=150, double _height=100]) {
+
+    print("tile word: " + word.title);
     return ButtonTheme(
       child: Column(
         children: [
@@ -89,24 +92,27 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
   }
 
   @override
-  Widget getCenterTile() {
+  Widget getCenterTile(onset) {
     Word onset = listProcess[listPosition] as Word;
-    audioPlayOnset(onset.title);
+    print("onset1: " + onset.title);
+    audioPlayOnset(onset.title.substring(0,1));
     return getOnsetTile(onset);
   }
 
   void _playTileAudio(Object itemId) {
     Word onset = listProcess[listPosition] as Word;
-    Word testWord = alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset.title));
+    print("onset2: " + onset.title);
+    Word testWord = alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset.title.substring(0,1)));
     _testWordId = testWord.id;
-    AudioCache audioCache = AudioCache();
-    if (Platform.isIOS)
-      audioCache.fixedPlayer?.notificationService.startHeadlessService();
     audioStop();
-    audioPlay(_testWordId);
-    t2 = Timer(Duration(milliseconds: 1000), () async {
-      audioPlayer = await audioCache.play('audios/$itemId.mp3');
-    });
+    audioPlayer.open(
+      Playlist(
+          audios: [
+            Audio("assets/audios/$_testWordId.mp3"),
+            Audio("assets/audios/$itemId.mp3")
+          ]
+      ),
+    );
   }
 
 }

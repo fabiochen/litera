@@ -26,24 +26,50 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        Container(
-          width: 200.0,
-          padding: EdgeInsets.all(12),
-          child: TextField(
-            controller: userInputTextField,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.black
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 200.0,
+              padding: EdgeInsets.all(12),
+              child: TextField(
+                controller: userInputTextField,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.black
+                ),
+                decoration: InputDecoration(
+                  border: new OutlineInputBorder(
+                      borderSide: new BorderSide(
+                          color: Colors.teal)),
+                  hintText: getAssetsVocab('TYPE-WORD'),
+                ),
+              ),
+            ), // textfield
+            ButtonTheme(
+              minWidth: 50.0,
+              height: 50.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                ),
+                onPressed: () => _correction(),
+                child: Text(
+                  getAssetsVocab('CHECK'),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
             ),
-            decoration: InputDecoration(
-              border: new OutlineInputBorder(
-                  borderSide: new BorderSide(
-                      color: Colors.teal)),
-              hintText: getAssetsVocab('TYPE-WORD'),
-            ),
-          ),
-        ), // textfield
+          ],
+        ),
         getImageTile(wordMain.id),
         ValueListenableBuilder(
           valueListenable: flagCorrect,
@@ -58,27 +84,6 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
             saveCorrectionValues();
             return SizedBox.shrink();
           },
-        ),
-        ButtonTheme(
-          minWidth: 50.0,
-          height: 50.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50.0),
-          ),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.teal,
-            ),
-            onPressed: () => _correction(),
-            child: Text(
-              getAssetsVocab('CHECK'),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-          ),
         ),
       ],
     );

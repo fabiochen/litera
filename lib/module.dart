@@ -13,9 +13,11 @@ class Module {
   bool useNavigation;
   Map<String,Object>? args = {};
   String fontFamily;
+  bool loop;
+  List<int>? misc;
 
   Module(
-      var this.pos,
+      int this.pos,
       String this.title,
       ModuleType this.type,
       Yr this.year,
@@ -26,7 +28,9 @@ class Module {
         bool this.isVisibleTarget = false,
         int? this.numberQuestions,
         bool this.useNavigation = true,
-        String this.fontFamily = "LiteraIcons"
+        String this.fontFamily = "Litera-Regular",
+        bool this.loop = false,
+        List<int>? this.misc,
       }
   );
 
@@ -41,6 +45,8 @@ class Module {
     if (this.numberQuestions != null) args!['numberQuestions'] = this.numberQuestions as Object;
     args!['useNavigation'] = this.useNavigation;
     args!['fontFamily'] = this.fontFamily;
+    args!['loop'] = this.loop;
+    if (this.misc != null) args!['misc'] = this.misc as List<int>;
     return args;
   }
 

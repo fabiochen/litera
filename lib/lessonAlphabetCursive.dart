@@ -4,12 +4,12 @@ import 'package:litera/baseModule.dart';
 import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
-class LessonAlphabetLetters extends BaseModule {
+class LessonAlphabetCursive extends BaseModule {
   @override
-  _LessonAlphabetLettersState createState() => _LessonAlphabetLettersState();
+  _LessonAlphabetCursiveState createState() => _LessonAlphabetCursiveState();
 }
 
-class _LessonAlphabetLettersState extends BaseModuleState<LessonAlphabetLetters> {
+class _LessonAlphabetCursiveState extends BaseModuleState<LessonAlphabetCursive> {
 
   Comparator<Object> criteria = (a, b) => (a as Word).title.compareTo((b as Word).title);
 
@@ -26,14 +26,17 @@ class _LessonAlphabetLettersState extends BaseModuleState<LessonAlphabetLetters>
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        getMainText(wordMain, 100, "Litera-Regular"), // letter
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
-            getSoundTile(wordMain),
-            getOnsetTile(wordMain)
+            getMainText(wordMain, 100, "Litera-Regular"),
+            SizedBox(width: 80),
+            getMainText(wordMain, 100, "Maria_lucia")
           ],
-        ),
+        ), // letter
+        getSoundTile(wordMain),
       ],
     );
   }

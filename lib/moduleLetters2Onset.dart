@@ -11,12 +11,13 @@ class ModuleLetters2Onset extends BaseOptionTiles {
 class _ModuleLetters2OnsetState extends BaseOptionTilesState<ModuleLetters2Onset> {
 
   @override
-  Widget getCenterTile() {
-    return getOnsetTile(wordMain);
+  Widget getCenterTile(word) {
+    audioPlay(word.id);
+    return getOnsetTile(word);
   }
 
   @override
-  Widget getOptionValue(Word word) {
+  Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(

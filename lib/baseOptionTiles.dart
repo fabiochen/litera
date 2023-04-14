@@ -21,7 +21,6 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
 
   @override
   Widget getMainTile() {
-
     listProcess.shuffle();
     if (listPosition == 0 || listPosition >= option1.length) {
       int i= Random().nextInt(4);
@@ -32,7 +31,6 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
       option4.add(listProcess[3] as Word);
       optionMain.add(wordMain);
     }
-    audioPlay(optionMain[listPosition].id);
 
     wordMain = optionMain[listPosition];
 
@@ -42,32 +40,32 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            getOptionTileByWord(option1[listPosition]),
-            getOptionTileByWord(option2[listPosition])
+            getOptionTile(option1[listPosition]),
+            getOptionTile(option2[listPosition])
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            getCenterTile(),
+            getCenterTile(optionMain[listPosition]),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            getOptionTileByWord(option3[listPosition]),
-            getOptionTileByWord(option4[listPosition])
+            getOptionTile(option3[listPosition]),
+            getOptionTile(option4[listPosition])
           ],
         ),
       ],
     );
   }
 
-  Widget getCenterTile() {
-    return getImageTile(optionMain[listPosition].id);
+  Widget getCenterTile(word) {
+    return getImageTile(word.id);
   }
 
-  ButtonTheme getOptionTileByWord(Word wordOption) {
+  ButtonTheme getOptionTile(Word wordOption, [double _width=150, double _height=100]) {
     return ButtonTheme(
         child: Expanded(
             child: Column(
@@ -87,8 +85,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
                   },
                 ),
                 SizedBox(
-                  width: 150,
-                  height: 100,
+                  width: _width,
+                  height: _height,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white
@@ -117,7 +115,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     );
   }
 
-  Widget getOptionValue(Word word) {
+  Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
@@ -125,7 +123,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: 50,
+          fontSize: fontSize,
+          fontFamily: fontFamily
         ),
       ),
     );

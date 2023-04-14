@@ -131,7 +131,8 @@ class _PageHomeState<T extends PageHome> extends State<T> {
         if (i>0) {
           // unlock year if all modules from previous years are unlocked, i.e., if saved unlock index is equal to length of module list
           listYears[i].subjects.forEach((subject) {
-            unlockSubjects.add(listYears[i-1].subjects[subject.id.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, subject.id.index));
+            if (listYears[i-1].subjects.length > subject.id.index)
+              unlockSubjects.add(listYears[i-1].subjects[subject.id.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, subject.id.index));
           });
         }
         unlockYear = listYears[i].id.index > 0 && !(unlockSubjects.where((item) => item == false).length>0);

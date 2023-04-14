@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
-import 'package:litera/word.dart';
 import 'package:litera/globals.dart';
+import 'package:litera/word.dart';
 
 class LessonNumbers extends BaseModule {
   @override
@@ -12,33 +12,30 @@ class LessonNumbers extends BaseModule {
 class _LessonNumbersState extends BaseModuleState<LessonNumbers> {
 
   // list sort criteria
-  Comparator<Word> criteria = (a, b) => a.value.compareTo(b.value);
+  Comparator<Object> criteria = (a, b) => ((a as Word).id).compareTo((b as Word).id);
 
   Widget getMainTile() {
     Word word = listProcess[listPosition] as Word;
+    audioPlay(word.id);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         getImageTile(word.id), // image
-        getText(word), // words
+        getText(word.title,70), // words
       ],
     );
   }
 
-  String getTextValue(Word word) {
-    audioPlay(word.id);
-    return word.value;
-  }
-
-  Text getText(Word word) {
-    return Text(
-        getTextValue(word),
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 80,
-          color: Colors.teal,
-        )
-    );
-  }
-
+  // Text getText(Word word) {
+  //   audioPlay(word.id);
+  //   return Text(
+  //       getText(word.value),
+  //       textAlign: TextAlign.center,
+  //       style: TextStyle(
+  //         fontSize: 80,
+  //         color: Colors.teal,
+  //       )
+  //   );
+  // }
+  //
 }

@@ -3,20 +3,20 @@ import 'package:litera/baseOptionTiles.dart';
 import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
-class ModuleSyllableOnset2Text extends BaseOptionTiles {
+class ModuleSound2Words extends BaseOptionTiles {
   @override
-  _ModuleSyllableOnset2TextState createState() => _ModuleSyllableOnset2TextState();
+  _State createState() => _State();
 }
 
-class _ModuleSyllableOnset2TextState extends BaseOptionTilesState<ModuleSyllableOnset2Text> {
+class _State extends BaseOptionTilesState<ModuleSound2Words> {
 
-  Widget getCenterTile() {
-    audioPlay(wordMain.id);
-    return getSoundTile(wordMain);
+  Widget getCenterTile(word) {
+    audioPlay(word.id);
+    return getSoundTile(word);
   }
 
   @override
-  Widget getOptionValue(Word word) {
+  Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(

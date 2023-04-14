@@ -17,16 +17,16 @@ class _LessonLettersState extends BaseModuleState<LessonLetters> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getMainText(100), // letter
-        getOnsetTile(wordMain)
+        getMainText(wordMain, 100), // letter
+        getSoundTile(wordMain)
       ],
     );
   }
 
   @override
-  String getMainLabel() {
-    audioPlay(wordMain.id);
-    return wordMain.title.substring(0,1).toUpperCase();
+  String getMainLabel(word) {
+    audioPlay(word.id);
+    return word.title.substring(0,1).toUpperCase() + " " + word.title.substring(0,1).toLowerCase();
   }
 
 }

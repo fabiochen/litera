@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:litera/word.dart';
@@ -59,10 +59,18 @@ late List<Word> valOrderAlphabet;
 late List<Word> listSyllables;
 late List<Map<String, List<Word>>> mapSyllableMatch;
 late List<Map<String, List<Word>>> mapWordMatch;
+late List<Word> listDaysOfTheWeek;
+late List<Word> listMonthsOfTheYear;
+late List<Word> listSeasonsOfTheYear;
+late List<List<Word>> listGenderNumber;
+late List<Word> listTimeLessonHour;
+late List<Word> listTimeLessonMinutes;
+late List<Word> listTimeHour;
+late List<Word> listTimeMinutes;
 
 late Map<String, dynamic> parsedWords;
 
-AudioPlayer audioPlayer = AudioPlayer();
+final AssetsAudioPlayer audioPlayer = AssetsAudioPlayer();
 Timer? t1,t2,t3 = Timer(Duration(seconds: 1), () {});
 
 late Widget adWidget;
@@ -88,6 +96,7 @@ enum ModuleType {
 enum Sub {
   PORTUGUESE,
   MATH,
+  SCIENCE,
   OTHERS,
 }
 
@@ -96,60 +105,12 @@ enum Yr {
   TWO,
 }
 
-// enum ModulePosYear1Por {
-//   Letters_Lesson_Alphabet,
-//   Letters_Lesson_Vowels,
-//   Letters_Exercise_OrderVowels,
-//   Letters_Exercise_OrderAlphabet,
-//   Letters_Exercise_LettersOnset,
-//   Letters_Exercise_MatchCase,
-//   Letters_Test_LettersImage,
-//   Letters_Test_LettersOnset,
-//   Letters_Test_MatchCase,
-//   Syllables_Lesson_Syllables,
-//   Syllables_Lesson_Consonant_Vowels,
-//   Syllables_Lesson_Words,
-//   Syllables_Exercise_SyllablesSound,
-//   Syllables_Exercise_SyllablesWord,
-//   Syllables_Test_SyllablesSound,
-//   Syllables_Test_SyllablesWord,
-// }
-
-// enum ModulePosYear1Mat {
-//   Numbers_Lesson_1_10,
-//   Numbers_Exercise_NumbersPicture,
-//   Numbers_Exercise_OrderNumbers,
-//   Numbers_Test_NumbersPicture,
-//   Numbers_Test_OrderNumbers,
-// }
-// enum ModulePosYear2Por {
-//   Words_Lesson_Words,
-//   Words_Lesson_WordsOnset,
-//   Words_Lesson_WordOnsets,
-//   Words_Lesson_ConsonantsVowels,
-//   Words_Exercise_WordsPicture,
-//   Words_Exercise_WordPictures,
-//   Words_Exercise_Spelling1,
-//   Words_Exercise_Spelling2,
-//   Words_Test_WordsPicture,
-//   Words_Test_WordPictures,
-//   Words_Test_Spelling1,
-//   Words_Test_Spelling2,
-// }
-// enum ModulePosYear2Mat {
-//   Numbers_Lesson_1_20_Full,
-//   Numbers_Exercise_WordNumbers1_20,
-//   Numbers_Test_WordNumbers1_20,
-//   Numbers_Lesson_30_100_Full,
-//   Numbers_Exercise_WordNumbers30_100,
-//   Numbers_Test_WordNumbers30_100,
-//   Numbers_Lesson_1_10_Ordinals,
-//   Numbers_Exercise_1_10_Ordinals,
-//   Numbers_Test_1_10_Ordinals,
-//   Numbers_Lesson_20_100_Ordinals,
-//   Numbers_Exercise_20_100_Ordinals,
-//   Numbers_Test_20_100_Ordinals,
-// }
+List<String> enumGenderNumber = [
+  'Masculino/ Singular',
+  'Feminino/ Singular',
+  'Masculino/ Plural',
+  'Feminino/ Plural',
+];
 
 List<Year> listYears = [];
 
@@ -181,6 +142,14 @@ Future init() async {
   mapSyllableMatch = [];
   mapWordMatch = [];
   listYears = [];
+  listDaysOfTheWeek = [];
+  listMonthsOfTheYear = [];
+  listSeasonsOfTheYear = [];
+  listGenderNumber = [];
+  listTimeLessonHour = [];
+  listTimeLessonMinutes = [];
+  listTimeHour = [];
+  listTimeMinutes = [];
 
   printDebug("******** init 2");
 
@@ -202,6 +171,8 @@ Future init() async {
   getYear2Pt();
   printDebug("******** init 4.4");
   getYear2Mt();
+
+  getYear2Sc();
 
   printDebug("******** init 5");
   expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index")??Sub.PORTUGUESE.index);
@@ -252,6 +223,50 @@ Future populate() async {
     Word word = Word(id, title);
     listVocab.add(word);
   });
+
+  printDebug("******** populate 4");
+
+  // populate vocab list
+  parsedWords['LIST']['CATEGORY']['DAYS-OF-THE-WEEK'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['DAYS-OF-THE-WEEK'][key];
+    Word word = Word(id, title);
+    listDaysOfTheWeek.add(word);
+  });
+
+  // populate vocab list
+  parsedWords['LIST']['CATEGORY']['MONTHS-OF-THE-YEAR'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['MONTHS-OF-THE-YEAR'][key];
+    Word word = Word(id, title, (id-3600).toString());
+    listMonthsOfTheYear.add(word);
+  });
+
+  printDebug("******** populate 5");
+
+  parsedWords['LIST']['CATEGORY']['SEASONS-OF-THE-YEAR'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['SEASONS-OF-THE-YEAR'][key];
+    Word word = Word(id, title);
+    listSeasonsOfTheYear.add(word);
+  });
+
+  printDebug("******** populate 6");
+
+  parsedWords['LIST']['CATEGORY']['GENDER-NUMBER'].keys.forEach((key1){
+    List<Word> listWord = [];
+    parsedWords['LIST']['CATEGORY']['GENDER-NUMBER'][key1].asMap().keys.forEach((key2){
+      parsedWords['LIST']['CATEGORY']['GENDER-NUMBER'][key1][key2].keys.forEach((key3) {
+        int id = int.parse(key3);
+        String title = parsedWords['LIST']['CATEGORY']['GENDER-NUMBER'][key1][key2][key3].toString();
+        listWord.add(Word(id,title,key2.toString()));
+      });
+    });
+    print("List length: " + listWord.length.toString());
+    listGenderNumber.add(listWord);
+  });
+
+  printDebug("******** populate 7");
 
   parsedWords['LIST']['CATEGORY']['ALPHABET'].forEach((key) {
     int id = int.parse(key.toString());
@@ -366,7 +381,7 @@ Future populate() async {
   parsedWords['LIST']['CATEGORY']['ALPHABET-LETTER-SOUND'].keys.forEach((key){
     int id = int.parse(key);
     String title = parsedWords['LIST']['CATEGORY']['ALPHABET-LETTER-SOUND'][key];
-    Word word = Word(id, title);
+    Word word = Word(id, title, title);
     alphabetLetterList.add(word);
   });
 
@@ -426,6 +441,34 @@ Future populate() async {
     String title = parsedWords['LIST']['CATEGORY']['LIST-SYLLABLES'][key];
     Word word = Word(id, title);
     listSyllables.add(word);
+  });
+
+  parsedWords['LIST']['CATEGORY']['TIME-LESSON-HOUR'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['TIME-LESSON-HOUR'][key];
+    Word word = Word(id, title);
+    listTimeLessonHour.add(word);
+  });
+
+  parsedWords['LIST']['CATEGORY']['TIME-LESSON-MINUTES'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['TIME-LESSON-MINUTES'][key];
+    Word word = Word(id, title);
+    listTimeLessonMinutes.add(word);
+  });
+
+  parsedWords['LIST']['CATEGORY']['TIME-HOUR'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['TIME-HOUR'][key];
+    Word word = Word(id, title);
+    listTimeHour.add(word);
+  });
+
+  parsedWords['LIST']['CATEGORY']['TIME-MINUTES'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['TIME-MINUTES'][key];
+    Word word = Word(id, title);
+    listTimeMinutes.add(word);
   });
 
   printDebug("******** populate 8");
@@ -515,7 +558,7 @@ void getYear1Pt() {
 
   // module 0
   listModulesYear1Por.add(() {
-    String _title = "Alfabeto (Palavras)";
+    String _title = "Alfabeto (Imagens)";
     int _modulePos = listModulesYear1Por.length;
     return Module(
       _modulePos,
@@ -538,7 +581,6 @@ void getYear1Pt() {
       _subject,
       alphabetLetterList,
       '/LessonAlphabetLetters',
-      fontFamily: "LiteraIcons",
     );
   } ());
   listModulesYear1Por.add(() {
@@ -582,6 +624,19 @@ void getYear1Pt() {
     );
   } ());
   listModulesYear1Por.add(() {
+    String _title = "Som das Letras";
+    int _modulePos = listModulesYear1Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      alphabetLetterList,
+      '/ModuleSound2Words',
+    );
+  } ());
+  listModulesYear1Por.add(() {
     String _title = "Som inicial / Letras";
     int _modulePos = listModulesYear1Por.length;
     return Module(
@@ -606,6 +661,19 @@ void getYear1Pt() {
       lettersMatchCase,
       '/ModuleMatchCase',
       isVisibleTarget: true,
+    );
+  } ());
+  listModulesYear1Por.add(() {
+    String _title = "Letras (Antes e Depois)";
+    int _modulePos = listModulesYear1Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      alphabetLetterList,
+      '/ModuleBeforeAndAfter',
     );
   } ());
   listModulesYear1Por.add(() {
@@ -700,7 +768,8 @@ void getYear1Pt() {
       _year,
       _subject,
       listSyllables,
-      '/ModuleSyllableOnset2Text',
+      '/ModuleSound2Words',
+      numberQuestions:20,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -726,7 +795,8 @@ void getYear1Pt() {
       _year,
       _subject,
       listSyllables,
-      '/ModuleSyllableOnset2Text',
+      '/ModuleSound2Words',
+      numberQuestions:20,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -793,6 +863,19 @@ void getYear1Mt() {
     );
   } ());
   listModulesYear1Mat.add(() {
+    String _title = "Números (Antes e Depois)";
+    int _modulePos = listModulesYear1Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listNumber1t20.where((word) => word.id <= 154).toList(),
+      '/ModuleBeforeAndAfter',
+    );
+  } ());
+  listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS');
     int _modulePos = listModulesYear1Mat.length;
     return Module(
@@ -848,8 +931,7 @@ void getYear2Pt() {
       _year,
       _subject,
       alphabetLetterList,
-      '/LessonAlphabetLetters',
-      fontFamily: "Maria_lucia",
+      '/LessonAlphabetCursive',
     );
   } ());
 
@@ -863,7 +945,7 @@ void getYear2Pt() {
       _year,
       _subject,
       alphabet,
-      '/LessonWords',
+      '/LessonWordsAndPicture',
     );
   } ());
   listModulesYear2Por.add(() {
@@ -893,7 +975,7 @@ void getYear2Pt() {
     );
   } ());
   listModulesYear2Por.add(() {
-    String _title = getAssetsVocab('CONSONANTS') + " / " + getAssetsVocab('VOWELS');
+    String _title = "Sílabas";
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -903,6 +985,19 @@ void getYear2Pt() {
       _subject,
       mapWordMatch,
       '/LessonWordsConsonantsVowels',
+    );
+  } ());
+  listModulesYear2Por.add(() {
+    String _title = "Forca";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listVocab.where((word) => word.title.length <=4 && !(word.title.contains(RegExp(r'[çéáúãóõ]')))).toList(),
+      '/LessonHangman',
     );
   } ());
   listModulesYear2Por.add(() {
@@ -916,6 +1011,20 @@ void getYear2Pt() {
       _subject,
       listVocab.where((word) => word.title.length <=5).toList(),
       '/ModuleWords2Picture',
+    );
+  } ());
+  listModulesYear2Por.add(() {
+    String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS') + " (cursiva)";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listVocab.where((word) => word.title.length <=5).toList(),
+      '/ModuleWords2Picture',
+      fontFamily: "Maria_lucia"
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1013,6 +1122,47 @@ void getYear2Pt() {
         numberQuestions : 20
     );
   } ());
+  listModulesYear2Por.add(() {
+    String _title = "Masculino / Feminino";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listGenderNumber,
+        '/LessonWordPairs',
+        misc: [0,1]
+    );
+  } ());
+  listModulesYear2Por.add(() {
+    String _title = "Singular / Plural";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listGenderNumber,
+        '/LessonWordPairs',
+        misc: [0,2]
+    );
+  } ());
+  listModulesYear2Por.add(() {
+    String _title = "Masculino/Feminino/Singular/Plural";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listGenderNumber,
+      '/ModuleGenderNumber',
+    );
+  } ());
 
   listYears[_year.index].subjects.add(Subject(_subject, "Português", listModulesYear2Por));
 
@@ -1037,6 +1187,33 @@ void getYear2Mt() {
     );
   } ());
   listModulesYear2Mat.add(() {
+    String _title = "1 - 20 (extenso)";
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listNumber1t20,
+      '/ModuleNumbers2Word',
+    );
+  } ());
+  listModulesYear2Mat.add(() {
+    String _title = "1 - 20 (extenso)";
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listNumber1t20,
+      '/ModuleNumbers2Word',
+    );
+  } ());
+
+  listModulesYear2Mat.add(() {
     String _title = "30 - 100 (extenso)";
     int _modulePos = listModulesYear2Mat.length;
     return Module(
@@ -1050,6 +1227,33 @@ void getYear2Mt() {
     );
   } ());
   listModulesYear2Mat.add(() {
+    String _title = "30 - 100 (extenso)";
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listNumber30t100,
+      '/ModuleNumbers2Word',
+    );
+  } ());
+  listModulesYear2Mat.add(() {
+    String _title = "30 - 100 (extenso)";
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listNumber30t100,
+      '/ModuleNumbers2Word',
+    );
+  } ());
+
+  listModulesYear2Mat.add(() {
     String _title = "1 - 10 (ordinais)";
     int _modulePos = listModulesYear2Mat.length;
     return Module(
@@ -1062,6 +1266,33 @@ void getYear2Mt() {
       '/LessonNumbersFull',
     );
   } ());
+  listModulesYear2Mat.add(() {
+    String _title = "1 - 10 (ordinais)";
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listNumber1t10Ordinal,
+      '/ModuleNumbers2Word',
+    );
+  } ());
+  listModulesYear2Mat.add(() {
+    String _title = "1 - 10 (ordinais)";
+    int _modulePos = listModulesYear2Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listNumber1t10Ordinal,
+      '/ModuleNumbers2Word',
+    );
+  } ());
+
   listModulesYear2Mat.add(() {
     String _title = "20 - 100 (ordinais)";
     int _modulePos = listModulesYear2Mat.length;
@@ -1077,45 +1308,6 @@ void getYear2Mt() {
   } ());
 
   listModulesYear2Mat.add(() {
-    String _title = "1 - 20 (extenso)";
-    int _modulePos = listModulesYear2Mat.length;
-    return Module(
-      _modulePos,
-      _title,
-      ModuleType.EXERCISE,
-      _year,
-      _subject,
-      listNumber1t20,
-      '/ModuleNumbers2Word',
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = "30 - 100 (extenso)";
-    int _modulePos = listModulesYear2Mat.length;
-    return Module(
-      _modulePos,
-      _title,
-      ModuleType.EXERCISE,
-      _year,
-      _subject,
-      listNumber30t100,
-      '/ModuleNumbers2Word',
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = "1 - 10 (ordinais)";
-    int _modulePos = listModulesYear2Mat.length;
-    return Module(
-      _modulePos,
-      _title,
-      ModuleType.EXERCISE,
-      _year,
-      _subject,
-      listNumber1t10Ordinal,
-      '/ModuleNumbers2Word',
-    );
-  } ());
-  listModulesYear2Mat.add(() {
     String _title = "20 - 100 (ordinais)";
     int _modulePos = listModulesYear2Mat.length;
     return Module(
@@ -1125,45 +1317,6 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber20t100Ordinal,
-      '/ModuleNumbers2Word',
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = "1 - 20 (extenso)";
-    int _modulePos = listModulesYear2Mat.length;
-    return Module(
-      _modulePos,
-      _title,
-      ModuleType.TEST,
-      _year,
-      _subject,
-      listNumber1t20,
-      '/ModuleNumbers2Word',
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = "30 - 100 (extenso)";
-    int _modulePos = listModulesYear2Mat.length;
-    return Module(
-      _modulePos,
-      _title,
-      ModuleType.TEST,
-      _year,
-      _subject,
-      listNumber30t100,
-      '/ModuleNumbers2Word',
-    );
-  } ());
-  listModulesYear2Mat.add(() {
-    String _title = "1 - 10 (ordinais)";
-    int _modulePos = listModulesYear2Mat.length;
-    return Module(
-      _modulePos,
-      _title,
-      ModuleType.TEST,
-      _year,
-      _subject,
-      listNumber1t10Ordinal,
       '/ModuleNumbers2Word',
     );
   } ());
@@ -1182,6 +1335,202 @@ void getYear2Mt() {
   } ());
 
   listYears[_year.index].subjects.add(Subject(_subject, "Matemática", listModulesYear2Mat));
+
+}
+
+void getYear2Sc() {
+  Yr _year = Yr.TWO;
+  Sub _subject = Sub.SCIENCE;
+  List<Module> listModulesYear2Sci = [];
+
+  listModulesYear2Sci.add(() {
+    String _title = "Dias da Semana";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listDaysOfTheWeek,
+      '/LessonWords',
+      loop:true,
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Dias da Semana (Antes e Depois)";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listDaysOfTheWeek,
+      '/ModuleBeforeAndAfterDays',
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Dias da Semana (Antes e Depois)";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listDaysOfTheWeek,
+      '/ModuleBeforeAndAfterDays',
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Meses do Ano";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listMonthsOfTheYear,
+      '/LessonNumbersFull',
+      loop:true,
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Número do Mês";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listMonthsOfTheYear,
+      '/ModuleWord2Numbers',
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Meses do Ano (Antes e Depois)";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listMonthsOfTheYear,
+      '/ModuleBeforeAndAfterDays',
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Meses do Ano (Antes e Depois)";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listMonthsOfTheYear,
+      '/ModuleBeforeAndAfterDays',
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Estações do Ano";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listSeasonsOfTheYear,
+      '/LessonWordsAndPicture',
+      loop:true,
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Estações do Ano (Antes & Depois)";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listSeasonsOfTheYear,
+      '/ModuleBeforeAndAfterDays',
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Estações do Ano (Antes & Depois)";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listSeasonsOfTheYear,
+      '/ModuleBeforeAndAfterDays',
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Relógio Análogo (horas)";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listTimeLessonHour,
+      '/LessonClock',
+      loop: true,
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Relógio Análogo (minutos)";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listTimeLessonMinutes,
+      '/LessonClock',
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Relógio Análogo & Digital";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listTimeLessonHour,
+      '/LessonClockDigital',
+      useNavigation: false,
+    );
+  } ());
+
+  listYears[_year.index].subjects.add(Subject(_subject, "Ciências", listModulesYear2Sci));
 
 }
 
@@ -1236,78 +1585,23 @@ int getNavigationLanguage() {
   return navigationLanguage;// portuguese as default
 }
 
-showBeginningAlertDialog(BuildContext context) {
-  printDebug('alert');
-  // set up the button
-  Widget okButton = TextButton(
-    child: Text("OK"),
-    onPressed: () { Navigator.of(context).pop(); },
-  );
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    content: Text('\n' + getAssetsVocab('BEGINNING'),
-      style: TextStyle(
-        fontSize: 20,
-        color: Colors.black,
-      ),
-      textAlign: TextAlign.center,
-    ),
-    actions: [
-      okButton,
-    ],
-  );
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
-
-showEndAlertDialog(BuildContext context, [String grade='']) {
-  printDebug('alert');
-  // set up the button
-  Widget okButton = TextButton(
-    child: Text("OK"),
-    onPressed: () {
-      Navigator.of(context).pop(); // close popup
-    },
-  );
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    content: Text(grade + '\n' + getAssetsVocab('END'),
-      style: TextStyle(
-        fontSize: 20,
-        color: Colors.black,
-      ),
-      textAlign: TextAlign.center,
-    ),
-    actions: [
-      okButton,
-    ],
-  );
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
-
-void audioPlay(Object itemId, [int duration=100]) {
-  AudioCache audioCache = AudioCache();
+void audioPlay(Object itemId) async {
+//  AudioCache audioCache = AudioCache();
   if (Platform.isIOS)
-    audioCache.fixedPlayer?.notificationService.startHeadlessService();
+//    audioCache.fixedPlayer?.notificationService.startHeadlessService();
   audioStop();
-  t1 = Timer(Duration(milliseconds: duration), () async {
-    audioPlayer = await audioCache.play('audios/$itemId.mp3');
-  });
+  //await audioPlayer.play('audios/$itemId.mp3', isLocal: true);
+  // Uri uri = await audioCache.load('audios/$itemId.mp3');
+  // return await audioPlayer.play(
+  //     uri.path,
+  //     isLocal: true,
+  // );
+  audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
 }
 
 void audioPlayOnset(String onset) {
   Word testWord = alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset));
+  print("onset3: " + testWord.title);
   audioPlay(testWord.id);
 }
 
@@ -1323,165 +1617,8 @@ Future<SharedPreferences> getPrefs() async {
   return prefs;
 }
 
-ElevatedButton getImageTile(int id) {
-  return ElevatedButton(
-      onPressed: () => audioPlay(id),
-      style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white
-      ),
-      child: Stack(
-        children: [
-          getImage(id,200),
-          Positioned(
-            bottom: 10, right: 0,
-            child: Icon(
-              IconData(57400, fontFamily: 'LiteraIcons'),
-              color: Colors.blue,
-              size: 40,
-            ),
-          ),
-          Positioned(
-            bottom: 10, right: 0,
-            child: Icon(
-              IconData(57401, fontFamily: 'LiteraIcons'),
-              color: Colors.white,
-              size: 40,
-            ),
-          ), // second icon to "paint" previous transparent icon
-        ],
-      )
-  );
-}
-
-Padding getImage(int id, double width) {
-  return Padding(
-    padding: const EdgeInsets.all(15.0),
-    child: Image(
-      image: AssetImage('assets/images/$id.png'),
-      width: width,
-      gaplessPlayback: true,
-    ),
-  );
-}
-
-ElevatedButton getTextTile(Word word) {
-  int id = word.id;
-  return ElevatedButton(
-      onPressed: () => audioPlay(id),
-      style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white
-      ),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-              width: 250,
-              height: 200,
-              alignment: Alignment.center,
-              child: getText(word.value),
-            ),
-          ),
-          Positioned(
-            bottom: 10, right: 0,
-            child: Icon(
-              IconData(57400, fontFamily: 'LiteraIcons'),
-              color: Colors.blue,
-              size: 40,
-            ),
-          ),
-          Positioned(
-            bottom: 10, right: 0,
-            child: Icon(
-              IconData(57401, fontFamily: 'LiteraIcons'),
-              color: Colors.white,
-              size: 40,
-            ),
-          ), // second icon to "paint" previous transparent icon
-        ],
-      )
-  );
-}
-
-Text getText(String text) {
-  return Text(
-    text,
-    style: TextStyle(
-        color: Colors.deepOrange,
-        fontSize: 100,
-    ),
-  );
-}
-
 printDebug (String text) {
   if (debugMode) print(text);
-}
-
-ElevatedButton getSoundTile(Word word) {
-  return ElevatedButton(
-      onPressed: () => audioPlay(word.id),
-      style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white
-      ),
-      child: Stack(
-        children: [
-          Icon(
-            IconData(57400, fontFamily: 'LiteraIcons'),
-            color: Colors.blue,
-            size: 100,
-          ),
-          Icon(
-            IconData(57401, fontFamily: 'LiteraIcons'),
-            color: Colors.white,
-            size: 100,
-          ), // second icon to "paint" previous transparent icon
-        ],
-      )
-  );
-}
-
-ElevatedButton getOnsetTile(Word word) {
-  printDebug('********** onset tile 1 word:' + word.title);
-  printDebug('********** onset tile 2 word:' + alphabetOnsetList.length.toString());
-  late Word onset;
-  try {
-    onset = alphabetOnsetList.singleWhere((element) => element.title == word.title.substring(0,1));
-    printDebug('********** onset tile 3 word:' + onset.title);
-  } catch (e) {
-    printDebug('********** onset error:' + e.toString());
-  }
-  return ElevatedButton(
-      onPressed: () => (word.id==8)?{}:audioPlay(onset.id),
-      style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white
-      ),
-      child: Stack(
-        children: [
-          Image(
-            image: AssetImage('assets/images/voice-onset.png'),
-            width: 100,
-            gaplessPlayback: true,
-            color: Colors.black.withOpacity((word.id==8)?0.5:1.0) // opacity on muted letter (h)
-          ),
-          Positioned(
-            bottom: 10, right: 0,
-            child: Icon(
-              IconData(57400, fontFamily: 'LiteraIcons'),
-              color: Colors.blue.withOpacity((word.id==8)?0.5:1.0), // opacity on muted letter (h)
-              size: 40,
-            ),
-          ),
-          Positioned(
-            bottom: 10, right: 0,
-            child: Icon(
-              IconData(57401, fontFamily: 'LiteraIcons'),
-              color: Colors.white,
-              size: 40,
-            ),
-          ), // second icon to "paint" previous transparent icon
-        ],
-      )
-  );
 }
 
 int getUnlockModuleIndex (int _year, int _subject) {

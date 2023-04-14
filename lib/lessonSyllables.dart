@@ -12,14 +12,15 @@ class LessonSyllables extends BaseModule {
 class _LessonSyllablesState extends BaseModuleState<LessonSyllables> {
 
   // list sort criteria
-  Comparator<Word> criteria = (a, b) => a.id.compareTo(b.id);
+  Comparator<Object> criteria = (a, b) => ((a as Word).id).compareTo((b as Word).id);
 
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
+    audioPlay(wordMain.id);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getText(wordMain), // words
+        getText(wordMain.title,80), // words
         getSoundTile(wordMain)
       ],
     );
@@ -30,18 +31,8 @@ class _LessonSyllablesState extends BaseModuleState<LessonSyllables> {
     return word.title;
   }
 
-  Text getText(Word word) {
-    return Text(
-        getTextValue(word),
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 80,
-          color: Colors.teal,
-        )
-    );
-  }
-
   void next() {
+    // override function for special unlock module case
     if (isEndPosition) {
       modulePos++;
       if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
-import 'package:litera/globals.dart';
 
 class ModuleWords2Picture extends BaseOptionTiles {
   @override
@@ -24,12 +23,17 @@ class _ModuleWords2PictureState extends BaseOptionTilesState<ModuleWords2Picture
   }
 
   @override
-  Widget getCenterTile() {
-    return getImageTile(wordMain.id);
+  Widget getCenterTile(word) {
+    return getImageTile(word.id);
   }
 
   @override
-  Widget getOptionValue(Word word) {
+  ButtonTheme getOptionTile(Word wordOption, [double _width=150, double _height=100]) {
+    return super.getOptionTile(wordOption,200);
+  }
+
+  @override
+  Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
@@ -37,7 +41,8 @@ class _ModuleWords2PictureState extends BaseOptionTilesState<ModuleWords2Picture
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: (word.title.length <5)?30:28,
+          fontSize: 30,
+          fontFamily: fontFamily,
         ),
       ),
     );

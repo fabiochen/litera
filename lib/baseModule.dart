@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+//import 'package:audioplayers/audioplayers.dart';
 
 import 'package:litera/menu.dart';
 import 'package:litera/word.dart';
@@ -28,6 +29,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   int wrongCount = 0;
 
   List<Object> listProcess = [];
+  List<Object> listOriginal = [];
   late int numberQuestions;
   late String title;
   ModuleType? type;
@@ -36,13 +38,18 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   int modulePos = 0;
   bool useNavigation = true;
   bool useProgressBar = true;
-  String fontFamily = "LiteraIcons";
+  String fontFamily = "Litera-Regular";
+  bool loop = false;
+  List<int>? misc;
 
   late Word wordMain;
   Color? backgroundColor = Colors.grey[200];
 
   late BannerAd bannerAd;
   final isBannerAdReady = ValueNotifier<bool>(false);
+
+  // list sort criteria
+  Comparator<Object> criteria = (a, b) => ((a as Word).id).compareTo((b as Word).id);
 
   void initState() {
     _initGoogleMobileAds();
@@ -95,8 +102,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       subjectIndex = args?['subject'] ?? Sub.PORTUGUESE.index;
       printDebug("test5");
       modulePos = args?['modulePos']??0;
-      printDebug("test6");
+      printDebug("test6: $modulePos");
       listProcess = args?['list']??[];
+      listOriginal = args?['list']??[];
       printDebug("test7");
       numberQuestions = args?['numberQuestions']??listProcess.length.toInt();
       printDebug("test8");
@@ -104,7 +112,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("test9");
       useProgressBar = args?['useProgressBar'] ?? true;
       printDebug("test10");
-      fontFamily = args?['fontFamily'] ?? "LiteraIcons";
+      fontFamily = args?['fontFamily'] ?? "Litera-Regular";
+      print("FontFamily $fontFamily");
+      loop = args?['loop'] ?? false;
+      misc = args?['misc'];
+
+      listProcess.sort(criteria);
 
       if (listProcess.length <= 1) {
         useNavigation = false;
@@ -135,6 +148,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("dcd error modulePos: " + modulePos.toString());
     }
     getUnlockModuleIndex(yearIndex,subjectIndex);
+    //audioPlayer = AudioPlayer();
     super.didChangeDependencies();
   }
 
@@ -193,8 +207,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getProgressBar() {
-    print("listPosition: $listPosition");
-    print("numberQuestions: $numberQuestions");
+    // print("listPosition: $listPosition");
+    // print("numberQuestions: $numberQuestions");
     double percent = (numberQuestions>0)?(listPosition+1) / numberQuestions:0;
     return Container(
       color: Colors.white,
@@ -235,31 +249,32 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getImageTile(), // image
-        getMainText(50), // words
+        getImageTile(wordMain.id), // image
+        getMainText(wordMain,50), // words
       ],
     );
   }
 
-  String getMainLabel() {
-    return wordMain.title;
+  String getMainLabel(word) {
+    return word.title;
   }
 
-  Text getMainText(double fontSize, [String font = "Litera-Regular"]) {
+  Text getMainText(Word word, double fontSize, [String fontFamily = "Litera-Regular"]) {
     return Text(
-      getMainLabel(),
+      getMainLabel(word),
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontFamily: font,
+        fontFamily: fontFamily,
         fontSize: fontSize,
         color: Colors.teal,
       )
     );
   }
 
-  ElevatedButton getImageTile() {
+  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
+    int id = word.id;
     return ElevatedButton(
-        onPressed: () => audioPlay(wordMain.id),
+        onPressed: () => audioPlay(id),
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white
         ),
@@ -267,10 +282,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
           children: [
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Image(
-                image: AssetImage('assets/images/' + wordMain.id.toString() + '.png'),
-                width: 200,
-                gaplessPlayback: true,
+              child: Container(
+                width: 250,
+                height: 200,
+                alignment: Alignment.center,
+                child: getText(word.value, fontSize, color),
               ),
             ),
             Positioned(
@@ -291,6 +307,125 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
             ), // second icon to "paint" previous transparent icon
           ],
         )
+    );
+  }
+
+  Text getText(String text, [double fontSize = 100, Color color = Colors.teal]) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: color,
+        fontSize: fontSize,
+      ),
+    );
+  }
+
+  ElevatedButton getSoundTile(Word word) {
+    return ElevatedButton(
+        onPressed: () => audioPlay(word.id),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white
+        ),
+        child: Stack(
+          children: [
+            Icon(
+              IconData(57400, fontFamily: 'LiteraIcons'),
+              color: Colors.blue,
+              size: 100,
+            ),
+            Icon(
+              IconData(57401, fontFamily: 'LiteraIcons'),
+              color: Colors.white,
+              size: 100,
+            ), // second icon to "paint" previous transparent icon
+          ],
+        )
+    );
+  }
+
+  ElevatedButton getOnsetTile(Word word) {
+    printDebug('********** onset tile 1 word:' + word.title);
+    printDebug('********** onset tile 2 word:' + alphabetOnsetList.length.toString());
+    late Word onset;
+    try {
+      onset = alphabetOnsetList.singleWhere((element) => element.title == word.title.substring(0,1));
+      printDebug('********** onset tile 3 word:' + onset.title);
+    } catch (e) {
+      printDebug('********** onset error:' + e.toString());
+    }
+    return ElevatedButton(
+        onPressed: () => (word.id==8)?{}:audioPlay(onset.id),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white
+        ),
+        child: Stack(
+          children: [
+            Image(
+                image: AssetImage('assets/images/voice-onset.png'),
+                width: 100,
+                gaplessPlayback: true,
+                color: Colors.black.withOpacity((word.id==8)?0.5:1.0) // opacity on muted letter (h)
+            ),
+            Positioned(
+              bottom: 10, right: 0,
+              child: Icon(
+                IconData(57400, fontFamily: 'LiteraIcons'),
+                color: Colors.blue.withOpacity((word.id==8)?0.5:1.0), // opacity on muted letter (h)
+                size: 40,
+              ),
+            ),
+            Positioned(
+              bottom: 10, right: 0,
+              child: Icon(
+                IconData(57401, fontFamily: 'LiteraIcons'),
+                color: Colors.white,
+                size: 40,
+              ),
+            ), // second icon to "paint" previous transparent icon
+          ],
+        )
+    );
+  }
+
+  ElevatedButton getImageTile(int id, [double imageSize=200]) {
+    return ElevatedButton(
+        onPressed: () => audioPlay(id),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white
+        ),
+        child: Stack(
+          children: [
+            getImage(id,imageSize),
+            Positioned(
+              bottom: 10, right: 0,
+              child: Icon(
+                IconData(57400, fontFamily: 'LiteraIcons'),
+                color: Colors.blue,
+                size: 40,
+              ),
+            ),
+            Positioned(
+              bottom: 10, right: 0,
+              child: Icon(
+                IconData(57401, fontFamily: 'LiteraIcons'),
+                color: Colors.white,
+                size: 40,
+              ),
+            ), // second icon to "paint" previous transparent icon
+          ],
+        )
+    );
+  }
+
+  Padding getImage(int id, double width) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Image(
+        image: AssetImage('assets/images/$id.png'),
+        width: width,
+        gaplessPlayback: true,
+      ),
     );
   }
 
@@ -318,11 +453,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   void saveCorrectionValues () async {
     String correctKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-correct';
-    print("CorrectKey: $correctKey = " + flagCorrect.value.toString());
+    //print("CorrectKey: $correctKey = " + flagCorrect.value.toString());
     int correctValue = (prefs.getInt(correctKey) ?? 0) + flagCorrect.value;
     await prefs.setInt(correctKey, correctValue);
     String wrongKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-wrong';
-    print("WrongKey: $wrongKey =" + flagWrong.value.toString());
+    //print("WrongKey: $wrongKey =" + flagWrong.value.toString());
     int wrongValue = (prefs.getInt(wrongKey) ?? 0) + flagWrong.value;
     await prefs.setInt(wrongKey, wrongValue);
     flagCorrect.value = 0;
@@ -331,12 +466,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   void next() {
     audioStop();
+    printDebug("*********** next");
     if (isEndPosition) {
       modulePos++;
-      printDebug("*********** next");
       printDebug("modulePos: $modulePos");
       printDebug("year: $yearIndex");
       printDebug("subject: $subjectIndex");
+      // redo TEST if minimum grade not reached
       if (
         type == ModuleType.TEST &&
         correctCount/numberQuestions*100 >= int.parse(percentUnlock)  &&
@@ -374,13 +510,90 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   void setEndPoints() {
     isStartPosition = false;
-    if (listPosition <= 0) {
-      isStartPosition = true;
+    if (loop) {
+      if (listPosition < 0) {
+        listPosition = numberQuestions-1;
+      }
+    } else {
+      if (listPosition <= 0) {
+        isStartPosition = true;
+      }
     }
     isEndPosition = false;
-    if (listPosition >= numberQuestions - 1) {
-      isEndPosition = true;
+    if (loop) {
+      if (listPosition > numberQuestions - 1) {
+        print("in loop: $modulePos");
+        setUnlockModule(modulePos+1);
+        listPosition = 0;
+      }
+    } else {
+      if (listPosition >= numberQuestions - 1) {
+        isEndPosition = true;
+      }
     }
+    print("ListPosition: $listPosition");
+    print("EndPoint: $isEndPosition");
+    print("NumberOfQuestions: $numberQuestions");
+  }
+
+  showBeginningAlertDialog(BuildContext context) {
+    printDebug('alert');
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { Navigator.of(context).pop(); },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Text('\n' + getAssetsVocab('BEGINNING'),
+        style: TextStyle(
+          fontSize: 20,
+          color: Colors.black,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showEndAlertDialog(BuildContext context, [String grade='']) {
+    printDebug('alert');
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop(); // close popup
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Text(grade + '\n' + getAssetsVocab('END'),
+        style: TextStyle(
+          fontSize: 20,
+          color: Colors.black,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   setUnlockModule (int newIndex, [int? _year, int? _subject]) async {
@@ -396,6 +609,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   void dispose() {
     audioStop();
     super.dispose();
+  }
+
+  Word getWordById(int id) {
+    return listOriginal.singleWhere((word) => (word as Word).id == id) as Word;
   }
 
 }

@@ -52,8 +52,7 @@ class _LessonWordsConsonantsVowelsState extends BaseModuleState<LessonWordsConso
                     )
                   ],
                   onSelectedItemChanged: (value) {
-                    setState(() {
-                    });
+                    setState(() {});
                   },
                 ),
               ),

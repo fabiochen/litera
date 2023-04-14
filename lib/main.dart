@@ -2,41 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
-import 'package:litera/globals.dart';
-import 'package:litera/lessonSyllables2Words.dart';
-import 'package:litera/moduleLetters2Picture.dart';
-import 'package:litera/moduleWord2Pictures.dart';
+import 'globals.dart';
+import 'lessonSyllables2Words.dart';
+import 'lessonWordPairs.dart';
+import 'moduleBeforeAndAfterDays.dart';
+import 'moduleLetters2Picture.dart';
+import 'moduleWord2Pictures.dart';
 
-import 'package:litera/pageHome.dart';
+import 'pageHome.dart';
 
-import 'package:litera/pageAbout.dart';
-import 'package:litera/pageContact.dart';
-import 'package:litera/pageSettings.dart';
+import 'pageAbout.dart';
+import 'pageContact.dart';
+import 'pageSettings.dart';
 
-import 'package:litera/report.dart';
+import 'report.dart';
 
-import 'package:litera/lessonAlphabet.dart';
-import 'package:litera/lessonAlphabetLetters.dart';
-import 'package:litera/lessonLetters.dart';
-import 'package:litera/lessonNumbers.dart';
-import 'package:litera/lessonNumbersFull.dart';
-import 'package:litera/moduleOrder.dart';
-import 'package:litera/moduleOrderNumeric.dart';
-import 'package:litera/moduleMatchCase.dart';
-import 'package:litera/lessonWords.dart';
-import 'package:litera/lessonSyllables.dart';
-import 'package:litera/lessonSyllablesConsonantsVowels.dart';
-import 'package:litera/moduleSyllableOnset2Text.dart';
-import 'package:litera/moduleSyllablesWord.dart';
-import 'package:litera/lessonOnset2Words.dart';
-import 'package:litera/lessonWord2Onsets.dart';
-import 'package:litera/lessonWordsConsonantsVowels.dart';
-import 'package:litera/moduleWords2Picture.dart';
-import 'package:litera/moduleNumbers2Picture.dart';
-import 'package:litera/moduleNumbers2Word.dart';
-import 'package:litera/moduleLetters2Onset.dart';
-import 'package:litera/moduleSpelling01.dart';
-import 'package:litera/moduleSpelling02.dart';
+import 'lessonAlphabet.dart';
+import 'lessonAlphabetLetters.dart';
+import 'lessonAlphabetCursive.dart';
+import 'lessonLetters.dart';
+import 'lessonNumbers.dart';
+import 'lessonWords.dart';
+import 'lessonWordAndNumber.dart';
+import 'moduleOrder.dart';
+import 'moduleOrderNumeric.dart';
+import 'moduleMatchCase.dart';
+import 'moduleBeforeAndAfter.dart';
+import 'lessonWordsAndPicture.dart';
+import 'lessonSyllables.dart';
+import 'lessonSyllablesConsonantsVowels.dart';
+import 'moduleSound2Words.dart';
+import 'moduleSyllablesWord.dart';
+import 'lessonOnset2Words.dart';
+import 'lessonWord2Onsets.dart';
+import 'lessonWordsConsonantsVowels.dart';
+import 'moduleWords2Picture.dart';
+import 'moduleWord2Numbers.dart';
+import 'moduleNumbers2Picture.dart';
+import 'moduleNumbers2Word.dart';
+import 'moduleLetters2Onset.dart';
+import 'moduleSpelling01.dart';
+import 'moduleSpelling02.dart';
+import 'moduleGenderNumber.dart';
+import 'lessonClock.dart';
+import 'lessonClockDigital.dart';
+import 'lessonHangman.dart';
 
 void main() {
   runApp(
@@ -77,21 +87,30 @@ class MyApp extends StatelessWidget {
                 '/PageContact'               : (context) => PageContact(),
                 '/PageSettings'              : (context) => PageSettings(),
                 '/LessonAlphabetLetters'     : (context) => LessonAlphabetLetters(),
+                '/LessonAlphabetCursive'     : (context) => LessonAlphabetCursive(),
                 '/LessonAlphabet'            : (context) => LessonAlphabet(),
                 '/LessonLetters'             : (context) => LessonLetters(),
+                '/LessonClock'               : (context) => LessonClock(),
+                '/LessonClockDigital'        : (context) => LessonClockDigital(),
+                '/LessonHangman'             : (context) => LessonHangman(),
                 '/ModuleOrder'               : (context) => ModuleOrder(),
+                '/ModuleGenderNumber'        : (context) => ModuleGenderNumber(),
+                '/ModuleBeforeAndAfter'      : (context) => ModuleBeforeAndAfter(),
+                '/ModuleBeforeAndAfterDays'  : (context) => ModuleBeforeAndAfterDays(),
                 '/ModuleLetters2Onset'       : (context) => ModuleLetters2Onset(),
                 '/ModuleMatchCase'           : (context) => ModuleMatchCase(),
                 '/ModuleLetters2Picture'     : (context) => ModuleLetters2Picture(),
                 '/LessonSyllables'           : (context) => LessonSyllables(),
                 '/LessonSyllablesConsonantsVowels' : (context) => LessonSyllablesConsonantsVowels(),
                 '/LessonSyllables2Words'     : (context) => LessonSyllables2Words(),
-                '/ModuleSyllableOnset2Text'  : (context) => ModuleSyllableOnset2Text(),
+                '/ModuleSound2Words'         : (context) => ModuleSound2Words(),
                 '/ModuleSyllablesWord'       : (context) => ModuleSyllablesWord(),
                 '/LessonNumbers'             : (context) => LessonNumbers(),
                 '/ModuleNumbers2Picture'     : (context) => ModuleNumbers2Picture(),
                 '/ModuleOrderNumeric'        : (context) => ModuleOrderNumeric(),
                 '/LessonWords'               : (context) => LessonWords(),
+                '/LessonWordsAndPicture'     : (context) => LessonWordsAndPicture(),
+                '/LessonWordPairs'           : (context) => LessonWordPairs(),
                 '/LessonOnset2Words'         : (context) => LessonOnset2Words(),
                 '/LessonWord2Onsets'         : (context) => LessonWord2Onsets(),
                 '/LessonWordsConsonantsVowels' : (context) => LessonWordsConsonantsVowels(),
@@ -99,8 +118,9 @@ class MyApp extends StatelessWidget {
                 '/ModuleWord2Pictures'       : (context) => ModuleWord2Pictures(),
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),
                 '/ModuleSpelling02'          : (context) => ModuleSpelling02(),
-                '/LessonNumbersFull'         : (context) => LessonNumbersFull(),
+                '/LessonNumbersFull'         : (context) => LessonWordAndNumber(),
                 '/ModuleNumbers2Word'        : (context) => ModuleNumbers2Word(),
+                '/ModuleWord2Numbers'        : (context) => ModuleWord2Numbers(),
 
                 '/BaseReport'                : (context) => Report(),
               }

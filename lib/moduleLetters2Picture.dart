@@ -10,7 +10,7 @@ class ModuleLetters2Picture extends BaseOptionTiles {
 class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleLetters2Picture> {
 
   @override
-  Widget getOptionValue(Word word) {
+  Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
@@ -18,7 +18,7 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleLetters2Pic
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: 50,
+          fontSize: fontSize,
         ),
       ),
     );
