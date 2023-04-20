@@ -5,15 +5,47 @@ import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
 
-class ModuleNumbers2Word extends BaseOptionTiles {
+class ModuleLeftRight extends BaseOptionTiles {
   @override
-  _ModuleNumbers2WordState createState() => _ModuleNumbers2WordState();
+  _State createState() => _State();
 }
 
-class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> {
+class _State extends BaseOptionTilesState<ModuleLeftRight> {
+
+  int numberOfSyllables=0;
+
+  @override
+  Widget getMainTile() {
+    listProcess.shuffle();
+    // get new random number only going forward.  going back gets value from stored list.
+    if (listPosition == 0 || listPosition >= option1.length) {
+      int i= Random().nextInt(2);
+      wordMain = listProcess[i] as Word;
+      option1.add(listProcess[0] as Word);
+      option2.add(listProcess[1] as Word);
+      optionMain.add(wordMain);
+    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              getOptionTile(option1[listPosition]),
+              getOptionTile(option2[listPosition])
+            ],
+          ),
+        ),
+        Flexible(child: getCenterTile(optionMain[listPosition])),
+      ],
+    );
+  }
 
   @override
   Widget getCenterTile(word) {
+    print("center tile word: " + word.title);
     return getTextTile(word);
   }
 
@@ -56,16 +88,18 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
     );
   }
 
+  @override
+  ButtonTheme getOptionTile(Word wordOption, [double _width=150, _height=100]) {
+    return super.getOptionTile(wordOption,200,150);
+  }
+
+  @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Text(
-        word.value,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.teal,
-          fontSize: 30,
-        ),
+      padding: const EdgeInsets.all(5.0),
+      child: Image(
+        image: AssetImage('assets/images/' + word.id.toString() + '.png'),
+        gaplessPlayback: true,
       ),
     );
   }

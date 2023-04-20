@@ -39,6 +39,8 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfterDays> {
       if (word.title == 'Sábado') rel = -1;
       if (word.title == 'Janeiro') rel = 1;
       if (word.title == 'Dezembro') rel = -1;
+      if (word.title == 'Primavera') rel = 1;
+      if (word.title == 'Inverno') rel = -1;
       listRel.add(rel);
     }
     _playAudio();

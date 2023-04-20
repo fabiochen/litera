@@ -11,14 +11,6 @@ class LessonAlphabet extends BaseModule {
 
 class _LessonAlphabetState extends BaseModuleState<LessonAlphabet> {
 
-  // Comparator<Object> criteria = (a, b) => (a as Word).title.compareTo((b as Word).title);
-  //
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   listProcess.sort(criteria);
-  // }
-  //
   @override
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;

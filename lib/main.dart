@@ -46,7 +46,11 @@ import 'moduleSpelling02.dart';
 import 'moduleGenderNumber.dart';
 import 'lessonClock.dart';
 import 'lessonClockDigital.dart';
+import 'moduleClock.dart';
 import 'lessonHangman.dart';
+import 'moduleSyllablesCount.dart';
+import 'moduleLeftRight.dart';
+import 'lessonWordSearch.dart';
 
 void main() {
   runApp(
@@ -93,6 +97,7 @@ class MyApp extends StatelessWidget {
                 '/LessonClock'               : (context) => LessonClock(),
                 '/LessonClockDigital'        : (context) => LessonClockDigital(),
                 '/LessonHangman'             : (context) => LessonHangman(),
+                '/ModuleClock'               : (context) => ModuleClock(),
                 '/ModuleOrder'               : (context) => ModuleOrder(),
                 '/ModuleGenderNumber'        : (context) => ModuleGenderNumber(),
                 '/ModuleBeforeAndAfter'      : (context) => ModuleBeforeAndAfter(),
@@ -118,9 +123,12 @@ class MyApp extends StatelessWidget {
                 '/ModuleWord2Pictures'       : (context) => ModuleWord2Pictures(),
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),
                 '/ModuleSpelling02'          : (context) => ModuleSpelling02(),
-                '/LessonNumbersFull'         : (context) => LessonWordAndNumber(),
+                '/LessonWordAndNumber'       : (context) => LessonWordAndNumber(),
                 '/ModuleNumbers2Word'        : (context) => ModuleNumbers2Word(),
                 '/ModuleWord2Numbers'        : (context) => ModuleWord2Numbers(),
+                '/ModuleSyllablesCount'      : (context) => ModuleSyllablesCount(),
+                '/ModuleLeftRight'           : (context) => ModuleLeftRight(),
+                '/LessonWordSearch'          : (context) => LessonWordSearch(),
 
                 '/BaseReport'                : (context) => Report(),
               }

@@ -17,8 +17,8 @@ class _State extends BaseModuleState<LessonWordPairs> {
   Comparator<Object> criteria = (a, b) => ((a as List<Word>)[0].id).compareTo((b as List<Word>)[0].id);
 
   Widget getMainTile() {
-    Word wordMas = (listProcess[listPosition] as List<Word>)[misc![0]];
-    Word wordFem = (listProcess[listPosition] as List<Word>)[misc![1]];
+    Word wordMas = (listProcess[listPosition] as List<Word>)[(misc as List<int>)[0]];
+    Word wordFem = (listProcess[listPosition] as List<Word>)[(misc as List<int>)[1]];
 
     audioPlayer.open(
         Playlist(

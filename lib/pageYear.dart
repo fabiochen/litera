@@ -100,7 +100,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
     int _subjectIndex = _module.subject.index;
     int _moduleStatus = _modulePos.compareTo(getUnlockModuleIndex(_yearIndex,_subjectIndex));
     Icon iconModuleType = getIcon(_module.type);
-    print("$_yearIndex module: " + getUnlockModuleIndex(_yearIndex,_subjectIndex).toString());
+    //print("$_yearIndex module: " + getUnlockModuleIndex(_yearIndex,_subjectIndex).toString());
 
     return ListTile(
       leading: iconModuleType,

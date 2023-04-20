@@ -24,6 +24,7 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
   Widget getCenterTile(word) {
     //audioPlay(wordMain.id);
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
             onPressed: () {},

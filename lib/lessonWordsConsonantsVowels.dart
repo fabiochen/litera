@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:litera/globals.dart';
 import 'package:litera/baseModule.dart';
+import 'word.dart';
 
 class LessonWordsConsonantsVowels extends BaseModule {
   @override
@@ -13,6 +14,8 @@ class _LessonWordsConsonantsVowelsState extends BaseModuleState<LessonWordsConso
 
   int _selectedChars = 0;
   late FixedExtentScrollController controller;
+
+  Comparator<Object> criteria = (a, b) => ((a as Map<String, List<Word>>).length).compareTo((b as Map<String, List<Word>>).length);
 
   @override
   void initState() {

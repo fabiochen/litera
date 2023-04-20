@@ -40,7 +40,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   bool useProgressBar = true;
   String fontFamily = "Litera-Regular";
   bool loop = false;
-  List<int>? misc;
+  Object? misc;
 
   late Word wordMain;
   Color? backgroundColor = Colors.grey[200];
@@ -119,10 +119,6 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
       listProcess.sort(criteria);
 
-      if (listProcess.length <= 1) {
-        useNavigation = false;
-        useProgressBar = false;
-      }
       printDebug("test11: " + getAssetsVocab('LESSON'));
       switch (type) {
         case ModuleType.LESSON:
@@ -148,7 +144,6 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("dcd error modulePos: " + modulePos.toString());
     }
     getUnlockModuleIndex(yearIndex,subjectIndex);
-    //audioPlayer = AudioPlayer();
     super.didChangeDependencies();
   }
 
@@ -170,6 +165,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getBody() {
+    if (listProcess.length <= 1) {
+      useNavigation = false;
+      useProgressBar = false;
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

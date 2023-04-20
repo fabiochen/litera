@@ -11,7 +11,16 @@ class _LessonWordsAndPictureState extends BaseModuleState<LessonWordsAndPicture>
   @override
   String getMainLabel(word) {
     audioPlay(word.id);
-    return super.getMainLabel(word);
+    String label;
+    switch (misc as dynamic) {
+      case WordField.SYLLABLES:
+        label = word.syllables;
+        break;
+      default:
+        label = word.title;
+        break;
+    }
+    return label;
   }
 
 }

@@ -9,6 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:analog_clock/analog_clock.dart';
 
 import 'package:litera/word.dart';
 import 'package:litera/module.dart';
@@ -59,6 +60,7 @@ late List<Word> valOrderAlphabet;
 late List<Word> listSyllables;
 late List<Map<String, List<Word>>> mapSyllableMatch;
 late List<Map<String, List<Word>>> mapWordMatch;
+late List<Word> listDirections;
 late List<Word> listDaysOfTheWeek;
 late List<Word> listMonthsOfTheYear;
 late List<Word> listSeasonsOfTheYear;
@@ -67,6 +69,7 @@ late List<Word> listTimeLessonHour;
 late List<Word> listTimeLessonMinutes;
 late List<Word> listTimeHour;
 late List<Word> listTimeMinutes;
+late List<Word> listTimeTest;
 
 late Map<String, dynamic> parsedWords;
 
@@ -91,6 +94,11 @@ enum ModuleType {
   EXERCISE,
   TEST,
   REPORT
+}
+
+enum WordField {
+  TITLE,
+  SYLLABLES
 }
 
 enum Sub {
@@ -142,6 +150,7 @@ Future init() async {
   mapSyllableMatch = [];
   mapWordMatch = [];
   listYears = [];
+  listDirections = [];
   listDaysOfTheWeek = [];
   listMonthsOfTheYear = [];
   listSeasonsOfTheYear = [];
@@ -150,6 +159,7 @@ Future init() async {
   listTimeLessonMinutes = [];
   listTimeHour = [];
   listTimeMinutes = [];
+  listTimeTest = [];
 
   printDebug("******** init 2");
 
@@ -219,8 +229,10 @@ Future populate() async {
   // populate vocab list
   parsedWords['LIST']['CATEGORY']['VOCABULARY'].keys.forEach((key){
     int id = int.parse(key);
-    String title = parsedWords['LIST']['CATEGORY']['VOCABULARY'][key];
+    String syllables = parsedWords['LIST']['CATEGORY']['VOCABULARY'][key];
+    String title = syllables.replaceAll('-', '');
     Word word = Word(id, title);
+    word.syllables = syllables;
     listVocab.add(word);
   });
 
@@ -232,6 +244,14 @@ Future populate() async {
     String title = parsedWords['LIST']['CATEGORY']['DAYS-OF-THE-WEEK'][key];
     Word word = Word(id, title);
     listDaysOfTheWeek.add(word);
+  });
+
+  // populate vocab list
+  parsedWords['LIST']['CATEGORY']['DIRECTIONS'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['DIRECTIONS'][key];
+    Word word = Word(id, title);
+    listDirections.add(word);
   });
 
   // populate vocab list
@@ -469,6 +489,13 @@ Future populate() async {
     String title = parsedWords['LIST']['CATEGORY']['TIME-MINUTES'][key];
     Word word = Word(id, title);
     listTimeMinutes.add(word);
+  });
+
+  parsedWords['LIST']['CATEGORY']['TIME-TEST'].keys.forEach((key){
+    int id = int.parse(key);
+    String title = parsedWords['LIST']['CATEGORY']['TIME-TEST'][key];
+    Word word = Word(id, title);
+    listTimeTest.add(word);
   });
 
   printDebug("******** populate 8");
@@ -975,7 +1002,21 @@ void getYear2Pt() {
     );
   } ());
   listModulesYear2Por.add(() {
-    String _title = "Sílabas";
+    String _title = "Alfabeto (Sílabas)";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      alphabet,
+      '/LessonWordsAndPicture',
+      misc: WordField.SYLLABLES
+    );
+  } ());
+  listModulesYear2Por.add(() {
+    String _title = "Sílabas Iniciais";
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -985,8 +1026,25 @@ void getYear2Pt() {
       _subject,
       mapWordMatch,
       '/LessonWordsConsonantsVowels',
+      misc: WordField.TITLE
     );
   } ());
+
+  listModulesYear2Por.add(() {
+    String _title = "Número de Sílabas";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listVocab.where((word) => word.title.length < 10).toList(),
+        '/ModuleSyllablesCount',
+        numberQuestions: 15
+    );
+  } ());
+
   listModulesYear2Por.add(() {
     String _title = "Forca";
     int _modulePos = listModulesYear2Por.length;
@@ -1038,6 +1096,19 @@ void getYear2Pt() {
       _subject,
       alphabet,
       '/ModuleWord2Pictures',
+    );
+  } ());
+  listModulesYear2Por.add(() {
+    String _title = "Caça-Palavras";
+    int _modulePos = listModulesYear2Por.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      alphabet.where((word) => word.title.length <=6).toList(),
+      '/LessonWordSearch',
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1151,7 +1222,7 @@ void getYear2Pt() {
     );
   } ());
   listModulesYear2Por.add(() {
-    String _title = "Masculino/Feminino/Singular/Plural";
+    String _title = "Gênero & Número";
     int _modulePos = listModulesYear2Por.length;
     return Module(
       _modulePos,
@@ -1183,7 +1254,7 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber1t20,
-      '/LessonNumbersFull',
+      '/LessonWordAndNumber',
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1223,7 +1294,7 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber30t100,
-      '/LessonNumbersFull',
+      '/LessonWordAndNumber',
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1263,7 +1334,7 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber1t10Ordinal,
-      '/LessonNumbersFull',
+      '/LessonWordAndNumber',
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1303,7 +1374,7 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber20t100Ordinal,
-      '/LessonNumbersFull',
+      '/LessonWordAndNumber',
     );
   } ());
 
@@ -1342,6 +1413,51 @@ void getYear2Sc() {
   Yr _year = Yr.TWO;
   Sub _subject = Sub.SCIENCE;
   List<Module> listModulesYear2Sci = [];
+
+  listModulesYear2Sci.add(() {
+    String _title = "Esquerda / Direita";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listDirections,
+      '/LessonWordsAndPicture',
+      loop:true,
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Esquerda / Direita";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listDirections,
+      '/ModuleLeftRight',
+      numberQuestions: 6,
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Esquerda / Direita";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listDirections,
+      '/ModuleLeftRight',
+      numberQuestions: 6,
+    );
+  } ());
 
   listModulesYear2Sci.add(() {
     String _title = "Dias da Semana";
@@ -1396,7 +1512,7 @@ void getYear2Sc() {
       _year,
       _subject,
       listMonthsOfTheYear,
-      '/LessonNumbersFull',
+      '/LessonWordAndNumber',
       loop:true,
     );
   } ());
@@ -1516,7 +1632,22 @@ void getYear2Sc() {
   } ());
 
   listModulesYear2Sci.add(() {
-    String _title = "Relógio Análogo & Digital";
+    String _title = "Relógio: Análogo & Digital";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listTimeLessonHour,
+      '/LessonClockDigital',
+      useNavigation: false,
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Relógio: Exercício 1";
     int _modulePos = listModulesYear2Sci.length;
     return Module(
       _modulePos,
@@ -1524,9 +1655,24 @@ void getYear2Sc() {
       ModuleType.EXERCISE,
       _year,
       _subject,
-      listTimeLessonHour,
-      '/LessonClockDigital',
-      useNavigation: false,
+      listTimeTest,
+      '/ModuleClock',
+      numberQuestions:10,
+    );
+  } ());
+
+  listModulesYear2Sci.add(() {
+    String _title = "Relógio: Teste 1";
+    int _modulePos = listModulesYear2Sci.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listTimeTest,
+      '/ModuleClock',
+      numberQuestions:10,
     );
   } ());
 
@@ -1585,6 +1731,40 @@ int getNavigationLanguage() {
   return navigationLanguage;// portuguese as default
 }
 
+playTime(String time) {
+  int hr = int.parse(time.substring(0,2));
+  int min = int.parse(time.substring(3,5));
+  audioPlayer.stop();
+  String strHr = (400+hr).toString();
+  String strHrEnding = "horas";
+  String strMin = (600+min).toString();
+  if (min == 0) {
+    if (hr == 1) strHrEnding = "hora";
+    if (hr >  1) strHrEnding = "horas";
+    audioPlayer.open(
+      Playlist(
+          audios: [
+            Audio("assets/audios/$strHr.mp3"),
+            Audio("assets/audios/$strHrEnding.mp3")
+          ]
+      ),
+    );
+  } else {
+    if (hr == 1) strHrEnding = "hora_e";
+    if (hr >  1) strHrEnding = "horas_e";
+    audioPlayer.open(
+      Playlist(
+          audios: [
+            Audio("assets/audios/$strHr.mp3"),
+            Audio("assets/audios/$strHrEnding.mp3"),
+            Audio("assets/audios/$strMin.mp3"),
+            Audio("assets/audios/minutos.mp3"),
+          ]
+      ),
+    );
+  }
+}
+
 void audioPlay(Object itemId) async {
 //  AudioCache audioCache = AudioCache();
   if (Platform.isIOS)
@@ -1610,6 +1790,32 @@ void audioStop() {
   t1?.cancel();
   t2?.cancel();
   t3?.cancel();
+}
+
+Widget getClock(String time, [double padding=8.0]) {
+  print("Time: $time");
+  int hr = int.parse(time.substring(0,2));
+  int mn = int.parse(time.substring(3,5));
+  return Padding(
+    padding: EdgeInsets.all(padding),
+    child: AnalogClock(
+      decoration: BoxDecoration(
+          border: Border.all(width: 10.0, color: Colors.teal),
+          color: Colors.transparent,
+          shape: BoxShape.circle),
+      isLive: false,
+      hourHandColor: Colors.deepOrange,
+      minuteHandColor: Colors.black,
+      showSecondHand: false,
+      numberColor: Colors.teal,
+      showNumbers: true,
+      showAllNumbers: true,
+      textScaleFactor: 1.0,
+      showTicks: false,
+      showDigitalClock: false,
+      datetime: DateTime(2019, 1, 1, hr, mn, 00),
+    ),
+  );
 }
 
 Future<SharedPreferences> getPrefs() async {

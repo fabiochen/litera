@@ -22,6 +22,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
   @override
   Widget getMainTile() {
     listProcess.shuffle();
+    // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= option1.length) {
       int i= Random().nextInt(4);
       wordMain = listProcess[i] as Word;
@@ -31,31 +32,30 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
       option4.add(listProcess[3] as Word);
       optionMain.add(wordMain);
     }
-
     wordMain = optionMain[listPosition];
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            getOptionTile(option1[listPosition]),
-            getOptionTile(option2[listPosition])
-          ],
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              getOptionTile(option1[listPosition]),
+              getOptionTile(option2[listPosition])
+            ],
+          ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            getCenterTile(optionMain[listPosition]),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            getOptionTile(option3[listPosition]),
-            getOptionTile(option4[listPosition])
-          ],
+        Flexible(child: getCenterTile(optionMain[listPosition])),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              getOptionTile(option3[listPosition]),
+              getOptionTile(option4[listPosition])
+            ],
+          ),
         ),
       ],
     );

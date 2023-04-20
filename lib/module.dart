@@ -14,7 +14,7 @@ class Module {
   Map<String,Object>? args = {};
   String fontFamily;
   bool loop;
-  List<int>? misc;
+  Object? misc;
 
   Module(
       int this.pos,
@@ -30,7 +30,7 @@ class Module {
         bool this.useNavigation = true,
         String this.fontFamily = "Litera-Regular",
         bool this.loop = false,
-        List<int>? this.misc,
+        Object? this.misc,
       }
   );
 
@@ -46,7 +46,7 @@ class Module {
     args!['useNavigation'] = this.useNavigation;
     args!['fontFamily'] = this.fontFamily;
     args!['loop'] = this.loop;
-    if (this.misc != null) args!['misc'] = this.misc as List<int>;
+    if (this.misc != null) args!['misc'] = this.misc as Object;
     return args;
   }
 

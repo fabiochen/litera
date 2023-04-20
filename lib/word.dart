@@ -3,6 +3,7 @@ class Word {
   late int id;
   late String value;
   late bool processed;
+  late String syllables;
 
   Word(int id, String title, [String value = '', bool processed = false]) {
     this.title = title;
