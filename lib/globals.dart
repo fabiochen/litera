@@ -595,6 +595,7 @@ void getYear1Pt() {
       _subject,
       alphabet,
       '/LessonAlphabet',
+      numberQuestions: 26
     );
   } ());
   listModulesYear1Por.add(() {
@@ -608,6 +609,7 @@ void getYear1Pt() {
       _subject,
       alphabetLetterList,
       '/LessonAlphabetLetters',
+      numberQuestions: 26
     );
   } ());
   listModulesYear1Por.add(() {
@@ -727,7 +729,6 @@ void getYear1Pt() {
       _subject,
       letterOnsetList,
       '/ModuleLetters2Onset',
-      numberQuestions: 20,
       useNavigation:false,
     );
   } ());
@@ -770,6 +771,7 @@ void getYear1Pt() {
       _subject,
       [],
       '/LessonSyllablesConsonantsVowels',
+      noLock: true,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -783,6 +785,7 @@ void getYear1Pt() {
       _subject,
       [],
       '/LessonSyllables2Words',
+      noLock: true,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -796,7 +799,6 @@ void getYear1Pt() {
       _subject,
       listSyllables,
       '/ModuleSound2Words',
-      numberQuestions:20,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -823,7 +825,6 @@ void getYear1Pt() {
       _subject,
       listSyllables,
       '/ModuleSound2Words',
-      numberQuestions:20,
     );
   } ());
   listModulesYear1Por.add(() {
@@ -837,7 +838,6 @@ void getYear1Pt() {
       _subject,
       syllableUnique.where((word) => word.title.length == 4).toList(),
       '/ModuleSyllablesWord',
-      numberQuestions:20,
     );
   } ());
 
@@ -877,6 +877,20 @@ void getYear1Mt() {
     );
   } ());
   listModulesYear1Mat.add(() {
+    String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS');
+    int _modulePos = listModulesYear1Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listNumber1t20.where((word) => word.id <= 154).toList(),
+      '/ModuleNumbers2Picture',
+      useNavigation: false,
+    );
+  } ());
+  listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('ORDER-NUMBERS');
     int _modulePos = listModulesYear1Mat.length;
     return Module(
@@ -903,21 +917,6 @@ void getYear1Mt() {
     );
   } ());
   listModulesYear1Mat.add(() {
-    String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('NUMBERS');
-    int _modulePos = listModulesYear1Mat.length;
-    return Module(
-      _modulePos,
-      _title,
-      ModuleType.TEST,
-      _year,
-      _subject,
-      listNumber1t20.where((word) => word.id <= 154).toList(),
-      '/ModuleNumbers2Picture',
-      numberQuestions: 10,
-      useNavigation: false,
-    );
-  } ());
-  listModulesYear1Mat.add(() {
     String _title = getAssetsVocab('ORDER-NUMBERS');
     int _modulePos = listModulesYear1Mat.length;
     return Module(
@@ -928,6 +927,19 @@ void getYear1Mt() {
       _subject,
       valOrderNumbers,
       '/ModuleOrderNumeric',
+    );
+  } ());
+  listModulesYear1Mat.add(() {
+    String _title = "Números (Antes e Depois)";
+    int _modulePos = listModulesYear1Mat.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.TEST,
+      _year,
+      _subject,
+      listNumber1t20.where((word) => word.id <= 154).toList(),
+      '/ModuleBeforeAndAfter',
     );
   } ());
 
@@ -1034,14 +1046,13 @@ void getYear2Pt() {
     String _title = "Número de Sílabas";
     int _modulePos = listModulesYear2Por.length;
     return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        listVocab.where((word) => word.title.length < 10).toList(),
-        '/ModuleSyllablesCount',
-        numberQuestions: 15
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listVocab.where((word) => word.title.length < 10).toList(),
+      '/ModuleSyllablesCount',
     );
   } ());
 
@@ -1082,7 +1093,7 @@ void getYear2Pt() {
       _subject,
       listVocab.where((word) => word.title.length <=5).toList(),
       '/ModuleWords2Picture',
-      fontFamily: "Maria_lucia"
+      fontFamily: "Maria_lucia",
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1109,6 +1120,7 @@ void getYear2Pt() {
       _subject,
       alphabet.where((word) => word.title.length <=6).toList(),
       '/LessonWordSearch',
+      noLock: true,
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1120,7 +1132,7 @@ void getYear2Pt() {
       ModuleType.EXERCISE,
       _year,
       _subject,
-      alphabet.where((word) => word.title.length <=6).toList(),
+      alphabet.where((word) => word.title.length >3 && word.title.length <=6).toList(),
       '/ModuleSpelling01',
     );
   } ());
@@ -1148,7 +1160,6 @@ void getYear2Pt() {
       _subject,
       alphabet.where((word) => word.title.length <=5).toList(),
       '/ModuleWords2Picture',
-      numberQuestions : 20,
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1162,7 +1173,6 @@ void getYear2Pt() {
       _subject,
       alphabet,
       '/ModuleWord2Pictures',
-      numberQuestions : 20,
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1176,7 +1186,6 @@ void getYear2Pt() {
       _subject,
       alphabet.where((word) => word.title.length <=6 && word.title.length >3).toList(),
       '/ModuleSpelling01',
-      numberQuestions : 20,
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1190,7 +1199,6 @@ void getYear2Pt() {
         _subject,
         alphabet.where((word) => word.title.length <=6).toList(),
         '/ModuleSpelling02',
-        numberQuestions : 20
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1440,7 +1448,6 @@ void getYear2Sc() {
       _subject,
       listDirections,
       '/ModuleLeftRight',
-      numberQuestions: 6,
     );
   } ());
 
@@ -1455,7 +1462,6 @@ void getYear2Sc() {
       _subject,
       listDirections,
       '/ModuleLeftRight',
-      numberQuestions: 6,
     );
   } ());
 
@@ -1643,6 +1649,7 @@ void getYear2Sc() {
       listTimeLessonHour,
       '/LessonClockDigital',
       useNavigation: false,
+      noLock: true,
     );
   } ());
 
@@ -1657,7 +1664,6 @@ void getYear2Sc() {
       _subject,
       listTimeTest,
       '/ModuleClock',
-      numberQuestions:10,
     );
   } ());
 
@@ -1672,7 +1678,6 @@ void getYear2Sc() {
       _subject,
       listTimeTest,
       '/ModuleClock',
-      numberQuestions:10,
     );
   } ());
 
@@ -1770,12 +1775,6 @@ void audioPlay(Object itemId) async {
   if (Platform.isIOS)
 //    audioCache.fixedPlayer?.notificationService.startHeadlessService();
   audioStop();
-  //await audioPlayer.play('audios/$itemId.mp3', isLocal: true);
-  // Uri uri = await audioCache.load('audios/$itemId.mp3');
-  // return await audioPlayer.play(
-  //     uri.path,
-  //     isLocal: true,
-  // );
   audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
 }
 

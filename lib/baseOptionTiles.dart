@@ -13,26 +13,37 @@ class BaseOptionTiles extends BaseModule {
 
 class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T> {
 
-  List<Word> option1 = [];
-  List<Word> option2 = [];
-  List<Word> option3 = [];
-  List<Word> option4 = [];
-  List<Word> optionMain = [];
+  List<Word> listOption1 = [];
+  List<Word> listOption2 = [];
+  List<Word> listOption3 = [];
+  List<Word> listOption4 = [];
+  List<Word> listMain = [];
 
   @override
   Widget getMainTile() {
-    listProcess.shuffle();
+    listOriginal.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
-    if (listPosition == 0 || listPosition >= option1.length) {
-      int i= Random().nextInt(4);
-      wordMain = listProcess[i] as Word;
-      option1.add(listProcess[0] as Word);
-      option2.add(listProcess[1] as Word);
-      option3.add(listProcess[2] as Word);
-      option4.add(listProcess[3] as Word);
-      optionMain.add(wordMain);
+    if (listPosition == 0 || listPosition >= listOption1.length) {
+      int processedIndex = listProcess.indexWhere((word) => (word as Word).processed == false);
+      wordMain = listProcess[processedIndex] as Word;
+      print("word: " + wordMain.title);
+      wordMain.processed = true;
+      listProcess[processedIndex] = wordMain;
+      setProcessed = Set();
+      setProcessed.add(wordMain);
+      listOriginal.forEach((word) {
+        setProcessed.add(word as Word);
+      });
+      List temp = setProcessed.toList().sublist(0,4);
+      temp.shuffle();
+      setProcessed = (temp as List<Word>).toSet();
+      listOption1.add(setProcessed.elementAt(0));
+      listOption2.add(setProcessed.elementAt(1));
+      listOption3.add(setProcessed.elementAt(2));
+      listOption4.add(setProcessed.elementAt(3));
+      listMain.add(wordMain);
     }
-    wordMain = optionMain[listPosition];
+    wordMain = listMain[listPosition];
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -41,19 +52,19 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(option1[listPosition]),
-              getOptionTile(option2[listPosition])
+              getOptionTile(listOption1[listPosition]),
+              getOptionTile(listOption2[listPosition])
             ],
           ),
         ),
-        Flexible(child: getCenterTile(optionMain[listPosition])),
+        Flexible(child: getCenterTile(listMain[listPosition])),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(option3[listPosition]),
-              getOptionTile(option4[listPosition])
+              getOptionTile(listOption3[listPosition]),
+              getOptionTile(listOption4[listPosition])
             ],
           ),
         ),
@@ -92,19 +103,24 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
                         backgroundColor: Colors.white
                     ),
                     onPressed: () {
+                      bool isCorrect = wordMain.id == wordOption.id;
+                      audioPlay(isCorrect);
                       if (type == ModuleType.TEST) {
-                        if (wordMain.id == wordOption.id) {
+                        if (isCorrect) {
                           flagCorrect.value = 1;
                           correctCount++;
                         } else {
                           flagWrong.value = 1;
                           wrongCount++;
                         }
+                        Timer(Duration(milliseconds: 1000), () async {
+                          next();
+                        });
+                      } else {
+                        if (isCorrect) Timer(Duration(milliseconds: 1000), () async {
+                            next();
+                          });
                       }
-                      audioPlay(wordMain.id == wordOption.id);
-                      Timer(Duration(milliseconds: 1000), () async {
-                        next();
-                      });
                     },
                     child: getOptionValue(wordOption),
                   ),

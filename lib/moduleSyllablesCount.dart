@@ -19,40 +19,40 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
     numberOfSyllables = 0;
     listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
-    if (listPosition == 0 || listPosition >= option1.length) {
+    if (listPosition == 0 || listPosition >= listOption1.length) {
       wordMain = listProcess[0] as Word;
-      optionMain.add(wordMain);
+      listMain.add(wordMain);
       List<String> listSyllables = wordMain.syllables.split('-');
       print("word: " + wordMain.title);
       print("syllable #: " + listSyllables.length.toString());
       switch (listSyllables.length) {
         case 1:
-          option1.add(listProcess[0] as Word);
-          option2.add(listProcess[1] as Word);
-          option3.add(listProcess[2] as Word);
-          option4.add(listProcess[3] as Word);
+          listOption1.add(listProcess[0] as Word);
+          listOption2.add(listProcess[1] as Word);
+          listOption3.add(listProcess[2] as Word);
+          listOption4.add(listProcess[3] as Word);
           break;
         case 2:
-          option1.add(listProcess[1] as Word);
-          option2.add(listProcess[0] as Word);
-          option3.add(listProcess[2] as Word);
-          option4.add(listProcess[3] as Word);
+          listOption1.add(listProcess[1] as Word);
+          listOption2.add(listProcess[0] as Word);
+          listOption3.add(listProcess[2] as Word);
+          listOption4.add(listProcess[3] as Word);
           break;
         case 3:
-          option1.add(listProcess[1] as Word);
-          option2.add(listProcess[2] as Word);
-          option3.add(listProcess[0] as Word);
-          option4.add(listProcess[3] as Word);
+          listOption1.add(listProcess[1] as Word);
+          listOption2.add(listProcess[2] as Word);
+          listOption3.add(listProcess[0] as Word);
+          listOption4.add(listProcess[3] as Word);
           break;
         case 4:
-          option1.add(listProcess[1] as Word);
-          option2.add(listProcess[2] as Word);
-          option3.add(listProcess[3] as Word);
-          option4.add(listProcess[0] as Word);
+          listOption1.add(listProcess[1] as Word);
+          listOption2.add(listProcess[2] as Word);
+          listOption3.add(listProcess[3] as Word);
+          listOption4.add(listProcess[0] as Word);
           break;
       }
     }
-    wordMain = optionMain[listPosition];
+    wordMain = listMain[listPosition];
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -61,19 +61,19 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(option1[listPosition]),
-              getOptionTile(option2[listPosition])
+              getOptionTile(listOption1[listPosition]),
+              getOptionTile(listOption2[listPosition])
             ],
           ),
         ),
-        Flexible(child: getCenterTile(optionMain[listPosition])),
+        Flexible(child: getCenterTile(listMain[listPosition])),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(option3[listPosition]),
-              getOptionTile(option4[listPosition])
+              getOptionTile(listOption3[listPosition]),
+              getOptionTile(listOption4[listPosition])
             ],
           ),
         ),

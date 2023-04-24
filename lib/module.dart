@@ -14,6 +14,7 @@ class Module {
   Map<String,Object>? args = {};
   String fontFamily;
   bool loop;
+  bool noLock;
   Object? misc;
 
   Module(
@@ -30,6 +31,7 @@ class Module {
         bool this.useNavigation = true,
         String this.fontFamily = "Litera-Regular",
         bool this.loop = false,
+        bool this.noLock = false,
         Object? this.misc,
       }
   );
@@ -46,6 +48,7 @@ class Module {
     args!['useNavigation'] = this.useNavigation;
     args!['fontFamily'] = this.fontFamily;
     args!['loop'] = this.loop;
+    args!['noLock'] = this.noLock;
     if (this.misc != null) args!['misc'] = this.misc as Object;
     return args;
   }

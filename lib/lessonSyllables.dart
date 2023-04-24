@@ -31,16 +31,4 @@ class _LessonSyllablesState extends BaseModuleState<LessonSyllables> {
     return word.title;
   }
 
-  void next() {
-    // override function for special unlock module case
-    if (isEndPosition) {
-      modulePos++;
-      if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
-        setUnlockModule(modulePos);
-      modulePos++;
-      if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
-        setUnlockModule(modulePos);
-    }
-    super.next();
-  }
 }

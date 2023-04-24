@@ -18,12 +18,12 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
   Widget getMainTile() {
     listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
-    if (listPosition == 0 || listPosition >= option1.length) {
+    if (listPosition == 0 || listPosition >= listOption1.length) {
       int i= Random().nextInt(2);
       wordMain = listProcess[i] as Word;
-      option1.add(listProcess[0] as Word);
-      option2.add(listProcess[1] as Word);
-      optionMain.add(wordMain);
+      listOption1.add(listProcess[0] as Word);
+      listOption2.add(listProcess[1] as Word);
+      listMain.add(wordMain);
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -33,12 +33,12 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(option1[listPosition]),
-              getOptionTile(option2[listPosition])
+              getOptionTile(listOption1[listPosition]),
+              getOptionTile(listOption2[listPosition])
             ],
           ),
         ),
-        Flexible(child: getCenterTile(optionMain[listPosition])),
+        Flexible(child: getCenterTile(listMain[listPosition])),
       ],
     );
   }

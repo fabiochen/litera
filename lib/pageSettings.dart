@@ -132,6 +132,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                     onToggle: (val) {
                       setState(() {
                         resetApp = val;
+                        percentUnlock = "80";
                       });
                     },
                   ),

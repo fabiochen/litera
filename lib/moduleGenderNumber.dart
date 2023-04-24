@@ -16,15 +16,15 @@ class _State extends BaseOptionTilesState<ModuleGenderNumber> {
   Comparator<Object> criteria = (a, b) => ((a as List<Word>)[0].id).compareTo((b as List<Word>)[0].id);
 
   Widget getMainTile() {
-    if (listPosition == 0 || listPosition >= option1.length) {
+    if (listPosition == 0 || listPosition >= listOption1.length) {
       List<Word> listGenderNumber = (listProcess[listPosition] as List<Word>);
       int i= Random().nextInt(4);
       wordMain = listGenderNumber[i];
-      option1.add(listGenderNumber[0]);
-      option2.add(listGenderNumber[1]);
-      option3.add(listGenderNumber[2]);
-      option4.add(listGenderNumber[3]);
-      optionMain.add(wordMain);
+      listOption1.add(listGenderNumber[0]);
+      listOption2.add(listGenderNumber[1]);
+      listOption3.add(listGenderNumber[2]);
+      listOption4.add(listGenderNumber[3]);
+      listMain.add(wordMain);
     }
 
     return Column(
@@ -33,21 +33,21 @@ class _State extends BaseOptionTilesState<ModuleGenderNumber> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            getOptionTile(option1[listPosition]),
-            getOptionTile(option2[listPosition])
+            getOptionTile(listOption1[listPosition]),
+            getOptionTile(listOption2[listPosition])
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            getCenterTile(optionMain[listPosition]),
+            getCenterTile(listMain[listPosition]),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            getOptionTile(option3[listPosition]),
-            getOptionTile(option4[listPosition])
+            getOptionTile(listOption3[listPosition]),
+            getOptionTile(listOption4[listPosition])
           ],
         ),
       ],

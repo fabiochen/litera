@@ -30,8 +30,8 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
     int id = word.id;
-    print("listPosition: $listPosition option1.length: " + option1.length.toString());
-    if (listPosition == 0 || listPosition >= option1.length-1) {
+    print("listPosition: $listPosition option1.length: " + listOption1.length.toString());
+    if (listPosition == 0 || listPosition >= listOption1.length-1) {
       int rel = pow(-1,Random().nextInt(2)).toInt();
       print("value: " + word.value);
       if (word.value == 'a') rel = 1;
@@ -83,7 +83,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
       Playlist(
           audios: [
             Audio("assets/audios/$rel.mp3"),
-            Audio("assets/audios/" + (getWordById(optionMain[listPosition].id + listRel[listPosition]).id).toString() + ".mp3")
+            Audio("assets/audios/" + (getWordById(listMain[listPosition].id + listRel[listPosition]).id).toString() + ".mp3")
           ]
       ),
     );

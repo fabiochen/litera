@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -28,9 +30,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   int correctCount = 0;
   int wrongCount = 0;
 
-  List<Object> listProcess = [];
-  List<Object> listOriginal = [];
-  late int numberQuestions;
+  late List<Object> listProcess;
+  Set<Word> setProcessed = Set();
+  late List<Object> listOriginal;
+  int numberQuestions = 10;
   late String title;
   ModuleType? type;
   int yearIndex = Yr.ONE.index;
@@ -40,7 +43,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   bool useProgressBar = true;
   String fontFamily = "Litera-Regular";
   bool loop = false;
+  bool noLock = false;
   Object? misc;
+
+  bool audioDone = true;
 
   late Word wordMain;
   Color? backgroundColor = Colors.grey[200];
@@ -81,6 +87,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       ),
     );
     bannerAd.load();
+    audioPlayer.isPlaying.listen((event) {
+      audioDone = !event;
+    });
     super.initState();
   }
 
@@ -106,7 +115,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       listProcess = args?['list']??[];
       listOriginal = args?['list']??[];
       printDebug("test7");
-      numberQuestions = args?['numberQuestions']??listProcess.length.toInt();
+      if (listProcess.length < numberQuestions) numberQuestions = listProcess.length;
+      numberQuestions = args?['numberQuestions']??numberQuestions;
       printDebug("test8");
       useNavigation = args?['useNavigation'] ?? true;
       printDebug("test9");
@@ -115,7 +125,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       fontFamily = args?['fontFamily'] ?? "Litera-Regular";
       print("FontFamily $fontFamily");
       loop = args?['loop'] ?? false;
+      noLock = args?['noLock'] ?? false;
       misc = args?['misc'];
+
+      if (noLock) unlockNextModule();
 
       listProcess.sort(criteria);
 
@@ -180,7 +193,6 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
           mainAxisAlignment: (useNavigation)? MainAxisAlignment.spaceBetween : MainAxisAlignment.spaceAround,
           children: [
             if (useNavigation) getNavButtonPrevious(),
-            if (type == ModuleType.TEST) showGrade(),// navigation previous
             if (useNavigation) getNavButtonNext(),// navigation next
           ],
         ),
@@ -471,22 +483,34 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("modulePos: $modulePos");
       printDebug("year: $yearIndex");
       printDebug("subject: $subjectIndex");
-      // redo TEST if minimum grade not reached
       if (
-        type == ModuleType.TEST &&
-        correctCount/numberQuestions*100 >= int.parse(percentUnlock)  &&
-        modulePos > getUnlockModuleIndex(yearIndex, subjectIndex)
+      // unlock only if minimum grade reached
+      type == ModuleType.TEST &&
+          correctCount/numberQuestions*100 >= int.parse(percentUnlock)  &&
+          modulePos > getUnlockModuleIndex(yearIndex, subjectIndex)
       ) {
+        print("test1");
         setUnlockModule(modulePos);
+        showEndAlertDialog(context,true);
       } else if (
+        // unlock only if minimum grade reached
+        type == ModuleType.TEST &&
+        correctCount/numberQuestions*100 < int.parse(percentUnlock)
+      ) {
+        print("test2");
+        showEndAlertDialog(context,false);
+      } else if (
+        // unlock if not TEST
         type != ModuleType.TEST &&
         modulePos > getUnlockModuleIndex(yearIndex, subjectIndex)
       ) {
+        print("test3");
         setUnlockModule(modulePos);
+        Navigator.of(context).pop();
+      } else {
+        print("test4");
+        Navigator.of(context).pop();
       }
-      // rebirth so lock icon is refreshed...
-      // ideally would be to unlock from the previous page
-      Navigator.of(context).pop();
     } else {
       listPosition++;
       setState(() {
@@ -564,18 +588,28 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  showEndAlertDialog(BuildContext context, [String grade='']) {
+  showEndAlertDialog(BuildContext context, [bool pass=false, String grade='']) {
     printDebug('alert');
+    String message = '';
+    if (pass) {
+      audioPlay("cheer");
+      message = "Parabéns! Prossiga para o próximo módulo!";
+    } else {
+      audioPlay("moan");
+      message = "Você acertou $correctCount de $numberQuestions. Acerte " + (numberQuestions*int.parse(percentUnlock)/100).ceil().toString() + " ou mais perguntas para prosseguir.";
+    }
     // set up the button
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
         Navigator.of(context).pop(); // close popup
+        Navigator.of(context).pop(); // back one page
       },
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      content: Text(grade + '\n' + getAssetsVocab('END'),
+      content: Text(
+        message,
         style: TextStyle(
           fontSize: 20,
           color: Colors.black,
@@ -612,6 +646,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   Word getWordById(int id) {
     return listOriginal.singleWhere((word) => (word as Word).id == id) as Word;
+  }
+
+  void unlockNextModule() {
+    modulePos++;
+    if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
+      setUnlockModule(modulePos);
   }
 
 }
