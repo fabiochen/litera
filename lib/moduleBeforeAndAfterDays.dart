@@ -17,13 +17,6 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfterDays> {
   List<int> listRel = [];
 
   @override
-  Widget getMainTile() {
-    listProcess.shuffle();
-    wordMain = listProcess[Random().nextInt(4)] as Word;
-    return super.getMainTile();
-  }
-
-  @override
   Widget getCenterTile(word) {
     return getTextTile(word);
   }
@@ -44,7 +37,11 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfterDays> {
       listRel.add(rel);
     }
     _playAudio();
-    String wordShow = getWordById(id+listRel[listPosition]).title;
+    //String wordShow = getWordById(id+listRel[listPosition]).title;
+    return getSoundTile(word);
+  }
+
+  ElevatedButton getSoundTile(Word word) {
     return ElevatedButton(
         onPressed: () => _playAudio(),
         style: ElevatedButton.styleFrom(
@@ -52,30 +49,15 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfterDays> {
         ),
         child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                width: 300,
-                height: 100,
-                alignment: Alignment.center,
-                child: getText(wordShow,40,Colors.deepOrange),
-              ),
+            Icon(
+              IconData(57400, fontFamily: 'LiteraIcons'),
+              color: Colors.blue,
+              size: 100,
             ),
-            Positioned(
-              bottom: 10, right: 0,
-              child: Icon(
-                IconData(57400, fontFamily: 'LiteraIcons'),
-                color: Colors.blue,
-                size: 40,
-              ),
-            ),
-            Positioned(
-              bottom: 10, right: 0,
-              child: Icon(
-                IconData(57401, fontFamily: 'LiteraIcons'),
-                color: Colors.white,
-                size: 40,
-              ),
+            Icon(
+              IconData(57401, fontFamily: 'LiteraIcons'),
+              color: Colors.white,
+              size: 100,
             ), // second icon to "paint" previous transparent icon
           ],
         )

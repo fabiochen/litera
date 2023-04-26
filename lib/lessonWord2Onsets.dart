@@ -42,58 +42,55 @@ class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
   Padding _loadCharacter(String char) {
     //if (char != ' ') char = '[' + char + ']';
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ButtonTheme(
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, //limits the touch area to the button area
-        child: ElevatedButton(
-          onPressed: () => audioPlayOnset(char),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
-          child: Stack(
-            children: [
-              Container(
-                width: 45,
-                alignment: Alignment.center,
-                height: 100,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: appBarColor)
-                ),
-                child: Text(
-                  char,
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                  ),
-                ),
-              ), // onset letter
-              Positioned(
-                bottom: 0, right: 0,
-                child: (char != ' ') ? Icon(
-                  IconData(57400, fontFamily: 'LiteraIcons'),
-                  color: Colors.blue,
-                  size: 20,
-                ) : Icon(
-                  IconData(57400, fontFamily: 'LiteraIcons'),
+      padding: const EdgeInsets.all(5.0),
+      child: ElevatedButton(
+        onPressed: () => audioPlayOnset(char),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+        ),
+        child: Stack(
+          children: [
+            Container(
+              width: 45,
+              alignment: Alignment.center,
+              height: 100,
+              decoration: BoxDecoration(
                   color: Colors.white,
-                  size: 20,
+                  border: Border.all(color: Colors.white)
+              ),
+              child: Text(
+                char,
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
                 ),
-              ), // first icon
-              Positioned(
-                bottom: 0, right: 0,
-                child: (char != ' ') ? Icon(
-                  IconData(57401, fontFamily: 'LiteraIcons'),
-                  color: Colors.white,
-                  size: 20,
-                ) : Icon(
-                  IconData(57401, fontFamily: 'LiteraIcons'),
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ), // second icon to "paint" previous transparent icon
-            ],
-          ),
+              ),
+            ), // onset letter
+            Positioned(
+              bottom: 0, right: 0,
+              child: (char != ' ') ? Icon(
+                IconData(57400, fontFamily: 'LiteraIcons'),
+                color: Colors.blue,
+                size: 20,
+              ) : Icon(
+                IconData(57400, fontFamily: 'LiteraIcons'),
+                color: Colors.white,
+                size: 20,
+              ),
+            ), // first icon
+            Positioned(
+              bottom: 0, right: 0,
+              child: (char != ' ') ? Icon(
+                IconData(57401, fontFamily: 'LiteraIcons'),
+                color: Colors.white,
+                size: 20,
+              ) : Icon(
+                IconData(57401, fontFamily: 'LiteraIcons'),
+                color: Colors.white,
+                size: 20,
+              ),
+            ), // second icon to "paint" previous transparent icon
+          ],
         ),
       ),
     );

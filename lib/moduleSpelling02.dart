@@ -91,23 +91,29 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
 
   void _correction() {
     bool isCorrect = (userInputTextField.text.toLowerCase() == wordMain.title);
+    print("isCorrect: $isCorrect");
     audioPlay(isCorrect);
-    if (isCorrect) {
-      flagCorrect.value = 1;
+    if (type == ModuleType.TEST) {
+      if (isCorrect) {
+        flagCorrect.value = 1;
+        correctCount++;
+      } else {
+        flagWrong.value = 1;
+        wrongCount++;
+      }
+      Timer(Duration(milliseconds: 1000), () async {
+        next();
+      });
     } else {
-      flagWrong.value = 1;
+      if (isCorrect) Timer(Duration(milliseconds: 1000), () async {
+        next();
+      });
     }
-    t2 = Timer(Duration(milliseconds: 1000), () {
-      next();
-    });
   }
 
   @override
   void next() {
     userInputTextField.text = '';
-    if (isEndPosition && type == 'test') {
-      prefs.setInt('expandedId2', 2);
-    }
     super.next();
   }
 

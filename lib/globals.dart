@@ -758,6 +758,7 @@ void getYear1Pt() {
       _subject,
       listSyllables,
       '/LessonSyllables',
+      numberQuestions: 999
     );
   } ());
   listModulesYear1Por.add(() {
@@ -912,7 +913,7 @@ void getYear1Mt() {
       ModuleType.EXERCISE,
       _year,
       _subject,
-      listNumber1t20.where((word) => word.id <= 154).toList(),
+      listNumber1t20.where((word) => word.id <= 153).toList(),
       '/ModuleBeforeAndAfter',
     );
   } ());
@@ -938,7 +939,7 @@ void getYear1Mt() {
       ModuleType.TEST,
       _year,
       _subject,
-      listNumber1t20.where((word) => word.id <= 154).toList(),
+      listNumber1t20.where((word) => word.id <= 153).toList(),
       '/ModuleBeforeAndAfter',
     );
   } ());
@@ -971,6 +972,7 @@ void getYear2Pt() {
       _subject,
       alphabetLetterList,
       '/LessonAlphabetCursive',
+      numberQuestions: 999,
     );
   } ());
 
@@ -985,6 +987,7 @@ void getYear2Pt() {
       _subject,
       alphabet,
       '/LessonWordsAndPicture',
+      numberQuestions: 999,
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1132,7 +1135,7 @@ void getYear2Pt() {
       ModuleType.EXERCISE,
       _year,
       _subject,
-      alphabet.where((word) => word.title.length >3 && word.title.length <=6).toList(),
+      alphabet.where((word) => word.title.length >3 && word.title.length <=6 && !(word.title.contains(RegExp(r'[çéáúãóõ]')))).toList(),
       '/ModuleSpelling01',
     );
   } ());
@@ -1145,7 +1148,7 @@ void getYear2Pt() {
       ModuleType.EXERCISE,
       _year,
       _subject,
-      alphabet.where((word) => word.title.length <=6).toList(),
+      alphabet.where((word) => word.title.length <=6 && !(word.title.contains(RegExp(r'[çéáúãóõ]')))).toList(),
       '/ModuleSpelling02',
     );
   } ());
@@ -1519,6 +1522,7 @@ void getYear2Sc() {
       _subject,
       listMonthsOfTheYear,
       '/LessonWordAndNumber',
+      numberQuestions: 999,
       loop:true,
     );
   } ());
@@ -1620,6 +1624,7 @@ void getYear2Sc() {
       listTimeLessonHour,
       '/LessonClock',
       loop: true,
+      numberQuestions: 999,
     );
   } ());
 
@@ -1634,6 +1639,7 @@ void getYear2Sc() {
       _subject,
       listTimeLessonMinutes,
       '/LessonClock',
+      numberQuestions: 999,
     );
   } ());
 
@@ -1654,7 +1660,7 @@ void getYear2Sc() {
   } ());
 
   listModulesYear2Sci.add(() {
-    String _title = "Relógio: Exercício 1";
+    String _title = "Relógio";
     int _modulePos = listModulesYear2Sci.length;
     return Module(
       _modulePos,
@@ -1668,7 +1674,7 @@ void getYear2Sc() {
   } ());
 
   listModulesYear2Sci.add(() {
-    String _title = "Relógio: Teste 1";
+    String _title = "Relógio";
     int _modulePos = listModulesYear2Sci.length;
     return Module(
       _modulePos,
@@ -1832,5 +1838,12 @@ int getUnlockModuleIndex (int _year, int _subject) {
 
 setUnlockModuleIndex (int newIndex, [int? _year, int? _subject]) async {
   await prefs.setInt('unlockModuleIndex-$_year-$_subject', newIndex);
+}
+
+printList(List<Object> list) {
+  print("List of elements");
+  list.forEach((element) {
+    print("element: " + (element as Word).title + " processed: " + element.processed.toString());
+  });
 }
 

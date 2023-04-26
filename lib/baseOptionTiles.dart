@@ -21,17 +21,18 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
 
   @override
   Widget getMainTile() {
-    listOriginal.shuffle();
+    listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= listOption1.length) {
       int processedIndex = listProcess.indexWhere((word) => (word as Word).processed == false);
+      printList(listProcess);
       wordMain = listProcess[processedIndex] as Word;
-      print("word: " + wordMain.title);
+      print("processed word: " + wordMain.title);
       wordMain.processed = true;
       listProcess[processedIndex] = wordMain;
       setProcessed = Set();
       setProcessed.add(wordMain);
-      listOriginal.forEach((word) {
+      listProcess.forEach((word) {
         setProcessed.add(word as Word);
       });
       List temp = setProcessed.toList().sublist(0,4);

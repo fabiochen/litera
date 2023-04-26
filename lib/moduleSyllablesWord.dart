@@ -11,16 +11,6 @@ class ModuleSyllablesWord extends BaseOptionTiles {
 
 class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord> {
 
-  Widget getMainTile() {
-    listProcess.shuffle();
-    listProcess.sort((a, b) => (a as Word).processed?1:0);
-    int i= Random().nextInt(4);
-    wordMain = listProcess[i] as Word;
-    wordMain.processed = true;
-    listProcess[i] = wordMain;
-    return super.getMainTile();
-  }
-
   Widget getCenterTile(word) {
     //audioPlay(wordMain.id);
     return Row(

@@ -16,12 +16,13 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   List<int> listRel = [];
 
-  @override
-  Widget getMainTile() {
-    listProcess.shuffle();
-    wordMain = listProcess[Random().nextInt(4)] as Word;
-    return super.getMainTile();
-  }
+  // @override
+  // Widget getMainTile() {
+  //   listProcess.shuffle();
+  //   wordMain = listProcess[Random().nextInt(4)] as Word;
+  //   return super.getMainTile();
+  // }
+  //
 
   @override
   Widget getCenterTile(word) {
@@ -34,12 +35,18 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
     if (listPosition == 0 || listPosition >= listOption1.length-1) {
       int rel = pow(-1,Random().nextInt(2)).toInt();
       print("value: " + word.value);
-      if (word.value == 'a') rel = 1;
-      if (word.value == 'z') rel = -1;
+      if (word.value.substring(0,1) == 'a') rel = 1;
+      if (word.value.substring(0,1) == 'z') rel = -1;
+      if (word.value.substring(0,1) == '1') rel = 1;
+      if (word.value.substring(0,1) == '9') rel = -1;
       listRel.add(rel);
     }
     _playAudio();
-    String wordShow = (listRel[listPosition] > 0)? '__ ' + getWordById(id+listRel[listPosition]).value: getWordById(id+listRel[listPosition]).value + ' __';
+    //String wordShow = (listRel[listPosition] > 0)? '__ ' + getWordById(id+listRel[listPosition]).value: getWordById(id+listRel[listPosition]).value + ' __';
+    return getSoundTile(word);
+  }
+
+  ElevatedButton getSoundTile(Word word) {
     return ElevatedButton(
         onPressed: () => _playAudio(),
         style: ElevatedButton.styleFrom(
@@ -47,30 +54,15 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
         ),
         child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                width: 300,
-                height: 100,
-                alignment: Alignment.center,
-                child: getText(wordShow,50,Colors.deepOrange),
-              ),
+            Icon(
+              IconData(57400, fontFamily: 'LiteraIcons'),
+              color: Colors.blue,
+              size: 100,
             ),
-            Positioned(
-              bottom: 10, right: 0,
-              child: Icon(
-                IconData(57400, fontFamily: 'LiteraIcons'),
-                color: Colors.blue,
-                size: 40,
-              ),
-            ),
-            Positioned(
-              bottom: 10, right: 0,
-              child: Icon(
-                IconData(57401, fontFamily: 'LiteraIcons'),
-                color: Colors.white,
-                size: 40,
-              ),
+            Icon(
+              IconData(57401, fontFamily: 'LiteraIcons'),
+              color: Colors.white,
+              size: 100,
             ), // second icon to "paint" previous transparent icon
           ],
         )

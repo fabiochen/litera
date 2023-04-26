@@ -58,6 +58,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   Comparator<Object> criteria = (a, b) => ((a as Word).id).compareTo((b as Word).id);
 
   void initState() {
+    printDebug("************* baseModule: initState");
     _initGoogleMobileAds();
     MobileAds.instance.updateRequestConfiguration(
       RequestConfiguration(
@@ -113,10 +114,14 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       modulePos = args?['modulePos']??0;
       printDebug("test6: $modulePos");
       listProcess = args?['list']??[];
+      // reset
+      if (listProcess is List<Word>) listProcess.forEach((word) {(word as Word).processed = false;});
+
+
       listOriginal = args?['list']??[];
       printDebug("test7");
-      if (listProcess.length < numberQuestions) numberQuestions = listProcess.length;
       numberQuestions = args?['numberQuestions']??numberQuestions;
+      if (listProcess.length < numberQuestions) numberQuestions = listProcess.length;
       printDebug("test8");
       useNavigation = args?['useNavigation'] ?? true;
       printDebug("test9");
@@ -157,6 +162,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("dcd error modulePos: " + modulePos.toString());
     }
     getUnlockModuleIndex(yearIndex,subjectIndex);
+
     super.didChangeDependencies();
   }
 
@@ -463,6 +469,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   void saveCorrectionValues () async {
+    //print("SaveCorrectionValues");
     String correctKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-correct';
     //print("CorrectKey: $correctKey = " + flagCorrect.value.toString());
     int correctValue = (prefs.getInt(correctKey) ?? 0) + flagCorrect.value;
@@ -645,6 +652,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Word getWordById(int id) {
+    print("wordbyid: $id");
     return listOriginal.singleWhere((word) => (word as Word).id == id) as Word;
   }
 

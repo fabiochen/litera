@@ -20,6 +20,7 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
     Word onset = listOriginal[listPosition] as Word;
     print("onset0: " + onset.title);
     listProcess = listVocab.where((word) => word.title.startsWith(onset.title)).toList();
+    printList(listProcess);
     return super.getMainTile();
   }
 

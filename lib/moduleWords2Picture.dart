@@ -12,17 +12,6 @@ class ModuleWords2Picture extends BaseOptionTiles {
 class _ModuleWords2PictureState extends BaseOptionTilesState<ModuleWords2Picture> {
 
   @override
-  Widget getMainTile() {
-    listProcess.shuffle();
-    listProcess.sort((a, b) => (a as Word).processed?1:0);
-    int i= Random().nextInt(4);
-    wordMain = listProcess[i] as Word;
-    wordMain.processed = true;
-    listProcess[i] = wordMain;
-    return super.getMainTile();
-  }
-
-  @override
   Widget getCenterTile(word) {
     return getImageTile(word.id);
   }
