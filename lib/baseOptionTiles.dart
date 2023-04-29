@@ -1,6 +1,6 @@
-import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 
 import 'package:litera/baseModule.dart';
 import 'package:litera/globals.dart';
@@ -21,6 +21,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
 
   @override
   Widget getMainTile() {
+    print("baseOptionTiles: contains audio 1: $containsAudio");
     listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= listOption1.length) {
@@ -78,6 +79,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
   }
 
   ButtonTheme getOptionTile(Word wordOption, [double _width=150, double _height=100]) {
+    print("getOptionTile");
     return ButtonTheme(
         child: Expanded(
             child: Column(
@@ -99,31 +101,36 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
                 SizedBox(
                   width: _width,
                   height: _height,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white
-                    ),
-                    onPressed: () {
-                      bool isCorrect = wordMain.id == wordOption.id;
-                      audioPlay(isCorrect);
-                      if (type == ModuleType.TEST) {
-                        if (isCorrect) {
-                          flagCorrect.value = 1;
-                          correctCount++;
-                        } else {
-                          flagWrong.value = 1;
-                          wrongCount++;
-                        }
-                        Timer(Duration(milliseconds: 1000), () async {
-                          next();
-                        });
-                      } else {
-                        if (isCorrect) Timer(Duration(milliseconds: 1000), () async {
-                            next();
-                          });
+                  child: PlayerBuilder.isPlaying(
+                      player: audioPlayer,
+                      builder: (context, isPlaying) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white
+                          ),
+                          onPressed: (!isPlaying) ? () {
+                            bool isCorrect = wordMain.id == wordOption.id;
+                            audioPlay(isCorrect);
+                            if (type == ModuleType.TEST) {
+                              if (isCorrect) {
+                                flagCorrect.value = 1;
+                                correctCount++;
+                              } else {
+                                flagWrong.value = 1;
+                                wrongCount++;
+                              }
+                              Timer(Duration(milliseconds: 1000), () async {
+                                next();
+                              });
+                            } else {
+                              if (isCorrect) Timer(Duration(milliseconds: 1000), () async {
+                                next();
+                              });
+                            }
+                          } : () {},
+                          child: getOptionValue(wordOption),
+                        );
                       }
-                    },
-                    child: getOptionValue(wordOption),
                   ),
                 ),
               ],
@@ -133,6 +140,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
   }
 
   Widget getOptionValue(Word word, [double fontSize=50]) {
+    print("baseOptionTiles: getOptionValue");
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(

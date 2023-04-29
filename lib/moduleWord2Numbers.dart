@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera/baseOptionTiles.dart';
 import 'package:litera/word.dart';
-import 'package:litera/globals.dart';
 
 class ModuleWord2Numbers extends BaseOptionTiles {
   @override
@@ -11,13 +10,16 @@ class ModuleWord2Numbers extends BaseOptionTiles {
 class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Numbers> {
 
   Widget getCenterTile(word) {
-    audioPlay(word.id);
+    print("contains audio 1: $containsAudio");
+    if (containsAudio) audioPlay(word.id);
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
+  ElevatedButton getTextTile(Word word, [double _fontSizeDefault=50, Color _color= Colors.teal, double _width=250, bool _containsAudio=true]) {
     int id = word.id;
-    return ElevatedButton(
+    print("contains audio 2: $containsAudio");
+    if (containsAudio)
+      return ElevatedButton(
         onPressed: () => audioPlay(id),
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white
@@ -27,10 +29,10 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                width: 250,
+                width: widthMain,
                 height: 100,
                 alignment: Alignment.center,
-                child: getText(word.title, fontSize, color),
+                child: getText(word.title, fontSizeMain, colorMain),
               ),
             ),
             Positioned(
@@ -52,18 +54,37 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
           ],
         )
     );
+    else
+      return ElevatedButton(
+          onPressed: () => null,
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white
+          ),
+          child: Container(
+            width: widthMain,
+            height: 100,
+            alignment: Alignment.center,
+            child: getText(word.title, fontSizeMain, _color),
+          )
+      );
+  }
+
+  @override
+  ButtonTheme getOptionTile(Word wordOption, [double _width=150, double _height=100]) {
+    return super.getOptionTile(wordOption, widthOption);
   }
 
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
+    String text = getFieldTypeValue(word, fieldTypeOption);
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        word.value,
+        text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.teal,
-          fontSize: 50,
+          color: colorOption,
+          fontSize: fontSizeOption,
         ),
       ),
     );

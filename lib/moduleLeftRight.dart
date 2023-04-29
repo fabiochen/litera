@@ -15,6 +15,14 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
   int numberOfSyllables=0;
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Map? args = ModalRoute.of(context)?.settings.arguments as Map?;
+    numberQuestions = args?['numberQuestions']??numberQuestions;
+  }
+
+  @override
   Widget getMainTile() {
     listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
@@ -49,7 +57,7 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
+  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal, double width=300, bool containsAudio=true]) {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),
@@ -61,7 +69,7 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                width: 300,
+                width: width,
                 height: 100,
                 alignment: Alignment.center,
                 child: getText(word.title,40,Colors.deepOrange),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
-import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class LessonAlphabet extends BaseModule {
@@ -27,7 +26,6 @@ class _LessonAlphabetState extends BaseModuleState<LessonAlphabet> {
 
   @override
   String getMainLabel(word) {
-    audioPlay(word.id);
     return word.title.substring(0,1).toUpperCase() + ' ' + word.title.substring(0,1);
   }
 

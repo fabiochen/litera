@@ -21,9 +21,8 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfterDays> {
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
-    int id = word.id;
-    print("listPosition: $listPosition option1.length: " + listOption1.length.toString());
+  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal, double width=250, bool containsAudio=true]) {
+    //print("listPosition: $listPosition option1.length: " + listOption1.length.toString());
     if (listPosition == 0 || listPosition >= listOption1.length-1) {
       // rand 1 or 2.  If 1 rel = -1, if 2 rel = 1
       int rel = pow(-1,Random().nextInt(2)).toInt();

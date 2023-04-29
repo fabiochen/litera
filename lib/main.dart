@@ -23,7 +23,7 @@ import 'lessonAlphabetCursive.dart';
 import 'lessonLetters.dart';
 import 'lessonNumbers.dart';
 import 'lessonWords.dart';
-import 'lessonWordAndNumber.dart';
+import 'lessonWordAndWord.dart';
 import 'moduleOrder.dart';
 import 'moduleOrderNumeric.dart';
 import 'moduleMatchCase.dart';
@@ -123,7 +123,7 @@ class MyApp extends StatelessWidget {
                 '/ModuleWord2Pictures'       : (context) => ModuleWord2Pictures(),
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),
                 '/ModuleSpelling02'          : (context) => ModuleSpelling02(),
-                '/LessonWordAndNumber'       : (context) => LessonWordAndNumber(),
+                '/LessonWordAndWord'         : (context) => LessonWordAndWord(),
                 '/ModuleNumbers2Word'        : (context) => ModuleNumbers2Word(),
                 '/ModuleWord2Numbers'        : (context) => ModuleWord2Numbers(),
                 '/ModuleSyllablesCount'      : (context) => ModuleSyllablesCount(),

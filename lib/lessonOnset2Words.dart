@@ -16,6 +16,7 @@ class LessonOnset2Words extends BaseOptionTiles {
 class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
   late int _testWordId;
 
+  @override
   Widget getMainTile() {
     Word onset = listOriginal[listPosition] as Word;
     print("onset0: " + onset.title);
@@ -24,8 +25,8 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
     return super.getMainTile();
   }
 
+  @override
   ButtonTheme getOptionTile(Word word, [double _width=150, double _height=100]) {
-
     print("tile word: " + word.title);
     return ButtonTheme(
       child: Column(

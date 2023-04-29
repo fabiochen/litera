@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:litera/baseOptionTiles.dart';
 import 'package:litera/globals.dart';

@@ -69,7 +69,7 @@ class _State extends BaseOptionTilesState<ModuleGenderNumber> {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        enumGenderNumber[int.parse(word.value)],
+        enumGenderNumber[int.parse(word.val1)],
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,

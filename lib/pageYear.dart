@@ -58,6 +58,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
   }
 
   List <ExpansionPanelRadio> _getListExpansionPanelRadio() {
+    print("test 1.6");
     List<ExpansionPanelRadio> listExpansionPanelRadio = [];
     _year.subjects.forEach((subject) {
       listExpansionPanelRadio.add(ExpansionPanelRadio(

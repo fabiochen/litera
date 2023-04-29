@@ -29,16 +29,15 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
-    int id = word.id;
+  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal, double width=250, bool containsAudio=true]) {
     print("listPosition: $listPosition option1.length: " + listOption1.length.toString());
     if (listPosition == 0 || listPosition >= listOption1.length-1) {
       int rel = pow(-1,Random().nextInt(2)).toInt();
-      print("value: " + word.value);
-      if (word.value.substring(0,1) == 'a') rel = 1;
-      if (word.value.substring(0,1) == 'z') rel = -1;
-      if (word.value.substring(0,1) == '1') rel = 1;
-      if (word.value.substring(0,1) == '9') rel = -1;
+      print("value: " + word.val1);
+      if (word.val1.substring(0,1) == 'a') rel = 1;
+      if (word.val1.substring(0,1) == 'z') rel = -1;
+      if (word.val1.substring(0,1) == '1') rel = 1;
+      if (word.val1.substring(0,1) == '9') rel = -1;
       listRel.add(rel);
     }
     _playAudio();
@@ -86,7 +85,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        word.value.substring(0,1),
+        word.val1.substring(0,1),
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,

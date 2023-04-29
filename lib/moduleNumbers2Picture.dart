@@ -22,7 +22,7 @@ class _ModuleNumbers2PictureState extends BaseOptionTilesState<ModuleNumbers2Pic
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        word.value,
+        word.val1,
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,

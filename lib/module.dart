@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:litera/globals.dart';
 
 class Module {
@@ -13,9 +14,17 @@ class Module {
   bool useNavigation;
   Map<String,Object>? args = {};
   String fontFamily;
+  late double fontSizeMain;
+  late double fontSizeOption;
+  double widthMain;
+  double widthOption;
+  Color colorMain;
+  Color colorOption;
+  bool containsAudio;
   bool loop;
   bool noLock;
-  Object? misc;
+  Object? fieldTypeMain;
+  Object? fieldTypeOption;
 
   Module(
       int this.pos,
@@ -30,9 +39,19 @@ class Module {
         int? this.numberQuestions,
         bool this.useNavigation = true,
         String this.fontFamily = "Litera-Regular",
+
+        double this.fontSizeMain = 50,
+        double this.fontSizeOption = 100,
+        Color this.colorMain = Colors.teal,
+        Color this.colorOption = Colors.teal,
+        double this.widthMain = 250,
+        double this.widthOption = 200,
+        Object? this.fieldTypeMain,
+        Object? this.fieldTypeOption,
+
         bool this.loop = false,
+        bool this.containsAudio = true,
         bool this.noLock = false,
-        Object? this.misc,
       }
   );
 
@@ -47,9 +66,19 @@ class Module {
     if (this.numberQuestions != null) args!['numberQuestions'] = this.numberQuestions as Object;
     args!['useNavigation'] = this.useNavigation;
     args!['fontFamily'] = this.fontFamily;
+
+    args!['fontSizeMain'] = this.fontSizeMain;
+    args!['fontSizeOption'] = this.fontSizeOption;
+    args!['colorMain'] = this.colorMain;
+    args!['colorOption'] = this.colorOption;
+    args!['widthMain'] = this.widthMain;
+    args!['widthOption'] = this.widthOption;
+    if (this.fieldTypeMain != null) args!['fieldTypeMain'] = this.fieldTypeMain as Object;
+    if (this.fieldTypeOption != null) args!['fieldTypeOption'] = this.fieldTypeOption as Object;
+
     args!['loop'] = this.loop;
+    args!['containsAudio'] = this.containsAudio;
     args!['noLock'] = this.noLock;
-    if (this.misc != null) args!['misc'] = this.misc as Object;
     return args;
   }
 

@@ -1,14 +1,14 @@
 class Word {
   late String title;
   late int id;
-  late String value;
+  late String val1;
+  late String val2;
   late bool processed;
-  late String syllables;
 
-  Word(int id, String title, [String value = '', bool processed = false]) {
+  Word(int id, String title, [String val1 = '', bool processed = false]) {
     this.title = title;
     this.id = id;
-    this.value = value;
+    this.val1 = val1;
     this.processed = processed;
   }
 

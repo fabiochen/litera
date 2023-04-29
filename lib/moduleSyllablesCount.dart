@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
@@ -12,17 +10,18 @@ class ModuleSyllablesCount extends BaseOptionTiles {
 
 class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
 
-  int numberOfSyllables=0;
+  int syllableOption=0;
 
   @override
   Widget getMainTile() {
-    numberOfSyllables = 0;
+    print("moduleSyllablesCount: getMainTile");
+    syllableOption = 0;
     listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= listOption1.length) {
       wordMain = listProcess[0] as Word;
       listMain.add(wordMain);
-      List<String> listSyllables = wordMain.syllables.split('-');
+      List<String> listSyllables = wordMain.val1.split('-');
       print("word: " + wordMain.title);
       print("syllable #: " + listSyllables.length.toString());
       switch (listSyllables.length) {
@@ -83,11 +82,10 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
 
   @override
   Widget getCenterTile(word) {
-    print("center tile word: " + word.title);
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
+  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal, double width=300, bool containsAudio=true]) {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),
@@ -99,7 +97,7 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                width: 300,
+                width: width,
                 height: 100,
                 alignment: Alignment.center,
                 child: getText(word.title,40,Colors.deepOrange),
@@ -126,12 +124,15 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
     );
   }
 
+  @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
-    numberOfSyllables++;
+    syllableOption++;
+    if (syllableOption > 4) syllableOption = 1;
+    print("number of syllables: $syllableOption");
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        numberOfSyllables.toString(),
+        syllableOption.toString(),
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,

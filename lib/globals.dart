@@ -1,6 +1,5 @@
 library globals;
 
-import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 
@@ -70,6 +69,7 @@ late List<Word> listTimeLessonMinutes;
 late List<Word> listTimeHour;
 late List<Word> listTimeMinutes;
 late List<Word> listTimeTest;
+late List<Word> listStateCapital;
 
 late Map<String, dynamic> parsedWords;
 
@@ -79,7 +79,7 @@ Timer? t1,t2,t3 = Timer(Duration(seconds: 1), () {});
 late Widget adWidget;
 
 //index 0 = year 1; index 1 = year 2;
-List<int> expandedId = [Sub.PORTUGUESE.index, Sub.PORTUGUESE.index];
+List<int> expandedId = [];
 
 late SharedPreferences prefs;
 
@@ -96,21 +96,27 @@ enum ModuleType {
   REPORT
 }
 
-enum WordField {
+enum FieldType {
+  ID,
   TITLE,
-  SYLLABLES
+  VAL1,
+  VAL2,
+  TITLE_ID,
+  TITLE_VAL1,
+  TITLE_VAL2,
 }
 
 enum Sub {
   PORTUGUESE,
   MATH,
   SCIENCE,
-  OTHERS,
+  GENERAL,
 }
 
 enum Yr {
   ONE,
   TWO,
+  THREE,
 }
 
 List<String> enumGenderNumber = [
@@ -160,6 +166,7 @@ Future init() async {
   listTimeHour = [];
   listTimeMinutes = [];
   listTimeTest = [];
+  listStateCapital = [];
 
   printDebug("******** init 2");
 
@@ -173,16 +180,19 @@ Future init() async {
 
   printDebug("******** init 4");
   await populate();
+
   printDebug("******** init 4.1");
   getYear1Pt();
   printDebug("******** init 4.2");
   getYear1Mt();
+
   printDebug("******** init 4.3");
   getYear2Pt();
   printDebug("******** init 4.4");
   getYear2Mt();
-
   getYear2Sc();
+
+  //getYear3General();
 
   printDebug("******** init 5");
   expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index")??Sub.PORTUGUESE.index);
@@ -232,7 +242,7 @@ Future populate() async {
     String syllables = parsedWords['LIST']['CATEGORY']['VOCABULARY'][key];
     String title = syllables.replaceAll('-', '');
     Word word = Word(id, title);
-    word.syllables = syllables;
+    word.val1 = syllables;
     listVocab.add(word);
   });
 
@@ -341,12 +351,14 @@ Future populate() async {
   // populate number list
   parsedWords['LIST']['CATEGORY']['NUMBERS_1-20'].keys.forEach((key){
     int id = int.parse(key);
-    //printDebug('key: ' + key);
+    printDebug('key: ' + key);
     parsedWords['LIST']['CATEGORY']['NUMBERS_1-20'][id.toString()].keys.forEach((value) {
-      //printDebug('value: ' + value);
+      printDebug('value: ' + value);
       String title = parsedWords['LIST']['CATEGORY']['NUMBERS_1-20'][id.toString()][value];
-      //printDebug('title: ' + title);
-      Word word = Word(id, title, value);
+      printDebug('title: ' + title);
+      Word word = Word(id, title);
+      word.val1 = value;
+      word.val2 = key;
       listNumber1t20.add(word);
     });
   });
@@ -563,6 +575,17 @@ Future populate() async {
       printDebug("empty result");
     }
   });
+
+  parsedWords['LIST']['CATEGORY']['STATE-CAPITAL'].keys.forEach((key){
+    int id = int.parse(key);
+    //printDebug('key: ' + key);
+    List listWords = parsedWords['LIST']['CATEGORY']['STATE-CAPITAL'][key];
+    Word word = Word(id, listWords[0]);
+    word.val1 = listWords[1];
+    word.val2 = listWords[2];
+    listStateCapital.add(word);
+  });
+
 }
 
 void getYear1Pt() {
@@ -578,6 +601,7 @@ void getYear1Pt() {
       "1º Ano",
       Colors.red.shade200,
       listSubjects);
+  expandedId.add(_subject.index);
 
   printDebug("******** init 4.1.3");
 
@@ -959,7 +983,9 @@ void getYear2Pt() {
       "2º Ano",
       Colors.yellow.shade200,
       listSubjects);
+
   listYears.add(year);
+  expandedId.add(_subject.index);
 
   listModulesYear2Por.add(() {
     String _title = "Alfabeto (Cursiva)";
@@ -1012,7 +1038,7 @@ void getYear2Pt() {
       ModuleType.LESSON,
       _year,
       _subject,
-      listWordOnset.where((word) => word.title.length <=6).toList(),
+      listWordOnset.where((word) => word.title.length <=6 && !(word.title.contains(RegExp(r'[çéáúãóõ]')))).toList(),
       '/LessonWord2Onsets',
     );
   } ());
@@ -1027,7 +1053,8 @@ void getYear2Pt() {
       _subject,
       alphabet,
       '/LessonWordsAndPicture',
-      misc: WordField.SYLLABLES
+      numberQuestions: 999,
+      fieldTypeMain: FieldType.VAL1
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1041,7 +1068,7 @@ void getYear2Pt() {
       _subject,
       mapWordMatch,
       '/LessonWordsConsonantsVowels',
-      misc: WordField.TITLE
+      fieldTypeMain: FieldType.TITLE
     );
   } ());
 
@@ -1215,7 +1242,7 @@ void getYear2Pt() {
         _subject,
         listGenderNumber,
         '/LessonWordPairs',
-        misc: [0,1]
+        fieldTypeMain: [0,1]
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1229,7 +1256,7 @@ void getYear2Pt() {
         _subject,
         listGenderNumber,
         '/LessonWordPairs',
-        misc: [0,2]
+        fieldTypeMain: [0,2]
     );
   } ());
   listModulesYear2Por.add(() {
@@ -1265,7 +1292,11 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber1t20,
-      '/LessonWordAndNumber',
+      '/LessonWordAndWord',
+      fieldTypeMain: FieldType.VAL1,
+      fieldTypeOption: FieldType.TITLE,
+      fontSizeMain: 70,
+      fontSizeOption: 100,
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1305,7 +1336,11 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber30t100,
-      '/LessonWordAndNumber',
+      '/LessonWordAndWord',
+      fieldTypeMain: FieldType.VAL1,
+      fieldTypeOption: FieldType.TITLE,
+      fontSizeMain: 50,
+      fontSizeOption: 100,
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1345,7 +1380,11 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber1t10Ordinal,
-      '/LessonWordAndNumber',
+      '/LessonWordAndWord',
+      fieldTypeMain: FieldType.VAL1,
+      fieldTypeOption: FieldType.TITLE,
+      fontSizeMain: 50,
+      fontSizeOption: 100,
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1385,7 +1424,12 @@ void getYear2Mt() {
       _year,
       _subject,
       listNumber20t100Ordinal,
-      '/LessonWordAndNumber',
+      '/LessonWordAndWord',
+      fieldTypeMain: FieldType.VAL1,
+      fieldTypeOption: FieldType.TITLE,
+      fontSizeMain: 40,
+      fontSizeOption: 100,
+      widthMain: 300
     );
   } ());
 
@@ -1451,6 +1495,7 @@ void getYear2Sc() {
       _subject,
       listDirections,
       '/ModuleLeftRight',
+      numberQuestions: 10,
     );
   } ());
 
@@ -1465,6 +1510,7 @@ void getYear2Sc() {
       _subject,
       listDirections,
       '/ModuleLeftRight',
+      numberQuestions: 10,
     );
   } ());
 
@@ -1521,7 +1567,7 @@ void getYear2Sc() {
       _year,
       _subject,
       listMonthsOfTheYear,
-      '/LessonWordAndNumber',
+      '/LessonWordAndWord',
       numberQuestions: 999,
       loop:true,
     );
@@ -1538,6 +1584,11 @@ void getYear2Sc() {
       _subject,
       listMonthsOfTheYear,
       '/ModuleWord2Numbers',
+      fieldTypeMain: FieldType.TITLE,
+      fieldTypeOption: FieldType.VAL1,
+      fontSizeMain: 50,
+      fontSizeOption: 50,
+      colorMain: Colors.red
     );
   } ());
 
@@ -1652,7 +1703,7 @@ void getYear2Sc() {
       ModuleType.LESSON,
       _year,
       _subject,
-      listTimeLessonHour,
+      [],
       '/LessonClockDigital',
       useNavigation: false,
       noLock: true,
@@ -1688,6 +1739,84 @@ void getYear2Sc() {
   } ());
 
   listYears[_year.index].subjects.add(Subject(_subject, "Ciências", listModulesYear2Sci));
+
+}
+
+void getYear3General() {
+  Yr _year = Yr.THREE;
+  Sub _subject = Sub.GENERAL;
+  List<Subject> listSubjects = [];
+  List<Module> listModules = [];
+
+  Year year = Year(
+      _year,
+      "3º Ano",
+      Colors.blue.shade200,
+      listSubjects);
+
+  listYears.add(year);
+  expandedId.add(_subject.index);
+
+  listModules.add(() {
+    String _title = "Estados / Capitais";
+    int _modulePos = listModules.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.LESSON,
+      _year,
+      _subject,
+      listStateCapital,
+      '/LessonWordAndWord',
+      numberQuestions: 999,
+      fontSizeMain: 50,
+      widthMain: 300,
+      containsAudio: false,
+      fieldTypeMain: FieldType.VAL2,
+    );
+  } ());
+
+  listModules.add(() {
+    String _title = "Qual é a Sigla?";
+    int _modulePos = listModules.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listStateCapital,
+      '/ModuleWord2Numbers',
+      fontSizeMain: 40,
+      fontSizeOption: 30,
+      widthMain: 300,
+      widthOption: 400,
+      containsAudio: false,
+      fieldTypeMain: FieldType.VAL1,
+    );
+  } ());
+
+  listModules.add(() {
+    String _title = "Qual é a Capital?";
+    int _modulePos = listModules.length;
+    return Module(
+      _modulePos,
+      _title,
+      ModuleType.EXERCISE,
+      _year,
+      _subject,
+      listStateCapital,
+      '/ModuleWord2Numbers',
+      fontSizeMain: 40,
+      fontSizeOption: 30,
+      widthMain: 300,
+      widthOption: 400,
+      containsAudio: false,
+      fieldTypeMain: FieldType.VAL2,
+    );
+  } ());
+
+  listYears[_year.index].subjects.add(Subject(_subject, "Geral", listModules));
 
 }
 
@@ -1742,61 +1871,6 @@ int getNavigationLanguage() {
   return navigationLanguage;// portuguese as default
 }
 
-playTime(String time) {
-  int hr = int.parse(time.substring(0,2));
-  int min = int.parse(time.substring(3,5));
-  audioPlayer.stop();
-  String strHr = (400+hr).toString();
-  String strHrEnding = "horas";
-  String strMin = (600+min).toString();
-  if (min == 0) {
-    if (hr == 1) strHrEnding = "hora";
-    if (hr >  1) strHrEnding = "horas";
-    audioPlayer.open(
-      Playlist(
-          audios: [
-            Audio("assets/audios/$strHr.mp3"),
-            Audio("assets/audios/$strHrEnding.mp3")
-          ]
-      ),
-    );
-  } else {
-    if (hr == 1) strHrEnding = "hora_e";
-    if (hr >  1) strHrEnding = "horas_e";
-    audioPlayer.open(
-      Playlist(
-          audios: [
-            Audio("assets/audios/$strHr.mp3"),
-            Audio("assets/audios/$strHrEnding.mp3"),
-            Audio("assets/audios/$strMin.mp3"),
-            Audio("assets/audios/minutos.mp3"),
-          ]
-      ),
-    );
-  }
-}
-
-void audioPlay(Object itemId) async {
-//  AudioCache audioCache = AudioCache();
-  if (Platform.isIOS)
-//    audioCache.fixedPlayer?.notificationService.startHeadlessService();
-  audioStop();
-  audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
-}
-
-void audioPlayOnset(String onset) {
-  Word testWord = alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset));
-  print("onset3: " + testWord.title);
-  audioPlay(testWord.id);
-}
-
-void audioStop() {
-  audioPlayer.stop();
-  t1?.cancel();
-  t2?.cancel();
-  t3?.cancel();
-}
-
 Widget getClock(String time, [double padding=8.0]) {
   print("Time: $time");
   int hr = int.parse(time.substring(0,2));
@@ -1841,9 +1915,14 @@ setUnlockModuleIndex (int newIndex, [int? _year, int? _subject]) async {
 }
 
 printList(List<Object> list) {
-  print("List of elements");
+  print("List of elements: " + list.length.toString());
   list.forEach((element) {
-    print("element: " + (element as Word).title + " processed: " + element.processed.toString());
+    if (element is Word)
+      print("element: " + (element).title + " processed: " + element.processed.toString());
+    else if (element is bool)
+      print("element: $element");
+    else
+      print("$element");
   });
 }
 

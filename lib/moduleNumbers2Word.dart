@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
@@ -17,7 +15,7 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
+  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal, double width=300, bool containsAudio=true]) {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),
@@ -29,7 +27,7 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                width: 300,
+                width: width,
                 height: 100,
                 alignment: Alignment.center,
                 child: getText(word.title,40,Colors.deepOrange),
@@ -60,7 +58,7 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        word.value,
+        word.val1,
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,

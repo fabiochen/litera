@@ -67,6 +67,7 @@ class _PageHomeState<T extends PageHome> extends State<T> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        SizedBox(width: 50, height: 50),
         Flexible(
             child: getMainTile()
         ),
@@ -106,40 +107,43 @@ class _PageHomeState<T extends PageHome> extends State<T> {
   }
 
   Widget getMainTile() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: getListYears()
-        ),
-      ],
+    return GridView.count(
+      primary: false,
+      padding: const EdgeInsets.all(20),
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      children: getListYears(),
     );
   }
 
   List<Widget> getListYears() {
     List<Widget> listContainers = [];
-    listContainers.add(SizedBox(
-        width: 50,
-        height: 50
-    ));
+    print("number of years: " + listYears.length.toString());
     for (int i=0; i<listYears.length; i++) {
       {
-        bool unlockYear = true;
+        bool lockYear = true;
         List<bool> unlockSubjects = [];
+        if (i == 0)
+          print("$i: " + listYears[i].subjects.length.toString() + " subjects");
         if (i>0) {
           // unlock year if all modules from previous years are unlocked, i.e., if saved unlock index is equal to length of module list
-          listYears[i].subjects.forEach((subject) {
-            if (listYears[i-1].subjects.length > subject.id.index)
-              unlockSubjects.add(listYears[i-1].subjects[subject.id.index].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, subject.id.index));
-          });
+          print("$i: " + listYears[i].subjects.length.toString() + " subjects");
+          for (int s=0; s<listYears[i].subjects.length; s++) {
+            print("$i subject index: $s");
+            if (listYears[i-1].subjects.length > s) {
+              unlockSubjects.add(listYears[i - 1].subjects[s].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, listYears[i - 1].subjects[s].id.index));
+            }
+          }
         }
-        unlockYear = listYears[i].id.index > 0 && !(unlockSubjects.where((item) => item == false).length>0);
+        //printList(unlockSubjects);
+        lockYear = listYears[i].id.index > 0 && !(unlockSubjects.where((item) => item == false).length>0);
+//        print("lock year: $i $lockYear");
         listContainers.add(Container(
           child: InkWell(
               onTap: () {
-                if (!unlockYear) Navigator.push(
+                if (!lockYear) Navigator.push(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (c, animation1, animation2) => PageYear(listYears[i]),
@@ -167,7 +171,7 @@ class _PageHomeState<T extends PageHome> extends State<T> {
                 children: [
                   Stack(
                     alignment: Alignment.topRight,
-                    children: getYearIcon(i, unlockYear),
+                    children: getYearIcon(i, lockYear),
                   ),
                   Text(
                     listYears[i].value,
@@ -180,10 +184,6 @@ class _PageHomeState<T extends PageHome> extends State<T> {
                 ],
               )
           ),
-        ));
-        listContainers.add(SizedBox(
-            width: 50,
-            height: 50
         ));
       }
     }

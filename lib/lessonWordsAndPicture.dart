@@ -12,9 +12,9 @@ class _LessonWordsAndPictureState extends BaseModuleState<LessonWordsAndPicture>
   String getMainLabel(word) {
     audioPlay(word.id);
     String label;
-    switch (misc as dynamic) {
-      case WordField.SYLLABLES:
-        label = word.syllables;
+    switch (fieldTypeMain as dynamic) {
+      case FieldType.VAL1:
+        label = word.val1;
         break;
       default:
         label = word.title;

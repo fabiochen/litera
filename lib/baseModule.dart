@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-//import 'package:audioplayers/audioplayers.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 
 import 'package:litera/menu.dart';
 import 'package:litera/word.dart';
@@ -42,11 +42,20 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   bool useNavigation = true;
   bool useProgressBar = true;
   String fontFamily = "Litera-Regular";
-  bool loop = false;
-  bool noLock = false;
-  Object? misc;
 
-  bool audioDone = true;
+  late double fontSizeMain;
+  late double fontSizeOption;
+  late double widthMain = 250;
+  late double widthOption = 200;
+  late Color colorMain = Colors.teal;
+  late Color colorOption = Colors.teal;
+  late Object? fieldTypeMain = FieldType.TITLE;
+  late Object? fieldTypeOption = FieldType.VAL1;
+
+  bool loop = false;
+  bool containsAudio = true;
+  bool noLock = false;
+  Color buttonColor = Colors.grey;
 
   late Word wordMain;
   Color? backgroundColor = Colors.grey[200];
@@ -88,9 +97,6 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       ),
     );
     bannerAd.load();
-    audioPlayer.isPlaying.listen((event) {
-      audioDone = !event;
-    });
     super.initState();
   }
 
@@ -127,11 +133,20 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       printDebug("test9");
       useProgressBar = args?['useProgressBar'] ?? true;
       printDebug("test10");
-      fontFamily = args?['fontFamily'] ?? "Litera-Regular";
-      print("FontFamily $fontFamily");
-      loop = args?['loop'] ?? false;
+      fontFamily = args?['fontFamily'] ?? fontFamily;
+
+      fontSizeMain = args?['fontSizeMain'] ?? fontSizeMain;
+      fontSizeOption = args?['fontSizeOption'] ?? fontSizeOption;
+      widthMain = args?['widthMain'] ?? widthMain;
+      widthOption = args?['widthOption'] ?? widthOption;
+      colorMain   = args?['colorMain'] ?? colorMain;
+      colorOption = args?['colorOption'] ?? colorOption;
+      fieldTypeMain = args?['fieldTypeMain'] ?? fieldTypeMain;
+      fieldTypeOption = args?['fieldTypeOption'] ?? fieldTypeOption;
+
+      loop = args?['loop'] ?? loop;
+      containsAudio = args?['containsAudio'] ?? containsAudio;
       noLock = args?['noLock'] ?? false;
-      misc = args?['misc'];
 
       if (noLock) unlockNextModule();
 
@@ -184,6 +199,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getBody() {
+    print("baseModule: getBody");
     if (listProcess.length <= 1) {
       useNavigation = false;
       useProgressBar = false;
@@ -288,43 +304,63 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal]) {
+  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal, double width=250, bool containsAudio=true]) {
     int id = word.id;
+    String text = word.title;
+    if (containsAudio) {
+      return ElevatedButton(
+          onPressed: () => audioPlay(id),
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white
+          ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Container(
+                  width: width,
+                  height: 200,
+                  alignment: Alignment.center,
+                  child: getText(text, fontSize, color),
+                ),
+              ),
+              Positioned(
+                bottom: 10, right: 0,
+                child: Icon(
+                  IconData(57400, fontFamily: 'LiteraIcons'),
+                  color: Colors.blue,
+                  size: 40,
+                ),
+              ),
+              Positioned(
+                bottom: 10, right: 0,
+                child: Icon(
+                  IconData(57401, fontFamily: 'LiteraIcons'),
+                  color: Colors.white,
+                  size: 40,
+                ),
+              ), // second icon to "paint" previous transparent icon
+            ],
+          )
+      );
+    } else {
     return ElevatedButton(
-        onPressed: () => audioPlay(id),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white
-        ),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                width: 250,
-                height: 200,
-                alignment: Alignment.center,
-                child: getText(word.value, fontSize, color),
-              ),
-            ),
-            Positioned(
-              bottom: 10, right: 0,
-              child: Icon(
-                IconData(57400, fontFamily: 'LiteraIcons'),
-                color: Colors.blue,
-                size: 40,
-              ),
-            ),
-            Positioned(
-              bottom: 10, right: 0,
-              child: Icon(
-                IconData(57401, fontFamily: 'LiteraIcons'),
-                color: Colors.white,
-                size: 40,
-              ),
-            ), // second icon to "paint" previous transparent icon
-          ],
-        )
+    onPressed: () => null,
+    style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Container(
+        width: width,
+        height: 200,
+        alignment: Alignment.center,
+        child: getText(text, fontSize, color),
+      ),
+    ),
+
     );
+    }
   }
 
   Text getText(String text, [double fontSize = 100, Color color = Colors.teal]) {
@@ -336,6 +372,34 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         fontSize: fontSize,
       ),
     );
+  }
+
+  String getFieldTypeValue(word, fieldType) {
+    String text = word.id.toString();
+    switch (fieldType) {
+      case FieldType.ID:
+        text = word.id.toString();
+        break;
+      case FieldType.TITLE:
+        text = word.title;
+        break;
+      case FieldType.VAL1:
+        text = word.val1;
+        break;
+      case FieldType.VAL2:
+        text = word.val2;
+        break;
+      case FieldType.TITLE_ID:
+        text = word.title + " (" + word.id + ")";
+        break;
+      case FieldType.TITLE_VAL1:
+        text = word.title + " (" + word.val1 + ")";
+        break;
+      case FieldType.TITLE_VAL2:
+        text = word.title + " (" + word.val2 + ")";
+        break;
+    }
+    return text;
   }
 
   ElevatedButton getSoundTile(Word word) {
@@ -406,7 +470,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   ElevatedButton getImageTile(int id, [double imageSize=200]) {
-    return ElevatedButton(
+    if (containsAudio)
+      return ElevatedButton(
         onPressed: () => audioPlay(id),
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white
@@ -433,6 +498,14 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
           ],
         )
     );
+    else
+      return ElevatedButton(
+          onPressed: () => null,
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white
+          ),
+          child: getImage(id,imageSize)
+      );
   }
 
   Padding getImage(int id, double width) {
@@ -446,25 +519,37 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  InkWell getNavButtonPrevious() {
-    return InkWell(
-      onTap: () => previous(),
-      child: Icon(
-        IconData(58376, fontFamily: 'LiteraIcons'),
-        color: Colors.blue,
-        size: 80,
-      ),
+  PlayerBuilder getNavButtonPrevious() {
+    print("getNavButtonPrevious");
+    return PlayerBuilder.isPlaying(
+        player: audioPlayer,
+        builder: (context, isPlaying) {
+          return InkWell(
+            onTap: () => (!isPlaying)?previous():null,
+            child: Icon(
+              IconData(58376, fontFamily: 'LiteraIcons'),
+              color: (!isPlaying)?Colors.blue:Colors.grey,
+              size: 80,
+            ),
+          );
+        }
     );
   }
 
-  InkWell getNavButtonNext() {
-    return InkWell(
-      onTap: () => next(),
-      child: Icon(
-        IconData(58377, fontFamily: 'LiteraIcons'),
-        color: Colors.blue,
-        size:80,
-      ),
+  Widget getNavButtonNext() {
+    print("getNavButtonNext");
+    return PlayerBuilder.isPlaying(
+        player: audioPlayer,
+        builder: (context, isPlaying) {
+          return InkWell(
+            onTap: () => (!isPlaying)?next():null,
+            child: Icon(
+              IconData(58377, fontFamily: 'LiteraIcons'),
+              color: (!isPlaying)?Colors.blue:Colors.grey,
+              size: 80,
+            ),
+          );
+        }
     );
   }
 
@@ -660,6 +745,58 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     modulePos++;
     if (modulePos > getUnlockModuleIndex(yearIndex, subjectIndex))
       setUnlockModule(modulePos);
+  }
+
+  void audioPlay(Object itemId) async {
+    audioStop();
+    audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
+  }
+
+  void audioPlayOnset(String onset) {
+    Word testWord = alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset));
+    print("onset3: " + testWord.title);
+    audioPlay(testWord.id);
+  }
+
+  void playTime(String time) {
+    int hr = int.parse(time.substring(0,2));
+    int min = int.parse(time.substring(3,5));
+    audioPlayer.stop();
+    String strHr = (400+hr).toString();
+    String strHrEnding = "horas";
+    String strMin = (600+min).toString();
+    if (min == 0) {
+      if (hr == 1) strHrEnding = "hora";
+      if (hr >  1) strHrEnding = "horas";
+      audioPlayer.open(
+        Playlist(
+            audios: [
+              Audio("assets/audios/$strHr.mp3"),
+              Audio("assets/audios/$strHrEnding.mp3")
+            ]
+        ),
+      );
+    } else {
+      if (hr == 1) strHrEnding = "hora_e";
+      if (hr >  1) strHrEnding = "horas_e";
+      audioPlayer.open(
+        Playlist(
+            audios: [
+              Audio("assets/audios/$strHr.mp3"),
+              Audio("assets/audios/$strHrEnding.mp3"),
+              Audio("assets/audios/$strMin.mp3"),
+              Audio("assets/audios/minutos.mp3"),
+            ]
+        ),
+      );
+    }
+  }
+
+  void audioStop() {
+    audioPlayer.stop();
+    t1?.cancel();
+    t2?.cancel();
+    t3?.cancel();
   }
 
 }
