@@ -24,7 +24,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
             Column(
               children: [
                 Container(
-                  width: 200,
+                  width: 150,
                   height: 100,
                   child: CupertinoPicker(
                     backgroundColor: Colors.white,
@@ -85,7 +85,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
             Column(
               children: [
                 Container(
-                  width: 200,
+                  width: 150,
                   height: 100,
                   child: CupertinoPicker(
                     backgroundColor: Colors.white,

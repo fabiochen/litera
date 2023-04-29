@@ -1038,7 +1038,7 @@ void getYear2Pt() {
       ModuleType.LESSON,
       _year,
       _subject,
-      listWordOnset.where((word) => word.title.length <=6 && !(word.title.contains(RegExp(r'[çéáúãóõ]')))).toList(),
+      listWordOnset.where((word) => word.title.length <=4 && !(word.title.contains(RegExp(r'[çéáúãóõ]')))).toList(),
       '/LessonWord2Onsets',
     );
   } ());
@@ -1295,8 +1295,9 @@ void getYear2Mt() {
       '/LessonWordAndWord',
       fieldTypeMain: FieldType.VAL1,
       fieldTypeOption: FieldType.TITLE,
-      fontSizeMain: 70,
+      fontSizeMain: 50,
       fontSizeOption: 100,
+      numberQuestions: 999,
     );
   } ());
   listModulesYear2Mat.add(() {
@@ -1480,7 +1481,6 @@ void getYear2Sc() {
       _subject,
       listDirections,
       '/LessonWordsAndPicture',
-      loop:true,
     );
   } ());
 
@@ -1525,7 +1525,7 @@ void getYear2Sc() {
       _subject,
       listDaysOfTheWeek,
       '/LessonWords',
-      loop:true,
+//      loop:true,
     );
   } ());
 
@@ -1569,7 +1569,7 @@ void getYear2Sc() {
       listMonthsOfTheYear,
       '/LessonWordAndWord',
       numberQuestions: 999,
-      loop:true,
+//      loop:true,
     );
   } ());
 
@@ -1631,7 +1631,7 @@ void getYear2Sc() {
       _subject,
       listSeasonsOfTheYear,
       '/LessonWordsAndPicture',
-      loop:true,
+//      loop:true,
     );
   } ());
 
@@ -1674,7 +1674,7 @@ void getYear2Sc() {
       _subject,
       listTimeLessonHour,
       '/LessonClock',
-      loop: true,
+//      loop:true,
       numberQuestions: 999,
     );
   } ());

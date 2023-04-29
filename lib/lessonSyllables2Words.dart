@@ -35,7 +35,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
               Column(
                 children: [
                   Container(
-                    width: 150,
+                    width: 100,
                     height: 100,
                     child: CupertinoPicker(
                       backgroundColor: Colors.white,
@@ -48,7 +48,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
                           return Text(
                             _syllable,
                             style: TextStyle(
-                              fontSize: 50,
+                              fontSize: 40,
                               color: Colors.green,
                             ),
                           );
@@ -88,7 +88,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
               Column(
                 children: [
                   Container(
-                    width: 250,
+                    width: 200,
                     height: 100,
                     child: CupertinoPicker(
                       backgroundColor: Colors.white,
@@ -105,14 +105,14 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
                                   Text(
                                     word.title.substring(0,2),
                                     style: TextStyle(
-                                      fontSize: 50,
+                                      fontSize: 40,
                                       color: Colors.green,
                                     ),
                                   ),
                                   Text(
                                     word.title.substring(2),
                                     style: TextStyle(
-                                      fontSize: 50,
+                                      fontSize: 40,
                                       color: Colors.red,
                                     ),
                                   )

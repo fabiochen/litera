@@ -637,8 +637,6 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     isEndPosition = false;
     if (loop) {
       if (listPosition > numberQuestions - 1) {
-        print("in loop: $modulePos");
-        setUnlockModule(modulePos+1);
         listPosition = 0;
       }
     } else {

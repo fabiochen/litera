@@ -29,6 +29,7 @@ class _State extends BaseModuleState<LessonHangman> {
         Flexible(
           flex: 1,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Flexible(
                     flex: 1,
@@ -42,7 +43,7 @@ class _State extends BaseModuleState<LessonHangman> {
                       ),
                     )),  // hangman
                 Flexible(
-                    flex: 1,
+                    flex: 2,
                     child: Container(
                       child: getGuessWord(),
                     )),  // word
@@ -74,7 +75,7 @@ class _State extends BaseModuleState<LessonHangman> {
                 alphabetLetterList[i].title.toUpperCase(),
                 style: TextStyle(
                   color: (!listBadLetters.contains(alphabetLetterList[i].title))?Colors.white:Colors.grey,
-                  fontSize: 25,
+                  fontSize: 23,
                 ),
               ),
             style: ButtonStyle(

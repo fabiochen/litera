@@ -31,8 +31,8 @@ class _State extends BaseModuleState<LessonWordPairs> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(width: 50),
             getImageTile(wordMas.id, 100), // image
@@ -40,8 +40,8 @@ class _State extends BaseModuleState<LessonWordPairs> {
             getMainText(wordMas,50), // words
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(width: 50),
             getImageTile(wordFem.id, 100), // image
