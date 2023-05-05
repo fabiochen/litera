@@ -25,8 +25,8 @@ class _LessonAlphabetState extends BaseModuleState<LessonAlphabet> {
   }
 
   @override
-  String getMainLabel(word) {
-    return word.title.substring(0,1).toUpperCase() + ' ' + word.title.substring(0,1);
+  String getMainLabel(text) {
+    return text.substring(0,1).toUpperCase() + ' ' + text.substring(0,1);
   }
 
 }

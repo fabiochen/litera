@@ -17,7 +17,9 @@ class Module {
   late double fontSizeMain;
   late double fontSizeOption;
   double widthMain;
+  double heightMain;
   double widthOption;
+  double heightOption;
   Color colorMain;
   Color colorOption;
   bool containsAudio;
@@ -25,6 +27,7 @@ class Module {
   bool noLock;
   Object? fieldTypeMain;
   Object? fieldTypeOption;
+  Object? sortCriteria;
 
   Module(
       int this.pos,
@@ -45,9 +48,12 @@ class Module {
         Color this.colorMain = Colors.teal,
         Color this.colorOption = Colors.teal,
         double this.widthMain = 250,
+        double this.heightMain = 100,
         double this.widthOption = 200,
+        double this.heightOption = 100,
         Object? this.fieldTypeMain,
         Object? this.fieldTypeOption,
+        Object? this.sortCriteria,
 
         bool this.loop = false,
         bool this.containsAudio = true,
@@ -72,9 +78,12 @@ class Module {
     args!['colorMain'] = this.colorMain;
     args!['colorOption'] = this.colorOption;
     args!['widthMain'] = this.widthMain;
+    args!['heightMain'] = this.heightMain;
     args!['widthOption'] = this.widthOption;
+    args!['heightOption'] = this.heightOption;
     if (this.fieldTypeMain != null) args!['fieldTypeMain'] = this.fieldTypeMain as Object;
     if (this.fieldTypeOption != null) args!['fieldTypeOption'] = this.fieldTypeOption as Object;
+    if (this.sortCriteria != null) args!['sortCriteria'] = this.sortCriteria as Object;
 
     args!['loop'] = this.loop;
     args!['containsAudio'] = this.containsAudio;

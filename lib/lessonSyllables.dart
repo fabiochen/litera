@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
 import 'package:litera/word.dart';
-import 'package:litera/globals.dart';
 
 class LessonSyllables extends BaseModule {
   @override

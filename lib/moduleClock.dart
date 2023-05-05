@@ -16,12 +16,7 @@ class _State extends BaseOptionTilesState<ModuleClock> {
 
   @override
   Widget getCenterTile(word) {
-    return getClock(word.title);
-  }
-
-  @override
-  ButtonTheme getOptionTile(Word word, [double width=150, double height=80]) {
-    return super.getOptionTile(word,width,height);
+    return Globals().getClock(word.title);
   }
 
   @override

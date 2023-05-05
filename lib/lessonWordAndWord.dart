@@ -27,16 +27,20 @@ class _State extends BaseModuleState<LessonWordAndWord> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getTextTile(word, fontSizeMain, Colors.deepOrange, widthMain, containsAudio),
+        getTextTile(word,
+            fontSize: fontSizeMain,
+            color: Colors.deepOrange,
+            width: widthMain,
+            containsAudio: containsAudio),
         getText(text, fontSizeOption), // words
       ],
     );
   }
 
-  ElevatedButton getTextTile(Word word, [double _fontSize=50, Color _color= Colors.teal, double _width=250, bool _containsAudio=true]) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=250, double height=200, bool containsAudio=true}) {
     int id = word.id;
     String text = getFieldTypeValue(word, fieldTypeOption);
-    if (_containsAudio) {
+    if (containsAudio) {
       return ElevatedButton(
           onPressed: () => audioPlay(id),
           style: ElevatedButton.styleFrom(
@@ -47,10 +51,10 @@ class _State extends BaseModuleState<LessonWordAndWord> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Container(
-                  width: _width,
+                  width: width,
                   height: 200,
                   alignment: Alignment.center,
-                  child: getText(text, _fontSize, _color),
+                  child: getText(text, fontSize, color),
                 ),
               ),
               Positioned(
@@ -81,10 +85,10 @@ class _State extends BaseModuleState<LessonWordAndWord> {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Container(
-            width: _width,
+            width: width,
             height: 200,
             alignment: Alignment.center,
-            child: getText(text, _fontSize, _color),
+            child: getText(text, fontSize, color),
           ),
         ),
 

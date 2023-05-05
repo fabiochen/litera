@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
 
@@ -57,7 +56,7 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal, double width=300, bool containsAudio=true]) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),
@@ -94,11 +93,6 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
           ],
         )
     );
-  }
-
-  @override
-  ButtonTheme getOptionTile(Word wordOption, [double _width=150, _height=100]) {
-    return super.getOptionTile(wordOption,200,150);
   }
 
   @override

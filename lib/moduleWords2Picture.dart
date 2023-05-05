@@ -16,11 +16,6 @@ class _ModuleWords2PictureState extends BaseOptionTilesState<ModuleWords2Picture
   }
 
   @override
-  ButtonTheme getOptionTile(Word wordOption, [double _width=150, double _height=100]) {
-    return super.getOptionTile(wordOption,200);
-  }
-
-  @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),

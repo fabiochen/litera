@@ -34,11 +34,11 @@ class _PageHomeState<T extends PageHome> extends State<T> {
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (_) {
-          printDebug('******** banner loaded: ' + DateTime.now().toString());
+          Globals().printDebug('******** banner loaded: ' + DateTime.now().toString());
           isBannerAdReady.value = true;
         },
         onAdFailedToLoad: (ad, err) {
-          printDebug('Failed to load a banner ad: ${err.message}');
+          Globals().printDebug('Failed to load a banner ad: ${err.message}');
           isBannerAdReady.value = false;
           ad.dispose();
         },
@@ -50,12 +50,12 @@ class _PageHomeState<T extends PageHome> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    printDebug("******** baseModule build");
+    Globals().printDebug("******** baseModule build");
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
         appBar: AppBar(
-          backgroundColor: appBarColor,
+          backgroundColor: Globals().appBarColor,
           title: Text(title),
         ),
         drawer: Menu(),
@@ -120,33 +120,40 @@ class _PageHomeState<T extends PageHome> extends State<T> {
 
   List<Widget> getListYears() {
     List<Widget> listContainers = [];
-    print("number of years: " + listYears.length.toString());
-    for (int i=0; i<listYears.length; i++) {
+    print("number of years: " + Globals().listYears.length.toString());
+    for (int i=0; i<Globals().listYears.length; i++) {
       {
         bool lockYear = true;
         List<bool> unlockSubjects = [];
-        if (i == 0)
-          print("$i: " + listYears[i].subjects.length.toString() + " subjects");
+        // since modules for year 1 (i.e. i=0) are all unlocked, start checking unlocked modules after year 1 (i.e. i>0);
+        if (i==0) lockYear = false;
         if (i>0) {
           // unlock year if all modules from previous years are unlocked, i.e., if saved unlock index is equal to length of module list
-          print("$i: " + listYears[i].subjects.length.toString() + " subjects");
-          for (int s=0; s<listYears[i].subjects.length; s++) {
-            print("$i subject index: $s");
-            if (listYears[i-1].subjects.length > s) {
-              unlockSubjects.add(listYears[i - 1].subjects[s].modules.length > getUnlockModuleIndex(listYears[i-1].id.index, listYears[i - 1].subjects[s].id.index));
-            }
+          //print("$i: " + listYears[i].subjects.length.toString() + " subjects");
+          for (int s=0; s<Globals().listYears[i-1].subjects.length; s++) {
+            int totalSubjectModules = Globals().listYears[i-1].subjects[s].modules.length;
+            int lastSubjectUnlockedModule = Globals().getUnlockModuleIndex(Globals().listYears[i-1].id.index, Globals().listYears[i-1].subjects[s].id.index);
+            print("totalSubjectModules: $totalSubjectModules lastSubjectUnlockedModule: $lastSubjectUnlockedModule");
+            if (lastSubjectUnlockedModule >= totalSubjectModules) unlockSubjects.add(true);
           }
+          print("unlockSubjects ******************");
+          Globals().printList(unlockSubjects);
+          int unlockedSubjectCount = unlockSubjects.where((item) => item == true).length;
+          int subjectCount = Globals().listYears[i-1].subjects.length;
+          bool unlockedSubjects = unlockedSubjectCount == subjectCount;
+          lockYear = i>0 && !unlockedSubjects;
+          print("number of subject: $subjectCount");
+          print("number of unlocked subjects: $unlockedSubjectCount");
+          print("all subjects unlocked: $unlockedSubjects");
+          print("lock year: $i $lockYear");
         }
-        //printList(unlockSubjects);
-        lockYear = listYears[i].id.index > 0 && !(unlockSubjects.where((item) => item == false).length>0);
-//        print("lock year: $i $lockYear");
         listContainers.add(Container(
           child: InkWell(
               onTap: () {
                 if (!lockYear) Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (c, animation1, animation2) => PageYear(listYears[i]),
+                    pageBuilder: (c, animation1, animation2) => PageYear(Globals().listYears[i]),
                     transitionsBuilder: (context, animation, secondaryAnimation, child) {
                       const begin = Offset(1.0, 0.0);
                       const end = Offset.zero;
@@ -174,7 +181,7 @@ class _PageHomeState<T extends PageHome> extends State<T> {
                     children: getYearIcon(i, lockYear),
                   ),
                   Text(
-                    listYears[i].value,
+                    Globals().listYears[i].value,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -190,14 +197,35 @@ class _PageHomeState<T extends PageHome> extends State<T> {
     return listContainers;
   }
 
+  List<Widget> getListIcons() {
+    List<Widget> listContainers = [];
+    for (int i=59500; i<60000; i++) {
+      {
+        listContainers.add(Container(
+          child: Column(
+
+            children: [
+              Text("$i"),
+              Icon(
+                IconData(i, fontFamily: 'LiteraIcons'),
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ));
+      }
+    }
+    return listContainers;
+  }
+
   List<Widget> getYearIcon(i,unlockModule) {
     List<Widget> list = [];
       list.add(Icon(
         Icons.calendar_month,
-        color: listYears[i].color,
+        color: Globals().listYears[i].color,
         size: 100,
       ));
-      if (unlockModule)list.add(getLockIcon(true) as Widget);
+      if (unlockModule)list.add(Globals().getLockIcon(true) as Widget);
     return list;
   }
 
@@ -205,34 +233,6 @@ class _PageHomeState<T extends PageHome> extends State<T> {
     return TextStyle(
         fontSize: 20,
         color: unlock?Colors.white:Colors.grey[350]
-    );
-  }
-
-  Icon getLessonIcon() {
-    return Icon(
-      IconData(59404, fontFamily: 'LiteraIcons'),
-      color: Colors.blue.shade500,
-    );
-  }
-
-  Icon getExerciseIcon() {
-    return Icon(
-      IconData(58740, fontFamily: 'LiteraIcons'),
-      color: Colors.yellow.shade200,
-    );
-  }
-
-  Icon getTestIcon() {
-    return Icon(
-      IconData(59485, fontFamily: 'LiteraIcons'),
-      color: Colors.red.shade200,
-    );
-  }
-
-  Icon getReportIcon() {
-    return Icon(
-      IconData(59484, fontFamily: 'LiteraIcons'),
-      color: Colors.white,
     );
   }
 

@@ -20,13 +20,13 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
   Widget getMainTile() {
     Word onset = listOriginal[listPosition] as Word;
     print("onset0: " + onset.title);
-    listProcess = listVocab.where((word) => word.title.startsWith(onset.title)).toList();
-    printList(listProcess);
+    listProcess = Globals().listVocab.where((word) => word.title.startsWith(onset.title)).toList();
+    Globals().printList(listProcess);
     return super.getMainTile();
   }
 
   @override
-  ButtonTheme getOptionTile(Word word, [double _width=150, double _height=100]) {
+  ButtonTheme getOptionTile(Word word) {
     print("tile word: " + word.title);
     return ButtonTheme(
       child: Column(
@@ -44,7 +44,8 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
                       padding: const EdgeInsets.all(15.0),
                       child: Image(
                         image: AssetImage('assets/images/' + word.id.toString() + '.png'),
-                        width: 80,
+                        width: widthOption,
+                        height: heightOption,
                         gaplessPlayback: true,
                       ),
                     ),
@@ -104,10 +105,10 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
   void _playTileAudio(Object itemId) {
     Word onset = listProcess[listPosition] as Word;
     print("onset2: " + onset.title);
-    Word testWord = alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset.title.substring(0,1)));
+    Word testWord = Globals().alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset.title.substring(0,1)));
     _testWordId = testWord.id;
     audioStop();
-    audioPlayer.open(
+    Globals().audioPlayer.open(
       Playlist(
           audios: [
             Audio("assets/audios/$_testWordId.mp3"),

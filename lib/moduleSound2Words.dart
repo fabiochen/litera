@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:litera/baseOptionTiles.dart';
-import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class ModuleSound2Words extends BaseOptionTiles {

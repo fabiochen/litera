@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
-import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class LessonLetters extends BaseModule {
@@ -14,6 +13,7 @@ class _LessonLettersState extends BaseModuleState<LessonLetters> {
   @override
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
+    audioPlay(wordMain.id);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -24,9 +24,8 @@ class _LessonLettersState extends BaseModuleState<LessonLetters> {
   }
 
   @override
-  String getMainLabel(word) {
-    audioPlay(word.id);
-    return word.title.substring(0,1).toUpperCase() + " " + word.title.substring(0,1).toLowerCase();
+  String getMainLabel(text) {
+    return text.substring(0,1).toUpperCase() + " " + text.substring(0,1).toLowerCase();
   }
 
 }

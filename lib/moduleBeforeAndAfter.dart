@@ -16,36 +16,47 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   List<int> listRel = [];
 
-  // @override
-  // Widget getMainTile() {
-  //   listProcess.shuffle();
-  //   wordMain = listProcess[Random().nextInt(4)] as Word;
-  //   return super.getMainTile();
-  // }
-  //
-
   @override
   Widget getCenterTile(word) {
-    return getTextTile(word);
-  }
-
-  ElevatedButton getTextTile(Word word, [double fontSize=50, Color color= Colors.teal, double width=250, bool containsAudio=true]) {
     print("listPosition: $listPosition option1.length: " + listOption1.length.toString());
     if (listPosition == 0 || listPosition >= listOption1.length-1) {
       int rel = pow(-1,Random().nextInt(2)).toInt();
       print("value: " + word.val1);
-      if (word.val1.substring(0,1) == 'a') rel = 1;
-      if (word.val1.substring(0,1) == 'z') rel = -1;
-      if (word.val1.substring(0,1) == '1') rel = 1;
-      if (word.val1.substring(0,1) == '9') rel = -1;
+      // set endpoint rel values
+      switch (fieldTypeMain) {
+        case FieldType.TITLE:
+          if (word.title == 'Domingo') rel = 1;
+          if (word.title == 'Sábado') rel = -1;
+          if (word.title == 'Janeiro') rel = 1;
+          if (word.title == 'Dezembro') rel = -1;
+          if (word.title == 'Primavera') rel = 1;
+          if (word.title == 'Inverno') rel = -1;
+          if (word.title == 'Mercúrio') rel = 1;
+          if (word.title == 'Netuno') rel = -1;
+          break;
+        case FieldType.VAL1:
+          if (word.val1.substring(0,1) == 'a') rel = 1;
+          if (word.val1.substring(0,1) == 'z') rel = -1;
+          if (word.val1.substring(0,1) == '1') rel = 1;
+          if (word.val1.substring(0,1) == '9') rel = -1;
+          break;
+      }
       listRel.add(rel);
     }
-    _playAudio();
-    //String wordShow = (listRel[listPosition] > 0)? '__ ' + getWordById(id+listRel[listPosition]).value: getWordById(id+listRel[listPosition]).value + ' __';
-    return getSoundTile(word);
+    print("contains audio: $containsAudio");
+    if (containsAudio) return getSoundTile(word);
+    return getTextTile(word);
+  }
+
+  Text getText(String text, [double fontSize = 100, Color color = Colors.teal]) {
+    String rel = (listRel[listPosition] > 0)?"Antes":"Depois";
+    text = getWordById(listMain[listPosition].id + listRel[listPosition]).title;
+    text = rel + " de $text";
+    return super.getText(text, fontSize, Colors.red);
   }
 
   ElevatedButton getSoundTile(Word word) {
+    _playAudio();
     return ElevatedButton(
         onPressed: () => _playAudio(),
         style: ElevatedButton.styleFrom(
@@ -70,7 +81,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   void _playAudio() {
     String rel = (listRel[listPosition] > 0)?"antes":"depois";
-    audioPlayer.open(
+    Globals().audioPlayer.open(
       Playlist(
           audios: [
             Audio("assets/audios/$rel.mp3"),
@@ -81,15 +92,24 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
   }
 
   @override
-  Widget getOptionValue(Word word, [double fontSize=50]) {
+  Widget getOptionValue(Word word) {
+    String text = '';
+    switch(fieldTypeMain) {
+      case FieldType.TITLE:
+        text = word.title;
+        break;
+      case FieldType.VAL1:
+        text = word.val1.substring(0,1);
+        break;
+    }
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        word.val1.substring(0,1),
+        text,
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: fontSize,
+          fontSize: fontSizeOption,
         ),
       ),
     );

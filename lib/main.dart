@@ -5,18 +5,15 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'globals.dart';
 import 'lessonSyllables2Words.dart';
 import 'lessonWordPairs.dart';
-import 'moduleBeforeAndAfterDays.dart';
 import 'moduleLetters2Picture.dart';
+import 'moduleTonicOption.dart';
+import 'moduleTonicSyllable.dart';
 import 'moduleWord2Pictures.dart';
-
 import 'pageHome.dart';
-
 import 'pageAbout.dart';
 import 'pageContact.dart';
 import 'pageSettings.dart';
-
 import 'report.dart';
-
 import 'lessonAlphabet.dart';
 import 'lessonAlphabetLetters.dart';
 import 'lessonAlphabetCursive.dart';
@@ -51,6 +48,7 @@ import 'lessonHangman.dart';
 import 'moduleSyllablesCount.dart';
 import 'moduleLeftRight.dart';
 import 'lessonWordSearch.dart';
+import 'lessonTonic.dart';
 
 void main() {
   runApp(
@@ -72,7 +70,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return FutureBuilder(
-      future: init(),
+      future: Globals().init(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
@@ -101,7 +99,6 @@ class MyApp extends StatelessWidget {
                 '/ModuleOrder'               : (context) => ModuleOrder(),
                 '/ModuleGenderNumber'        : (context) => ModuleGenderNumber(),
                 '/ModuleBeforeAndAfter'      : (context) => ModuleBeforeAndAfter(),
-                '/ModuleBeforeAndAfterDays'  : (context) => ModuleBeforeAndAfterDays(),
                 '/ModuleLetters2Onset'       : (context) => ModuleLetters2Onset(),
                 '/ModuleMatchCase'           : (context) => ModuleMatchCase(),
                 '/ModuleLetters2Picture'     : (context) => ModuleLetters2Picture(),
@@ -129,6 +126,9 @@ class MyApp extends StatelessWidget {
                 '/ModuleSyllablesCount'      : (context) => ModuleSyllablesCount(),
                 '/ModuleLeftRight'           : (context) => ModuleLeftRight(),
                 '/LessonWordSearch'          : (context) => LessonWordSearch(),
+                '/LessonTonic'               : (context) => LessonTonic(),
+                '/ModuleTonicSyllable'       : (context) => ModuleTonicSyllable(),
+                '/ModuleTonicOption'         : (context) => ModuleTonicOption(),
 
                 '/BaseReport'                : (context) => Report(),
               }

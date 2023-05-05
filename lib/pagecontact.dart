@@ -13,8 +13,8 @@ class _PageContactState extends State<PageContact> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appBarColor,
-        title: Text(getAssetsVocab('CONTACT')),
+        backgroundColor: Globals().appBarColor,
+        title: Text(Globals().getAssetsVocab('CONTACT')),
       ),
       drawer: () {
         Menu();
@@ -25,7 +25,7 @@ class _PageContactState extends State<PageContact> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                devEmail,
+                Globals().devEmail,
                 style: TextStyle(fontSize: 20, color: Colors.black),
               ),
             ],

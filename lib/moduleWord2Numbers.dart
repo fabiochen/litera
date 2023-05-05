@@ -12,12 +12,15 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
   Widget getCenterTile(word) {
     print("contains audio 1: $containsAudio");
     if (containsAudio) audioPlay(word.id);
-    return getTextTile(word);
+    return getTextTile(word,
+      containsAudio: containsAudio,
+      width: widthMain,
+      height: heightMain
+    );
   }
 
-  ElevatedButton getTextTile(Word word, [double _fontSizeDefault=50, Color _color= Colors.teal, double _width=250, bool _containsAudio=true]) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=250, double height=200, bool containsAudio=true}) {
     int id = word.id;
-    print("contains audio 2: $containsAudio");
     if (containsAudio)
       return ElevatedButton(
         onPressed: () => audioPlay(id),
@@ -29,8 +32,8 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(
-                width: widthMain,
-                height: 100,
+                width: width,
+                height: height,
                 alignment: Alignment.center,
                 child: getText(word.title, fontSizeMain, colorMain),
               ),
@@ -61,17 +64,12 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
               backgroundColor: Colors.white
           ),
           child: Container(
-            width: widthMain,
-            height: 100,
+            width: width,
+            height: height,
             alignment: Alignment.center,
-            child: getText(word.title, fontSizeMain, _color),
+            child: getText(word.title, fontSizeMain, colorMain),
           )
       );
-  }
-
-  @override
-  ButtonTheme getOptionTile(Word wordOption, [double _width=150, double _height=100]) {
-    return super.getOptionTile(wordOption, widthOption);
   }
 
   @override

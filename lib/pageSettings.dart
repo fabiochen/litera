@@ -37,7 +37,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
 
   @override
   initState() {
-    listYears.forEach((year) {
+    Globals().listYears.forEach((year) {
       isUnlockModulesYear.add(false);
     });
     super.initState();
@@ -46,8 +46,8 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: appBarColor,
-        title: Text(getAssetsVocab('SETTINGS')),
+        backgroundColor: Globals().appBarColor,
+        title: Text(Globals().getAssetsVocab('SETTINGS')),
       ),
       drawer: () {
         Menu();
@@ -62,7 +62,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   color: Colors.black,
                 ),
                 title: Text(
-                  getAssetsVocab('UNLOCKMODULES'),
+                  Globals().getAssetsVocab('UNLOCKMODULES'),
                   style: TextStyle(color: Colors.black),
                 ),
               ),
@@ -87,14 +87,14 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                           child: DropdownButton<String>(
                         dropdownColor: Colors.white,
                         isExpanded: true,
-                        value: percentUnlock,
+                        value: Globals().percentUnlock,
                         icon: const Icon(Icons.keyboard_arrow_down),
                         iconSize: 24,
                         elevation: 16,
                         style: const TextStyle(color: Colors.black),
                         onChanged: (String? newValue) {
                           setState(() {
-                            percentUnlock = newValue!;
+                            Globals().percentUnlock = newValue!;
                           });
                         },
                         items: listPercentUnlock,
@@ -132,7 +132,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                     onToggle: (val) {
                       setState(() {
                         resetApp = val;
-                        percentUnlock = "80";
+                        Globals().percentUnlock = "80";
                       });
                     },
                   ),
@@ -141,7 +141,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
               ListTile(
                 trailing: ElevatedButton(
                     onPressed: () => saveSettings(),
-                    child: Text(getAssetsVocab('SAVE'),
+                    child: Text(Globals().getAssetsVocab('SAVE'),
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -165,13 +165,13 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
 
   Column getYearTiles() {
     List<ListTile> listListTiles = [];
-    listYears.forEach((year) {
+    Globals().listYears.forEach((year) {
       ListTile listTile = ListTile(
         leading: Icon(
           null,
         ),
         title: Text(
-          listYears[year.id.index].value + "º Ano",
+          Globals().listYears[year.id.index].value + "º Ano",
           style: TextStyle(color: Colors.black),
         ),
         trailing: SizedBox(
@@ -191,7 +191,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                 lockAll();
                 for (int j=0; j<=year.id.index; j++) {
                   isUnlockModulesYear[j] = true;
-                  listYears[j].subjects.forEach((subject) {
+                  Globals().listYears[j].subjects.forEach((subject) {
                     setUnlockModule(subject.modules.length, j, subject.id.index);
                   });
                 }
@@ -199,7 +199,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   lockAll();
                   for (int j=0; j<year.id.index; j++) {
                     isUnlockModulesYear[j] = true;
-                    listYears[j].subjects.forEach((subject) {
+                    Globals().listYears[j].subjects.forEach((subject) {
                       setUnlockModule(subject.modules.length, j, subject.id.index);
                     });
                   }
@@ -219,7 +219,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
   }
 
   void lockAll() {
-    listYears.forEach((year) {
+    Globals().listYears.forEach((year) {
       isUnlockModulesYear[year.id.index] = false;
       year.subjects.forEach((subject) {
         setUnlockModule(0, year.id.index, subject.id.index);
@@ -231,16 +231,16 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
     if (resetApp) {
       await clearSettings('reports');
       await clearSettings('unlockModuleIndex');
-      prefs.setInt('expandedId',1);
+      Globals().prefs.setInt('expandedId',1);
     }
-    prefs.setString('percentUnlock',percentUnlock);
+    Globals().prefs.setString('percentUnlock',Globals().percentUnlock);
     Phoenix.rebirth(context);
   }
 
   Future clearSettings(String section) async {
-    for (int i=prefs.getKeys().length-1; i>=0; i--) {
-      String key = prefs.getKeys().elementAt(i);
-      if (key.startsWith(section + '-')) prefs.remove(key);
+    for (int i=Globals().prefs.getKeys().length-1; i>=0; i--) {
+      String key = Globals().prefs.getKeys().elementAt(i);
+      if (key.startsWith(section + '-')) Globals().prefs.remove(key);
     }
   }
 

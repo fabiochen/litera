@@ -13,12 +13,11 @@ class Report extends BaseModule {
 
 class BaseReportState<T extends Report> extends BaseModuleState<T> {
 
-  Comparator<Object> criteria = (a, b) => (a as Word).id.compareTo((b as Word).id);
-
   Widget getBody() {
+    print("************************ Report: getBody");
     listProcess.sort(criteria);
     return FutureBuilder(
-      future: getPrefs(),
+      future: Globals().getPrefs(),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.done) {
           print('project snapshot data is: ${projectSnap.data}');
@@ -97,10 +96,6 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
         );
       },
     );
-  }
-
-  String getMainLabel(word) {
-    return word.title;
   }
 
   Text _getMainText(word) {

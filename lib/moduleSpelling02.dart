@@ -43,7 +43,7 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(
                           color: Colors.teal)),
-                  hintText: getAssetsVocab('TYPE-WORD'),
+                  hintText: Globals().getAssetsVocab('TYPE-WORD'),
                 ),
               ),
             ), // textfield
@@ -59,7 +59,7 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
                 ),
                 onPressed: () => _correction(),
                 child: Text(
-                  getAssetsVocab('CHECK'),
+                  Globals().getAssetsVocab('CHECK'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,

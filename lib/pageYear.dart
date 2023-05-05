@@ -31,13 +31,13 @@ class _PageYearState extends BaseModuleState<PageYear> {
     _year = this.widget.year;
     _yearIndex = _year.id.index;
     print("test 1 yearIndex $_yearIndex");
-    title = "$appTitle: " + (_yearIndex+1).toString() +"º Ano";
+    title = Globals().appTitle + ": " + (_yearIndex+1).toString() +"º Ano";
     bannerAd.load();
   }
 
   PreferredSizeWidget getAppBar() {
     return AppBar(
-      backgroundColor: appBarColor,
+      backgroundColor: Globals().appBarColor,
       title: Text(title),
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
@@ -51,7 +51,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
     print("test 1.5 yearIndex $_yearIndex");
     return SingleChildScrollView(
       child: ExpansionPanelList.radio(
-        initialOpenPanelValue: expandedId[_yearIndex],
+        initialOpenPanelValue: Globals().expandedId[_yearIndex],
         children: _getListExpansionPanelRadio(),
       ),
     );
@@ -65,15 +65,15 @@ class _PageYearState extends BaseModuleState<PageYear> {
         value: subject.id.index,
         headerBuilder: (BuildContext context, bool isExpanded) {
           if (isExpanded) {
-            expandedId[_yearIndex] = subject.id.index;
+            Globals().expandedId[_yearIndex] = subject.id.index;
             print("test 2 yearIndex $_yearIndex");
-            prefs.setInt('expandedId-$_yearIndex',expandedId[_yearIndex]);
+            Globals().prefs.setInt('expandedId-$_yearIndex',Globals().expandedId[_yearIndex]);
           }
           return ListTile(
               title: Text(
                   subject.value,
                   textAlign: TextAlign.left,
-                  style: getModuleStyle(false)
+                  style: Globals().getModuleStyle(false)
               )
           );},
         canTapOnHeader: true,
@@ -99,15 +99,15 @@ class _PageYearState extends BaseModuleState<PageYear> {
     String _moduleTitle = _module.title;
     var _modulePos = _module.pos;
     int _subjectIndex = _module.subject.index;
-    int _moduleStatus = _modulePos.compareTo(getUnlockModuleIndex(_yearIndex,_subjectIndex));
-    Icon iconModuleType = getIcon(_module.type);
+    int _moduleStatus = _modulePos.compareTo(Globals().getUnlockModuleIndex(_yearIndex,_subjectIndex));
+    Icon iconModuleType = Globals().getIcon(_module.type);
     //print("$_yearIndex module: " + getUnlockModuleIndex(_yearIndex,_subjectIndex).toString());
 
     return ListTile(
       leading: iconModuleType,
       title: (_moduleStatus > 0) ? Text(
         _moduleTitle,
-        style: getModuleStyle(true),
+        style: Globals().getModuleStyle(true),
       ): (_moduleStatus == 0) ? AnimatedTextKit(
         animatedTexts: [
           TypewriterAnimatedText(
@@ -126,9 +126,9 @@ class _PageYearState extends BaseModuleState<PageYear> {
         },
       ) : Text(
         _moduleTitle,
-        style: getModuleStyle(false),
+        style: Globals().getModuleStyle(false),
       ),
-      trailing: getLockIcon(_moduleStatus > 0),
+      trailing: Globals().getLockIcon(_moduleStatus > 0),
       onTap: () {
         if (_moduleStatus < 0) _onTap(_context, _module);
       }

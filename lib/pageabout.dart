@@ -18,8 +18,8 @@ class _PageAboutState extends State<PageAbout> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: appBarColor,
-        title: Text(getAssetsVocab('ABOUT')),
+        backgroundColor: Globals().appBarColor,
+        title: Text(Globals().getAssetsVocab('ABOUT')),
       ),
       drawer: () {
         Menu();
@@ -51,7 +51,7 @@ class _PageAboutState extends State<PageAbout> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        appTitle.toUpperCase(),
+                        Globals().appTitle.toUpperCase(),
                         style: TextStyle(
                             fontSize: 30,
                             color: Colors.blueGrey
@@ -61,8 +61,15 @@ class _PageAboutState extends State<PageAbout> {
                   ),
                 ),
                 SizedBox(height: 80),
-                Text('v.' + version + '+' +
-                    buildNumber,
+                Text("Illustrations by FreePik and others",
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text('v.' + Globals().version + '+' +
+                    Globals().buildNumber,
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.black
@@ -105,12 +112,12 @@ class _PageAboutState extends State<PageAbout> {
   }
 
   void saveSettings(int val) async {
-    prefs.setInt('settings-language', val);
+    Globals().prefs.setInt('settings-language', val);
     Phoenix.rebirth(context);
   }
 
   getNavigationLanguage() async {
-    var temp = prefs.get("settings-language");
+    var temp = Globals().prefs.get("settings-language");
 
     if (temp != null) isFirstTime = false;
     print('isFirstTime: ' + isFirstTime.toString());

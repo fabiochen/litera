@@ -18,14 +18,14 @@ class _State extends BaseModuleState<LessonClockDigital> {
   Widget getMainTile() {
     print("hour: $_selectedHour");
     print("min: $_selectedMinute");
-    Word hr = listTimeHour.elementAt(_selectedHour);
-    Word mn = listTimeMinutes.elementAt(_selectedMinute);
+    Word hr = Globals().listTimeHour.elementAt(_selectedHour);
+    Word mn = Globals().listTimeMinutes.elementAt(_selectedMinute);
     playTime(hr.title + ":" + mn.title);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         SizedBox(height: 40),
-        Flexible(child: getClock(hr.title + ":" + mn.title, 5)),
+        Flexible(child: Globals().getClock(hr.title + ":" + mn.title, 5)),
         Flexible(child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -36,7 +36,7 @@ class _State extends BaseModuleState<LessonClockDigital> {
                 backgroundColor: Colors.white,
                 itemExtent: 60,
                 children: [
-                  ...listTimeHour.map((word) {
+                  ...Globals().listTimeHour.map((word) {
                     String title = word.title;
                     return Text(
                       title,
@@ -69,7 +69,7 @@ class _State extends BaseModuleState<LessonClockDigital> {
                 backgroundColor: Colors.white,
                 itemExtent: 60,
                 children: [
-                  ...listTimeMinutes.map((word) {
+                  ...Globals().listTimeMinutes.map((word) {
                     String title = word.title;
                     return Text(
                       title,

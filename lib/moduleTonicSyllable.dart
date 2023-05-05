@@ -1,54 +1,41 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:litera/word.dart';
-import 'package:litera/baseOptionTiles.dart';
 
-class ModuleSyllablesCount extends BaseOptionTiles {
+import 'globals.dart';
+import 'word.dart';
+import 'baseOptionTiles.dart';
+
+class ModuleTonicSyllable extends BaseOptionTiles {
   @override
   _State createState() => _State();
 }
 
-class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
-
-  int syllableOption=0;
+class _State extends BaseOptionTilesState<ModuleTonicSyllable> {
 
   @override
   Widget getMainTile() {
-    print("moduleSyllablesCount: getMainTile");
-    syllableOption = 0;
     listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= listOption1.length) {
-      wordMain = listProcess[0] as Word;
+      int processedIndex = listProcess.indexWhere((word) => (word as Word).processed == false);
+      wordMain = listProcess[processedIndex] as Word;
+      audioPlay(wordMain.id);
+      wordMain.processed = true;
+      listProcess[processedIndex] = wordMain;
+      setProcessed = Set();
+      setProcessed.add(wordMain);
+      listProcess.forEach((word) {
+        setProcessed.add(word as Word);
+      });
+      List temp = setProcessed.toList().sublist(0,4);
+      temp.shuffle();
+      setProcessed = (temp as List<Word>).toSet();
+      // set word id = syllable position
+      listOption1.add(Word(1,wordMain.val1.split('-')[0]));
+      listOption2.add(Word(2,wordMain.val1.split('-')[1]));
+      listOption3.add(Word(3,wordMain.val1.split('-')[2]));
+      listOption4.add(Word(4,wordMain.val1.split('-')[3]));
       listMain.add(wordMain);
-      List<String> listSyllables = wordMain.val1.split('-');
-      print("word: " + wordMain.title);
-      print("syllable #: " + listSyllables.length.toString());
-      switch (listSyllables.length) {
-        case 1:
-          listOption1.add(listProcess[0] as Word);
-          listOption2.add(listProcess[1] as Word);
-          listOption3.add(listProcess[2] as Word);
-          listOption4.add(listProcess[3] as Word);
-          break;
-        case 2:
-          listOption1.add(listProcess[1] as Word);
-          listOption2.add(listProcess[0] as Word);
-          listOption3.add(listProcess[2] as Word);
-          listOption4.add(listProcess[3] as Word);
-          break;
-        case 3:
-          listOption1.add(listProcess[1] as Word);
-          listOption2.add(listProcess[2] as Word);
-          listOption3.add(listProcess[0] as Word);
-          listOption4.add(listProcess[3] as Word);
-          break;
-        case 4:
-          listOption1.add(listProcess[1] as Word);
-          listOption2.add(listProcess[2] as Word);
-          listOption3.add(listProcess[3] as Word);
-          listOption4.add(listProcess[0] as Word);
-          break;
-      }
     }
     wordMain = listMain[listPosition];
     return Column(
@@ -80,8 +67,34 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
   }
 
   @override
+  void correctionLogic(Word wordOption) {
+    bool isCorrect = wordMain.val2 == wordOption.id.toString();
+    audioPlay(isCorrect);
+    if (type == ModuleType.TEST) {
+      if (isCorrect) {
+        flagCorrect.value = 1;
+        correctCount++;
+      } else {
+        flagWrong.value = 1;
+        wrongCount++;
+      }
+      Timer(Duration(milliseconds: 1000), () async {
+        next();
+      });
+    } else {
+      if (isCorrect) Timer(Duration(milliseconds: 1000), () async {
+        next();
+      });
+    }
+  }
+
+  @override
   Widget getCenterTile(word) {
-    return getTextTile(word);
+    return getTextTile(
+      word,
+      containsAudio: containsAudio,
+      fontSize: fontSizeMain,
+    );
   }
 
   ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
@@ -99,7 +112,7 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
                 width: width,
                 height: 100,
                 alignment: Alignment.center,
-                child: getText(word.title,40,Colors.deepOrange),
+                child: getText(word.title,fontSize,Colors.deepOrange),
               ),
             ),
             Positioned(
@@ -123,19 +136,15 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
     );
   }
 
-  @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
-    syllableOption++;
-    if (syllableOption > 4) syllableOption = 1;
-    print("number of syllables: $syllableOption");
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        syllableOption.toString(),
+        word.title,
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: 30,
+          fontSize: fontSize,
         ),
       ),
     );

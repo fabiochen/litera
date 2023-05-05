@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
-import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class LessonNumbers extends BaseModule {

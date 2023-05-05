@@ -42,7 +42,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
                       itemExtent: 60,
                       scrollController: FixedExtentScrollController(initialItem: 0),
                       children: [
-                        ...mapSyllableMatch.map((value) {
+                        ...Globals().mapSyllableMatch.map((value) {
                           Map<String,List<Word>> map = value;
                           String _syllable = map.keys.first.toString();
                           return Text(
@@ -95,7 +95,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
                       itemExtent: 60,
                       scrollController: controller,
                       children: [
-                        ...mapSyllableMatch.elementAt(_selectedSyllable).values.first.map((word) {
+                        ...Globals().mapSyllableMatch.elementAt(_selectedSyllable).values.first.map((word) {
                           return Padding(
                             padding: const EdgeInsets.fromLTRB(20,0,0,0),
                             child: Align(
@@ -160,17 +160,17 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
   }
 
   void _audioPlayWord() {
-    List<Word> listWord = mapSyllableMatch.elementAt(_selectedSyllable).values.first;
+    List<Word> listWord = Globals().mapSyllableMatch.elementAt(_selectedSyllable).values.first;
     int itemId = listWord[_selectedWord].id;
     audioPlay(itemId);
   }
 
   void _audioPlaySyllable() {
     late int itemId;
-    Map<String,List> map = mapSyllableMatch.elementAt(_selectedSyllable);
+    Map<String,List> map = Globals().mapSyllableMatch.elementAt(_selectedSyllable);
     String _syllable = map.keys.first.toString();
 
-    listSyllables.forEach((element) {
+    Globals().listSyllables.forEach((element) {
       if (element.title == _syllable) itemId=element.id;
     });
 

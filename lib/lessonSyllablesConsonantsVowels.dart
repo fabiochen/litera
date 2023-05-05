@@ -31,7 +31,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                     itemExtent: 60,
                     scrollController: FixedExtentScrollController(initialItem: 0),
                     children: [
-                      ...listOnsetConsonants.map((value) {
+                      ...Globals().listOnsetConsonants.map((value) {
                         return Text(
                           value.title,
                           style: TextStyle(
@@ -50,7 +50,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                 ),
                 SizedBox(height: 40),
                 ElevatedButton(
-                    onPressed: () => audioPlay(listOnsetConsonants[_selectedConsonant].id),
+                    onPressed: () => audioPlay(Globals().listOnsetConsonants[_selectedConsonant].id),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white
                     ),
@@ -92,7 +92,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                     itemExtent: 60,
                     scrollController: FixedExtentScrollController(initialItem: 0),
                     children: [
-                      ...listVowels.map((value) {
+                      ...Globals().listVowels.map((value) {
                         return Text(
                           value.title,
                           style: TextStyle(
@@ -111,7 +111,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                 ),
                 SizedBox(height: 40),
                 ElevatedButton(
-                    onPressed: () => audioPlay(listVowels[_selectedVowel].id),
+                    onPressed: () => audioPlay(Globals().listVowels[_selectedVowel].id),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white
                     ),
@@ -150,7 +150,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              listOnsetConsonants[_selectedConsonant].title,
+              Globals().listOnsetConsonants[_selectedConsonant].title,
               style: TextStyle(
                 fontSize: 80,
                 color: Colors.green,
@@ -158,7 +158,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
               textAlign: TextAlign.center,
             ),
             Text(
-              listVowels[_selectedVowel].title,
+              Globals().listVowels[_selectedVowel].title,
               style: TextStyle(
                 fontSize: 80,
                 color: Colors.red,
@@ -194,8 +194,8 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
 
   void _playSyllableAudio() {
     late int itemId;
-    String _syllable = listOnsetConsonants[_selectedConsonant].title + listVowels[_selectedVowel].title;
-    listSyllables.forEach((element) {
+    String _syllable = Globals().listOnsetConsonants[_selectedConsonant].title + Globals().listVowels[_selectedVowel].title;
+    Globals().listSyllables.forEach((element) {
       if (element.title == _syllable) itemId=element.id;
     });
     audioPlay(itemId);

@@ -60,16 +60,11 @@ class _State extends BaseOptionTilesState<ModuleGenderNumber> {
   }
 
   @override
-  ButtonTheme getOptionTile(Word wordOption, [double _width=150, double _height=100]) {
-    return super.getOptionTile(wordOption,200);
-  }
-
-  @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        enumGenderNumber[int.parse(word.val1)],
+        Globals().enumGenderNumber[int.parse(word.val1)],
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,

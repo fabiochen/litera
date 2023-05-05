@@ -16,8 +16,8 @@ class _ModuleMatchCaseState extends BaseMatchCharacterState<ModuleMatchCase> {
   @override
   void next() {
     if (isEndPosition && type == 'test') {
-      expandedId[yearIndex] = Sub.MATH.index;
-      prefs.setInt('expandedId-$yearIndex',Sub.MATH.index);
+      Globals().expandedId[yearIndex] = Sub.MATH.index;
+      Globals().prefs.setInt('expandedId-$yearIndex',Sub.MATH.index);
     }
     super.next();
   }

@@ -19,7 +19,7 @@ class _State extends BaseModuleState<LessonWordPairs> {
   Widget getMainTile() {
     Word wordMas = (listProcess[listPosition] as List<Word>)[(fieldTypeMain as List<int>)[0]];
     Word wordFem = (listProcess[listPosition] as List<Word>)[(fieldTypeMain as List<int>)[1]];
-    audioPlayer.open(
+    Globals().audioPlayer.open(
         Playlist(
             audios: [
               Audio("assets/audios/" + wordMas.id.toString() + ".mp3"),

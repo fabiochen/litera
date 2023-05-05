@@ -16,13 +16,13 @@ class _MenuState extends BaseModuleState<Menu> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: init(),
+      future: Globals().init(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Theme(
             data: Theme.of(context).copyWith(
               canvasColor:
-                  menuColor, //This will change the drawer background.
+              Globals().menuColor, //This will change the drawer background.
               //other styles
             ),
             child: Drawer(
@@ -48,7 +48,7 @@ class _MenuState extends BaseModuleState<Menu> {
             Container(
               alignment: Alignment.center,
               child: Text(
-                appTitle.toUpperCase(),
+                Globals().appTitle.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 40,
@@ -70,7 +70,7 @@ class _MenuState extends BaseModuleState<Menu> {
             color: Colors.white,
           ),
           title: Text(
-              getAssetsVocab('ABOUT')),
+              Globals().getAssetsVocab('ABOUT')),
           onTap: () {
             Navigator.pushNamed(context, '/PageAbout');
           },
@@ -84,7 +84,7 @@ class _MenuState extends BaseModuleState<Menu> {
             color: Colors.white,
           ),
           title: Text(
-              getAssetsVocab('CONTACT')),
+              Globals().getAssetsVocab('CONTACT')),
           onTap: () {
             Navigator.pushNamed(context, '/PageContact');
           },
@@ -98,8 +98,8 @@ class _MenuState extends BaseModuleState<Menu> {
             color: Colors.white,
           ),
           title: Text(
-              getAssetsVocab('SHARE')),
-          onTap: () => Share.share('*$appTitle*\n\nhttps://play.google.com/store/apps/details?id=net.unitasoft.litera.portuguese'),
+              Globals().getAssetsVocab('SHARE')),
+          onTap: () => Share.share('*$Globals().appTitle*\n\nhttps://play.google.com/store/apps/details?id=net.unitasoft.litera.portuguese'),
         ),
       ));
       // share
@@ -110,7 +110,7 @@ class _MenuState extends BaseModuleState<Menu> {
             color: Colors.white,
           ),
           title: Text(
-              getAssetsVocab('SETTINGS')),
+              Globals().getAssetsVocab('SETTINGS')),
           onTap: () {
             Navigator.pushNamed(context, '/PageSettings');
           },
@@ -118,14 +118,14 @@ class _MenuState extends BaseModuleState<Menu> {
       ));
       // settings
 
-    listYears.forEach((_year) {
+    Globals().listYears.forEach((_year) {
       listWidgets.add(() {
         int _yearId = _year.id.index + 1;
         return ExpansionTile(
           collapsedIconColor: Colors.white,
           iconColor: Colors.white,
           textColor: Colors.white,
-          leading: getIcon(ModuleType.REPORT),
+          leading: Globals().getIcon(ModuleType.REPORT),
           title: Text("Relatório - $_yearIdº Ano"),
           children: getListModules(_year),
         );
@@ -157,8 +157,10 @@ class _MenuState extends BaseModuleState<Menu> {
         listModulesNew.add(Container(
           child: () {
             return ListTile(
-              leading: getIcon(ModuleType.REPORT),
-              title: Text(_module.title),
+              leading: Globals().getIcon(ModuleType.REPORT),
+              title: Text(_module.title,
+                  overflow: TextOverflow.ellipsis
+              ),
               onTap: () {
                 Navigator.pushNamed(context, '/BaseReport',
                     arguments: _module.arguments);

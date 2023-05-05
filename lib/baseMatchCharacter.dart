@@ -94,15 +94,15 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
                   return true;
                 },
                 onAccept: (List<String> data) {
-                  printDebug('accepted:${data[1]}');
-                  printDebug('data:${data[0]}');
+                  Globals().printDebug('accepted:${data[1]}');
+                  Globals().printDebug('data:${data[0]}');
                   setState(() {
                     acceptedPositionOriginalMap[data[1]] = true;
                     acceptedPositionTargetList[i] = true;
                     wordScrambled[i] = data[0];
                   });
                 },
-//                onLeave: (data) => printDebug("LEAVE 2!"),
+//                onLeave: (data) => Globals().printDebug("LEAVE 2!"),
                 builder: (context, candidateData,
                     rejectedData) {
                   charTarget = (isVisibleTarget) ? wordMain.title[i].toUpperCase() : '';
@@ -138,9 +138,32 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
                   ),
+                  onPressed: () => load(),
+                  child: Text(
+                    'Recomeçar',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ), // check result button,
+            ),  // check button
+            Flexible(
+              flex: 1,
+              child: ButtonTheme(
+                minWidth: 50.0,
+                height: 50.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                  ),
                   onPressed: () => _correction(),
                   child: Text(
-                    getAssetsVocab('CHECK'),
+                    Globals().getAssetsVocab('CHECK'),
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,
@@ -227,7 +250,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
     wordScrambled.forEach((item){
       concatenate.write(item);
     });
-    printDebug('concat:' + concatenate.toString());
+    Globals().printDebug('concat:' + concatenate.toString());
     isCorrect = wordMain.title == concatenate.toString();
     audioPlay(isCorrect);
     if (type == ModuleType.TEST) {
@@ -237,17 +260,17 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
         } else {
             flagWrong.value = 1;
         }
-        t2 = Timer(Duration(seconds: 1), () {
+        Globals().t2 = Timer(Duration(seconds: 1), () {
             next();
         });
     } else { // is exercise
         if (isCorrect) {
             correctCount++;
-            t2 = Timer(Duration(seconds: 1), () {
+            Globals().t2 = Timer(Duration(seconds: 1), () {
                 next();
             });
         } else {
-            t3 = Timer(Duration(seconds: 1), () {
+          Globals().t3 = Timer(Duration(seconds: 1), () {
                 load();
             });
         }
@@ -274,7 +297,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
       textList.add(text[i]);
     }
 
-    printDebug('org: ' + text);
+    Globals().printDebug('org: ' + text);
     textList.shuffle();
 
     text = '';
@@ -283,7 +306,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
       text = text + textList[i];
     }
 
-    printDebug('shuffled: ' + text);
+    Globals().printDebug('shuffled: ' + text);
 
     return text;
   }

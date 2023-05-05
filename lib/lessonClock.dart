@@ -14,7 +14,7 @@ class _State extends BaseModuleState<LessonClock> {
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
     playTime(wordMain.title);
-    return getClock(wordMain.title,20);
+    return Globals().getClock(wordMain.title,20);
   }
 
 }

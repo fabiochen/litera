@@ -26,7 +26,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= listOption1.length) {
       int processedIndex = listProcess.indexWhere((word) => (word as Word).processed == false);
-      printList(listProcess);
+      Globals().printList(listProcess);
       wordMain = listProcess[processedIndex] as Word;
       print("processed word: " + wordMain.title);
       wordMain.processed = true;
@@ -78,8 +78,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     return getImageTile(word.id);
   }
 
-  ButtonTheme getOptionTile(Word wordOption, [double _width=150, double _height=100]) {
-    print("getOptionTile");
+  ButtonTheme getOptionTile(Word wordOption) {
+    print("getOptionTile: " + wordOption.title);
     return ButtonTheme(
         child: Expanded(
             child: Column(
@@ -99,34 +99,17 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
                   },
                 ),
                 SizedBox(
-                  width: _width,
-                  height: _height,
+                  width: widthOption,
+                  height: heightOption,
                   child: PlayerBuilder.isPlaying(
-                      player: audioPlayer,
+                      player: Globals().audioPlayer,
                       builder: (context, isPlaying) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white
                           ),
                           onPressed: (!isPlaying) ? () {
-                            bool isCorrect = wordMain.id == wordOption.id;
-                            audioPlay(isCorrect);
-                            if (type == ModuleType.TEST) {
-                              if (isCorrect) {
-                                flagCorrect.value = 1;
-                                correctCount++;
-                              } else {
-                                flagWrong.value = 1;
-                                wrongCount++;
-                              }
-                              Timer(Duration(milliseconds: 1000), () async {
-                                next();
-                              });
-                            } else {
-                              if (isCorrect) Timer(Duration(milliseconds: 1000), () async {
-                                next();
-                              });
-                            }
+                            correctionLogic(wordOption);
                           } : () {},
                           child: getOptionValue(wordOption),
                         );
@@ -139,7 +122,28 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     );
   }
 
-  Widget getOptionValue(Word word, [double fontSize=50]) {
+  void correctionLogic(Word wordOption) {
+    bool isCorrect = wordMain.id == wordOption.id;
+    audioPlay(isCorrect);
+    if (type == ModuleType.TEST) {
+      if (isCorrect) {
+        flagCorrect.value = 1;
+        correctCount++;
+      } else {
+        flagWrong.value = 1;
+        wrongCount++;
+      }
+      Timer(Duration(milliseconds: 1000), () async {
+        next();
+      });
+    } else {
+      if (isCorrect) Timer(Duration(milliseconds: 1000), () async {
+        next();
+      });
+    }
+  }
+
+  Widget getOptionValue(Word word) {
     print("baseOptionTiles: getOptionValue");
     return Padding(
       padding: const EdgeInsets.all(15.0),
@@ -147,8 +151,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
         word.title.substring(0,1),
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.teal,
-          fontSize: fontSize,
+          color: colorOption,
+          fontSize: fontSizeOption,
           fontFamily: fontFamily
         ),
       ),

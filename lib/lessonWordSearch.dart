@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:litera/globals.dart';
 import 'package:litera/baseModule.dart';
 import 'word.dart';
 

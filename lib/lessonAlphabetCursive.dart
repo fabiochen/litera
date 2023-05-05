@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
-import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class LessonAlphabetCursive extends BaseModule {
@@ -22,6 +21,7 @@ class _LessonAlphabetCursiveState extends BaseModuleState<LessonAlphabetCursive>
   @override
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
+    audioPlay(wordMain.id);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,9 +42,8 @@ class _LessonAlphabetCursiveState extends BaseModuleState<LessonAlphabetCursive>
   }
 
   @override
-  String getMainLabel(word) {
-    audioPlay(word.id);
-    return word.title.substring(0,1).toUpperCase() + ' ' + word.title.substring(0,1);
+  String getMainLabel(text) {
+    return text.substring(0,1).toUpperCase() + ' ' + text.substring(0,1);
   }
 
 }

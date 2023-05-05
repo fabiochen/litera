@@ -45,7 +45,7 @@ class _LessonWordsConsonantsVowelsState extends BaseModuleState<LessonWordsConso
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          mapWordMatch.elementAt(listPosition).entries.first.key,
+                          Globals().mapWordMatch.elementAt(listPosition).entries.first.key,
                           style: TextStyle(
                             fontSize: 50,
                             color: Colors.green,
@@ -67,13 +67,13 @@ class _LessonWordsConsonantsVowelsState extends BaseModuleState<LessonWordsConso
                   itemExtent: 60,
                   scrollController: controller,
                   children: [
-                    ...mapWordMatch.elementAt(listPosition).values.first.map((word) {
+                    ...Globals().mapWordMatch.elementAt(listPosition).values.first.map((word) {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            word.title.replaceAll(mapWordMatch.elementAt(listPosition).entries.first.key,''),
+                            word.title.replaceAll(Globals().mapWordMatch.elementAt(listPosition).entries.first.key,''),
                             style: TextStyle(
                               fontSize: 50,
                               color: Colors.red,
@@ -97,7 +97,7 @@ class _LessonWordsConsonantsVowelsState extends BaseModuleState<LessonWordsConso
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                mapWordMatch.elementAt(listPosition).entries.first.key,
+                Globals().mapWordMatch.elementAt(listPosition).entries.first.key,
                 style: TextStyle(
                   fontSize: 50,
                   color: Colors.green,
@@ -105,7 +105,7 @@ class _LessonWordsConsonantsVowelsState extends BaseModuleState<LessonWordsConso
                 textAlign: TextAlign.center,
               ),
               Text(
-                mapWordMatch.elementAt(listPosition).values.first[_selectedChars].title.replaceAll(mapWordMatch.elementAt(listPosition).entries.first.key,''),
+                Globals().mapWordMatch.elementAt(listPosition).values.first[_selectedChars].title.replaceAll(Globals().mapWordMatch.elementAt(listPosition).entries.first.key,''),
                 style: TextStyle(
                   fontSize: 50,
                   color: Colors.red,
@@ -141,7 +141,7 @@ class _LessonWordsConsonantsVowelsState extends BaseModuleState<LessonWordsConso
   }
 
   void _playSyllableAudio() {
-    int itemId = mapWordMatch.elementAt(listPosition).values.first[_selectedChars].id;
+    int itemId = Globals().mapWordMatch.elementAt(listPosition).values.first[_selectedChars].id;
     audioPlay(itemId);
   }
 
