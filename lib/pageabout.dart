@@ -61,7 +61,7 @@ class _PageAboutState extends State<PageAbout> {
                   ),
                 ),
                 SizedBox(height: 80),
-                Text("Illustrations by FreePik and others",
+                Text("Illustrations by FreePik, brgfx and others",
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.black

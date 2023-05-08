@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import 'globals.dart';
-import 'lessonSyllables2Words.dart';
+import 'lessonCategory2Words.dart';
 import 'lessonWordPairs.dart';
 import 'moduleLetters2Picture.dart';
 import 'moduleTonicOption.dart';
@@ -18,7 +18,7 @@ import 'lessonAlphabet.dart';
 import 'lessonAlphabetLetters.dart';
 import 'lessonAlphabetCursive.dart';
 import 'lessonLetters.dart';
-import 'lessonNumbers.dart';
+import 'lessonImageText.dart';
 import 'lessonWords.dart';
 import 'lessonWordAndWord.dart';
 import 'moduleOrder.dart';
@@ -32,7 +32,7 @@ import 'moduleSound2Words.dart';
 import 'moduleSyllablesWord.dart';
 import 'lessonOnset2Words.dart';
 import 'lessonWord2Onsets.dart';
-import 'lessonWordsConsonantsVowels.dart';
+import 'lessonCategory2Word2Picture.dart';
 import 'moduleWords2Picture.dart';
 import 'moduleWord2Numbers.dart';
 import 'moduleNumbers2Picture.dart';
@@ -104,10 +104,10 @@ class MyApp extends StatelessWidget {
                 '/ModuleLetters2Picture'     : (context) => ModuleLetters2Picture(),
                 '/LessonSyllables'           : (context) => LessonSyllables(),
                 '/LessonSyllablesConsonantsVowels' : (context) => LessonSyllablesConsonantsVowels(),
-                '/LessonSyllables2Words'     : (context) => LessonSyllables2Words(),
+                '/LessonCategory2Words'     : (context) => LessonCategory2Words(),
                 '/ModuleSound2Words'         : (context) => ModuleSound2Words(),
                 '/ModuleSyllablesWord'       : (context) => ModuleSyllablesWord(),
-                '/LessonNumbers'             : (context) => LessonNumbers(),
+                '/LessonImageText'             : (context) => LessonImageText(),
                 '/ModuleNumbers2Picture'     : (context) => ModuleNumbers2Picture(),
                 '/ModuleOrderNumeric'        : (context) => ModuleOrderNumeric(),
                 '/LessonWords'               : (context) => LessonWords(),
@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
                 '/LessonWordPairs'           : (context) => LessonWordPairs(),
                 '/LessonOnset2Words'         : (context) => LessonOnset2Words(),
                 '/LessonWord2Onsets'         : (context) => LessonWord2Onsets(),
-                '/LessonWordsConsonantsVowels' : (context) => LessonWordsConsonantsVowels(),
+                '/LessonWordsConsonantsVowels' : (context) => LessonCategory2Word2Picture(),
                 '/ModuleWords2Picture'       : (context) => ModuleWords2Picture(),
                 '/ModuleWord2Pictures'       : (context) => ModuleWord2Pictures(),
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),

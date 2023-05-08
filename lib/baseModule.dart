@@ -33,6 +33,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   late List<Object> listProcess;
   Set<Word> setProcessed = Set();
   late List<Object> listOriginal;
+  late List<Object> listProcess2;
   int numberQuestions = 10;
   String title = '';
   ModuleType? type;
@@ -43,8 +44,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   bool useProgressBar = true;
   String fontFamily = "Litera-Regular";
 
-  late double fontSizeMain;
-  late double fontSizeOption;
+  late double fontSizeMain = 30;
+  late double fontSizeOption = 30;
   late double widthMain = 250;
   late double heightMain = 150;
   late double widthOption = 200;
@@ -122,11 +123,18 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       Globals().printDebug("test5");
       modulePos = args?['modulePos']??0;
       Globals().printDebug("test6: $modulePos");
-      listProcess = args?['list']??[];
+
+      listProcess = args?['list1']??[];
       // reset
       if (listProcess is List<Word>) listProcess.forEach((word) {(word as Word).processed = false;});
+      if (listProcess is List<Map<String, List<Word>>>) listProcess as List<Map<String, List<Word>>>;
+      listOriginal = args?['list1']??[];
 
-      listOriginal = args?['list']??[];
+      listProcess2 = args?['list2']??[];
+      // reset
+      //if (listProcess2 is List<Word>) listProcess2.forEach((word) {(word as Word).processed = false;});
+      //if (listProcess2 is List<Map<String, List<Word>>>) listProcess2.forEach((word) {(word as Word).processed = false;});
+
       Globals().printDebug("test7");
       numberQuestions = args?['numberQuestions']??numberQuestions;
       if (listProcess.length < numberQuestions) numberQuestions = listProcess.length;
@@ -136,8 +144,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       useProgressBar = args?['useProgressBar'] ?? true;
       Globals().printDebug("test10");
       fontFamily = args?['fontFamily'] ?? fontFamily;
-
+      Globals().printDebug("test10.1");
       fontSizeMain = args?['fontSizeMain'] ?? fontSizeMain;
+      Globals().printDebug("test10.2");
       fontSizeOption = args?['fontSizeOption'] ?? fontSizeOption;
       widthMain = args?['widthMain'] ?? widthMain;
       heightMain = args?['heightMain'] ?? heightMain;
@@ -301,7 +310,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
-    if (containsAudio) audioPlay(wordMain.id);
+    audioPlay(wordMain.id);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -377,9 +386,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       );
     } else {
     return ElevatedButton(
-    onPressed: () => null,
-    style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.white
+      onPressed: () => null,
+      style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.white
     ),
     child: Padding(
       padding: const EdgeInsets.all(15.0),
@@ -543,10 +552,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   Padding getImage(int id, double width) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Image(
-        image: AssetImage('assets/images/$id.png'),
-        width: width,
-        gaplessPlayback: true,
+      child: Container(
+        color: Colors.white,
+        child: Image(
+          image: AssetImage('assets/images/$id.png'),
+          width: width,
+          gaplessPlayback: true,
+        ),
       ),
     );
   }
@@ -766,9 +778,14 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     super.dispose();
   }
 
-  Word getWordById(int id) {
-    print("wordbyid: $id");
-    return listOriginal.singleWhere((word) => (word as Word).id == id) as Word;
+  Word getWordFromId(int id) {
+    print("word by id: $id");
+    return Globals().listVocab.singleWhere((word) => (word).id == id);
+  }
+
+  Word getCategoryFromId(List category, int id) {
+    print("syllable by id: $id");
+    return category.singleWhere((word) => (word).id == id);
   }
 
   void unlockNextModule() {
@@ -778,8 +795,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   void audioPlay(Object itemId) async {
-    audioStop();
-    Globals().audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
+    if (containsAudio) {
+      audioStop();
+      Globals().audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
+    }
   }
 
   void audioPlayOnset(String onset) {

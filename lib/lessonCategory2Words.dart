@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 import 'package:litera/baseModule.dart';
 
-class LessonSyllables2Words extends BaseModule {
+class LessonCategory2Words extends BaseModule {
   @override
-  _LessonSyllables2WordsState createState() => _LessonSyllables2WordsState();
+  _State createState() => _State();
 }
 
-class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words> {
+class _State extends BaseModuleState<LessonCategory2Words> {
 
   int _selectedSyllable = 0;
   int _selectedWord = 0;
@@ -42,11 +41,12 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
                       itemExtent: 60,
                       scrollController: FixedExtentScrollController(initialItem: 0),
                       children: [
-                        ...Globals().mapSyllableMatch.map((value) {
+                        ...(listProcess as List<Map<String, List<Word>>>).map((value) {
                           Map<String,List<Word>> map = value;
-                          String _syllable = map.keys.first.toString();
+                          String text = map.keys.first.toString();
+                          text = getCategoryFromId(listProcess2, int.parse(text)).title;
                           return Text(
-                            _syllable,
+                            text,
                             style: TextStyle(
                               fontSize: 40,
                               color: Colors.green,
@@ -64,7 +64,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
                   ),
                   SizedBox(height: 40),
                   ElevatedButton(
-                      onPressed: () => _audioPlaySyllable(),
+                      onPressed: () => _audioPlayCategory(),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white
                       ),
@@ -95,7 +95,7 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
                       itemExtent: 60,
                       scrollController: controller,
                       children: [
-                        ...Globals().mapSyllableMatch.elementAt(_selectedSyllable).values.first.map((word) {
+                        ...(listProcess as List<Map<String, List<Word>>>).elementAt(_selectedSyllable).values.first.map((word) {
                           return Padding(
                             padding: const EdgeInsets.fromLTRB(20,0,0,0),
                             child: Align(
@@ -160,21 +160,16 @@ class _LessonSyllables2WordsState extends BaseModuleState<LessonSyllables2Words>
   }
 
   void _audioPlayWord() {
-    List<Word> listWord = Globals().mapSyllableMatch.elementAt(_selectedSyllable).values.first;
+    List<Word> listWord = (listProcess as List<Map<String, List<Word>>>).elementAt(_selectedSyllable).values.first;
     int itemId = listWord[_selectedWord].id;
     audioPlay(itemId);
   }
 
-  void _audioPlaySyllable() {
-    late int itemId;
-    Map<String,List> map = Globals().mapSyllableMatch.elementAt(_selectedSyllable);
+  void _audioPlayCategory() {
+    Map<String,List> map = (listProcess as List<Map<String,List<Word>>>).elementAt(_selectedSyllable);
     String _syllable = map.keys.first.toString();
-
-    Globals().listSyllables.forEach((element) {
-      if (element.title == _syllable) itemId=element.id;
-    });
-
-    audioPlay(itemId);
+    Word word = getCategoryFromId(listProcess2, int.parse(_syllable));
+    audioPlay(word.id);
   }
 
 }

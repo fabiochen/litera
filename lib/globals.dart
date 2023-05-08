@@ -95,8 +95,9 @@ class Globals {
   late List<Word> valOrderVowels;
   late List<Word> valOrderAlphabet;
   late List<Word> listSyllables;
-  late List<Map<String, List<Word>>> mapSyllableMatch;
-  late List<Map<String, List<Word>>> mapWordMatch;
+  late List<Map<String, List<Word>>> mapMatchSyllable;
+  late List<Map<String, List<Word>>> mapMatchWord;
+  late List<Map<String, List<Word>>> mapMatchVertebrateAnimal;
   late List<Word> listDirections;
   late List<Word> listDaysOfTheWeek;
   late List<Word> listMonthsOfTheYear;
@@ -161,8 +162,9 @@ class Globals {
     valOrderNumbers = [];
     valOrderVowels = [];
     valOrderAlphabet = [];
-    mapSyllableMatch = [];
-    mapWordMatch = [];
+    mapMatchSyllable = [];
+    mapMatchVertebrateAnimal = [];
+    mapMatchWord = [];
     listYears = [];
     listDirections = [];
     listDaysOfTheWeek = [];
@@ -556,9 +558,7 @@ class Globals {
     printDebug("******** populate 8");
 
     parsedWords['LIST']['CATEGORY']['SYLLABLE-MATCH'].forEach((key) {
-      //printDebug("key:"+key.toString());
-      String _syllable = key['SYLLABLE'].toString();
-      //printDebug("syllable:"+syllable);
+      String _syllableId = key['SYLLABLE'].toString();
       List<Word> _listWords = [];
       key['WORDS'].forEach((key) {
         int id = int.parse(key.toString());
@@ -566,23 +566,19 @@ class Globals {
         Word word;
         if (result.isNotEmpty) {
           word = result.first;
-          //printDebug("id:" + word.id.toString());
-          //printDebug("title:" + word.title);
           _listWords.add(word);
         }
       });
-      Map<String, List<Word>> map = {_syllable: _listWords};
+      Map<String, List<Word>> map = {_syllableId: _listWords};
       try {
-        mapSyllableMatch.add(map);
+        mapMatchSyllable.add(map);
       } catch (e) {
         printDebug("Error:" + e.toString());
       }
     });
 
     parsedWords['LIST']['CATEGORY']['WORD-MATCH'].forEach((key) {
-      //printDebug("key:"+key.toString());
       String _syllable = key['SYLLABLE'].toString();
-      //printDebug("syllable:"+syllable);
       List<Word> _listWords = [];
       key['WORDS'].forEach((key) {
         int id = int.parse(key.toString());
@@ -590,14 +586,32 @@ class Globals {
         Word word;
         if (result.isNotEmpty) {
           word = result.first;
-          // printDebug("id:" + word.id.toString());
-          // printDebug("title:" + word.title);
           _listWords.add(word);
         }
       });
       Map<String, List<Word>> map = {_syllable: _listWords};
       try {
-        mapWordMatch.add(map);
+        mapMatchWord.add(map);
+      } catch (e) {
+        printDebug("Error:" + e.toString());
+      }
+    });
+
+    parsedWords['LIST']['CATEGORY']['VERTEBRATE-ANIMAL-MATCH'].forEach((key) {
+      String _syllable = key['CLASSIFICATION'].toString();
+      List<Word> _listWords = [];
+      key['ANIMAL'].forEach((key) {
+        int id = int.parse(key.toString());
+        final result = listVocab.where((element) => element.id == id);
+        Word word;
+        if (result.isNotEmpty) {
+          word = result.first;
+          _listWords.add(word);
+        }
+      });
+      Map<String, List<Word>> map = {_syllable: _listWords};
+      try {
+        mapMatchVertebrateAnimal.add(map);
       } catch (e) {
         printDebug("Error:" + e.toString());
       }
@@ -636,7 +650,7 @@ class Globals {
     printDebug("******** init 4.1.1");
     List<Subject> listSubjects = [];
     printDebug("******** init 4.1.2");
-    List<Module> listModulesYear1Por = [];
+    List<Module> listModules = [];
 
     Year year = Year(
         _year,
@@ -650,9 +664,9 @@ class Globals {
     listYears.add(year);
 
     // module 0
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Alfabeto (Imagens)";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
           _modulePos,
           _title,
@@ -664,9 +678,9 @@ class Globals {
           numberQuestions: 26
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Alfabeto (Letras)";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
           _modulePos,
           _title,
@@ -678,10 +692,10 @@ class Globals {
           numberQuestions: 26
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Vogais";
-      print("length: " + listModulesYear1Por.length.toString());
-      int _modulePos = listModulesYear1Por.length;
+      print("length: " + listModules.length.toString());
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -692,9 +706,9 @@ class Globals {
         '/LessonLetters',
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Ordem das Vogais";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -705,9 +719,9 @@ class Globals {
         '/ModuleOrder',
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Ordem Alfabética";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -718,9 +732,9 @@ class Globals {
         '/ModuleOrder',
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Qual é a Letra?";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -731,9 +745,9 @@ class Globals {
         '/ModuleSound2Words',
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Som inicial / Letras";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -744,9 +758,9 @@ class Globals {
         '/ModuleLetters2Onset',
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Maiúscula / Minúscula";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -758,9 +772,9 @@ class Globals {
         isVisibleTarget: true,
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Imagem / Letras";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -772,9 +786,9 @@ class Globals {
         fontSizeOption: 40,
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Som inicial / Letras";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -786,9 +800,9 @@ class Globals {
         useNavigation: false,
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Maiúscula / Minúscula";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -802,9 +816,9 @@ class Globals {
       );
     }());
 
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Caça-Palavras";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -817,9 +831,9 @@ class Globals {
       );
     }());
 
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Sílabas";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
           _modulePos,
           _title,
@@ -831,9 +845,9 @@ class Globals {
           numberQuestions: 999
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Consoantes / Vogais";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -845,23 +859,26 @@ class Globals {
         noLock: true,
       );
     }());
-    listModulesYear1Por.add(() {
+
+    listModules.add(() {
       String _title = "Sílabas / Palavras";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
         ModuleType.LESSON,
         _year,
         _subject,
-        [],
-        '/LessonSyllables2Words',
+        mapMatchSyllable,
+        '/LessonCategory2Words',
         noLock: true,
+        list2: listSyllables,
       );
     }());
-    listModulesYear1Por.add(() {
+
+    listModules.add(() {
       String _title = "Qual é a Sílaba?";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -872,9 +889,9 @@ class Globals {
         '/ModuleSound2Words',
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Palavras / Sílabas";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -885,9 +902,9 @@ class Globals {
         '/ModuleSyllablesWord',
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Qual é a Sílaba?";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -898,9 +915,9 @@ class Globals {
         '/ModuleSound2Words',
       );
     }());
-    listModulesYear1Por.add(() {
+    listModules.add(() {
       String _title = "Palavra / Sílabas";
-      int _modulePos = listModulesYear1Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -913,17 +930,17 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Português", listModulesYear1Por));
+        Subject(_subject, "Português", listModules));
   }
 
   void getYear1Mat() {
     Yr _year = Yr.ONE;
     Sub _subject = Sub.MATH;
-    List<Module> listModulesYear1Mat = [];
+    List<Module> listModules = [];
 
-    listModulesYear1Mat.add(() {
-      String _title = "1-10";
-      int _modulePos = listModulesYear1Mat.length;
+    listModules.add(() {
+      String _title = "1 - 10";
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -931,13 +948,13 @@ class Globals {
         _year,
         _subject,
         listNumber1t20.where((word) => word.id <= 154).toList(),
-        '/LessonNumbers',
+        '/LessonImageText',
       );
     }());
-    listModulesYear1Mat.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('PICTURE') + " / " +
           getAssetsVocab('NUMBERS');
-      int _modulePos = listModulesYear1Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -948,10 +965,10 @@ class Globals {
         '/ModuleNumbers2Picture',
       );
     }());
-    listModulesYear1Mat.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('PICTURE') + " / " +
           getAssetsVocab('NUMBERS');
-      int _modulePos = listModulesYear1Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -964,9 +981,9 @@ class Globals {
         sortCriteria: FieldType.ID,
       );
     }());
-    listModulesYear1Mat.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('ORDER-NUMBERS');
-      int _modulePos = listModulesYear1Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -977,9 +994,9 @@ class Globals {
         '/ModuleOrderNumeric',
       );
     }());
-    listModulesYear1Mat.add(() {
+    listModules.add(() {
       String _title = "Números (Antes e Depois)";
-      int _modulePos = listModulesYear1Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -991,9 +1008,9 @@ class Globals {
         fontSizeOption: 40,
       );
     }());
-    listModulesYear1Mat.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('ORDER-NUMBERS');
-      int _modulePos = listModulesYear1Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1004,9 +1021,9 @@ class Globals {
         '/ModuleOrderNumeric',
       );
     }());
-    listModulesYear1Mat.add(() {
+    listModules.add(() {
       String _title = "Números (Antes e Depois)";
-      int _modulePos = listModulesYear1Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1021,14 +1038,14 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Matemática", listModulesYear1Mat));
+        Subject(_subject, "Matemática", listModules));
   }
 
   void getYear2Por() {
     Yr _year = Yr.TWO;
     Sub _subject = Sub.PORTUGUESE;
     List<Subject> listSubjects = [];
-    List<Module> listModulesYear2Por = [];
+    List<Module> listModules = [];
 
     Year year = Year(
         _year,
@@ -1039,9 +1056,9 @@ class Globals {
     listYears.add(year);
     expandedId.add(_subject.index);
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Alfabeto (Cursiva)";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1054,9 +1071,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Alfabeto (Palavras)";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1069,9 +1086,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Letras (Antes e Depois)";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1084,9 +1101,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('ONSET') + " / " + getAssetsVocab('WORDS');
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1099,9 +1116,9 @@ class Globals {
         heightOption: 100
       );
     }());
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('ONSETS');
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1114,9 +1131,9 @@ class Globals {
         '/LessonWord2Onsets',
       );
     }());
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Alfabeto (Sílabas)";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
           _modulePos,
           _title,
@@ -1129,24 +1146,26 @@ class Globals {
           fieldTypeMain: FieldType.VAL1
       );
     }());
-    listModulesYear2Por.add(() {
+    
+    listModules.add(() {
       String _title = "Sílabas Iniciais";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
           _modulePos,
           _title,
           ModuleType.LESSON,
           _year,
           _subject,
-          mapWordMatch,
+          mapMatchWord,
           '/LessonWordsConsonantsVowels',
+          list2: listSyllables,
           fieldTypeMain: FieldType.TITLE
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Número de Sílabas";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1158,9 +1177,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Forca";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1173,10 +1192,10 @@ class Globals {
         '/LessonHangman',
       );
     }());
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('PICTURE') + " / " +
           getAssetsVocab('WORDS');
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1187,10 +1206,10 @@ class Globals {
         '/ModuleWords2Picture',
       );
     }());
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('PICTURE') + " / " +
           getAssetsVocab('WORDS') + " (cursiva)";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1202,9 +1221,9 @@ class Globals {
         fontFamily: "Maria_lucia",
       );
     }());
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1217,9 +1236,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('SPELLING') + " 1";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1233,9 +1252,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('SPELLING') + " 2";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1249,9 +1268,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Letras (Antes e Depois)";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1264,9 +1283,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS');
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1278,9 +1297,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1293,9 +1312,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('SPELLING') + " 1";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1308,9 +1327,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = getAssetsVocab('SPELLING') + ' 2';
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1322,9 +1341,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Masculino / Feminino";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
           _modulePos,
           _title,
@@ -1337,9 +1356,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Singular / Plural";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
           _modulePos,
           _title,
@@ -1353,9 +1372,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Por.add(() {
+    listModules.add(() {
       String _title = "Gênero & Número";
-      int _modulePos = listModulesYear2Por.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1368,17 +1387,17 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Português", listModulesYear2Por));
+        Subject(_subject, "Português", listModules));
   }
 
   void getYear2Mat() {
     Yr _year = Yr.TWO;
     Sub _subject = Sub.MATH;
-    List<Module> listModulesYear2Mat = [];
+    List<Module> listModules = [];
 
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "1 - 20 (extenso)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1394,9 +1413,9 @@ class Globals {
         numberQuestions: 999,
       );
     }());
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "1 - 20 (extenso)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1407,9 +1426,9 @@ class Globals {
         '/ModuleNumbers2Word',
       );
     }());
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "1 - 20 (extenso)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1421,9 +1440,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "30 - 100 (extenso)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1438,9 +1457,9 @@ class Globals {
         fontSizeOption: 100,
       );
     }());
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "30 - 100 (extenso)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1451,9 +1470,9 @@ class Globals {
         '/ModuleNumbers2Word',
       );
     }());
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "30 - 100 (extenso)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1465,9 +1484,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "1 - 10 (ordinais)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1482,9 +1501,9 @@ class Globals {
         fontSizeOption: 100,
       );
     }());
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "1 - 10 (ordinais)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1495,9 +1514,9 @@ class Globals {
         '/ModuleNumbers2Word',
       );
     }());
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "1 - 10 (ordinais)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1509,9 +1528,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "20 - 100 (ordinais)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
           _modulePos,
           _title,
@@ -1528,9 +1547,9 @@ class Globals {
       );
     }());
 
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "20 - 100 (ordinais)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1541,9 +1560,9 @@ class Globals {
         '/ModuleNumbers2Word',
       );
     }());
-    listModulesYear2Mat.add(() {
+    listModules.add(() {
       String _title = "20 - 100 (ordinais)";
-      int _modulePos = listModulesYear2Mat.length;
+      int _modulePos = listModules.length;
       return Module(
         _modulePos,
         _title,
@@ -1556,7 +1575,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Matemática", listModulesYear2Mat));
+        Subject(_subject, "Matemática", listModules));
   }
 
   void getYear2Sci() {
@@ -2257,6 +2276,22 @@ class Globals {
         containsAudio:  false,
         fontSizeOption: 30,
         fieldTypeMain: FieldType.TITLE,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Animais Vertebrados";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.LESSON,
+          _year,
+          _subject,
+          mapMatchVertebrateAnimal,
+          '/LessonWordsConsonantsVowels',
+          list2: listVocab,
+          fieldTypeMain: FieldType.TITLE
       );
     }());
 

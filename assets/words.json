@@ -161,94 +161,116 @@
       },
       "SYLLABLE-MATCH": [
         {
-          "SYLLABLE": "ba",
+          "SYLLABLE": "3000",
           "WORDS": [45,46,47,48]
         },
         {
-          "SYLLABLE": "be",
+          "SYLLABLE": "3001",
           "WORDS": [49,50,51]
         },
         {
-          "SYLLABLE": "bi",
+          "SYLLABLE": "3002",
           "WORDS": [52,53,54,55]
         },
         {
-          "SYLLABLE": "bo",
+          "SYLLABLE": "3003",
           "WORDS": [2,56,57,58]
         },
         {
-          "SYLLABLE": "bu",
+          "SYLLABLE": "3004",
           "WORDS": [60,61,62,63]
         },
         {
-          "SYLLABLE": "ma",
+          "SYLLABLE": "3030",
           "WORDS": [13, 27, 28]
         },
         {
-          "SYLLABLE": "me",
+          "SYLLABLE": "3031",
           "WORDS": [29,30,31,32,33]
         },
         {
-          "SYLLABLE": "mi",
+          "SYLLABLE": "3032",
           "WORDS": [34,35,36,37]
         },
         {
-          "SYLLABLE": "mo",
+          "SYLLABLE": "3033",
           "WORDS": [38,39,40,41,42]
         },
         {
-          "SYLLABLE": "mu",
+          "SYLLABLE": "3034",
           "WORDS": [43,44]
         },
         {
-          "SYLLABLE": "ta",
+          "SYLLABLE": "3050",
           "WORDS": [20,64,65]
         },
         {
-          "SYLLABLE": "te",
+          "SYLLABLE": "3051",
           "WORDS": [67,68,69,70,72]
         },
         {
-          "SYLLABLE": "ti",
+          "SYLLABLE": "3052",
           "WORDS": [73,74]
         },
         {
-          "SYLLABLE": "to",
+          "SYLLABLE": "3053",
           "WORDS": [75,76,77,78,79]
         },
         {
-          "SYLLABLE": "tu",
+          "SYLLABLE": "3054",
           "WORDS": [80,81,82,83,84]
         }
       ],
       "WORD-MATCH": [
         {
-          "SYLLABLE": "ba",
+          "SYLLABLE": "3000",
           "WORDS": [45,46,47,48]
         },
         {
-          "SYLLABLE": "be",
+          "SYLLABLE": "3001",
           "WORDS": [49,50,51]
         },
         {
-          "SYLLABLE": "ma",
+          "SYLLABLE": "3030",
           "WORDS": [13,27,28]
         },
         {
-          "SYLLABLE": "ta",
+          "SYLLABLE": "3050",
           "WORDS": [20,64,65]
         },
         {
-          "SYLLABLE": "te",
+          "SYLLABLE": "3051",
           "WORDS": [67,68,69,72]
         },
         {
-          "SYLLABLE": "to",
+          "SYLLABLE": "3053",
           "WORDS": [75,76,77,78,79]
         },
         {
-          "SYLLABLE": "tu",
+          "SYLLABLE": "3054",
           "WORDS": [80,81,83,84]
+        }
+      ],
+      "VERTEBRATE-ANIMAL-MATCH": [
+        {
+          "CLASSIFICATION": "109",
+          "ANIMAL": [7,18,27,73]
+        },
+        {
+          "CLASSIFICATION": "110",
+          "ANIMAL": [81,97,100,101]
+        },
+        {
+          "CLASSIFICATION": "111",
+          "ANIMAL": [80,89,106,107]
+        },
+        {
+          "CLASSIFICATION": "112",
+          "ANIMAL": [96,98,99,104]
+        },
+        {
+          "CLASSIFICATION": "113",
+          "ANIMAL": [105,108]
         }
       ],
       "ALPHABET-ONSET": {
@@ -654,7 +676,7 @@
           "pe-na", 1
         ],
         "89": [
-          "pei-xe", 1
+          "dou-ra-do", 2
         ],
         "90": [
           "por-ta", 1
@@ -673,6 +695,60 @@
         ],
         "95": [
           "rei", 1
+        ],
+        "96": [
+          "ca-ma-le-ão", 4
+        ],
+        "97": [
+          "ga-lo", 1
+        ],
+        "98": [
+          "ja-ca-ré", 3
+        ],
+        "99": [
+          "tar-ta-ru-ga", 3
+        ],
+        "100": [
+          "a-ves-truz", 3
+        ],
+        "101": [
+          "pin-guim", 2
+        ],
+        "102": [
+          "cis-ne", 1
+        ],
+        "103": [
+          "la-gar-ti-xa", 3
+        ],
+        "104": [
+          "co-bra", 1
+        ],
+        "105": [
+          "sa-po", 1
+        ],
+        "106": [
+          "sal-mão", 2
+        ],
+        "107": [
+          "ar-rai-a", 2
+        ],
+        "108": [
+          "a-xo-lo-te", 3
+        ],
+        "109": [
+          "ma-mí-fero", 2
+        ],
+        "110": [
+          "a-ve", 1
+        ],
+        "111": [
+          "pei-xe", 1
+        ],
+        "112": [
+          "rép-til", 1
+        ],
+        "113": [
+          "an-fí-bio", 2
         ]
       },
       "GENDER-NUMBER": {

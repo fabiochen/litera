@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:litera/baseModule.dart';
 import 'package:litera/word.dart';
 
-class LessonNumbers extends BaseModule {
+class LessonImageText extends BaseModule {
   @override
-  _LessonNumbersState createState() => _LessonNumbersState();
+  _State createState() => _State();
 }
 
-class _LessonNumbersState extends BaseModuleState<LessonNumbers> {
+class _State extends BaseModuleState<LessonImageText> {
 
   // list sort criteria
   Comparator<Object> criteria = (a, b) => ((a as Word).id).compareTo((b as Word).id);
@@ -24,17 +24,5 @@ class _LessonNumbersState extends BaseModuleState<LessonNumbers> {
       ],
     );
   }
-
-  // Text getText(Word word) {
-  //   audioPlay(word.id);
-  //   return Text(
-  //       getText(word.value),
-  //       textAlign: TextAlign.center,
-  //       style: TextStyle(
-  //         fontSize: 80,
-  //         color: Colors.teal,
-  //       )
-  //   );
-  // }
-  //
+  
 }

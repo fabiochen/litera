@@ -50,7 +50,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   Text getText(String text, [double fontSize = 100, Color color = Colors.teal]) {
     String rel = (listRel[listPosition] > 0)?"Antes":"Depois";
-    text = getWordById(listMain[listPosition].id + listRel[listPosition]).title;
+    text = getWordFromId(listMain[listPosition].id + listRel[listPosition]).title;
     text = rel + " de $text";
     return super.getText(text, fontSize, Colors.red);
   }
@@ -85,7 +85,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
       Playlist(
           audios: [
             Audio("assets/audios/$rel.mp3"),
-            Audio("assets/audios/" + (getWordById(listMain[listPosition].id + listRel[listPosition]).id).toString() + ".mp3")
+            Audio("assets/audios/" + (getWordFromId(listMain[listPosition].id + listRel[listPosition]).id).toString() + ".mp3")
           ]
       ),
     );

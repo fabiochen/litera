@@ -8,7 +8,8 @@ class Module {
   Yr year;
   Sub subject;
   String routeName;
-  List<Object>? list;
+  List<Object>? list1;
+  List<Object>? list2;
   bool isVisibleTarget;
   int? numberQuestions;
   bool useNavigation;
@@ -35,9 +36,10 @@ class Module {
       ModuleType this.type,
       Yr this.year,
       Sub this.subject,
-      List<Object>? this.list,
+      List<Object>? this.list1,
       String this.routeName,
       {
+        List<Object>? this.list2,
         bool this.isVisibleTarget = false,
         int? this.numberQuestions,
         bool this.useNavigation = true,
@@ -67,7 +69,8 @@ class Module {
     args!['type'] = this.type;
     args!['year'] = this.year.index;
     args!['subject'] = this.subject.index;
-    args!['list'] = this.list as Object;
+    args!['list1'] = this.list1 as Object;
+    if (this.list2 != null) args!['list2'] = this.list2 as Object;
     args!['isVisibleTarget'] = this.isVisibleTarget;
     if (this.numberQuestions != null) args!['numberQuestions'] = this.numberQuestions as Object;
     args!['useNavigation'] = this.useNavigation;
