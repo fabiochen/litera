@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:litera/word.dart';
-import 'package:litera/baseModule.dart';
+import 'word.dart';
+import 'baseModule.dart';
+import 'globals.dart';
 
 class LessonCategory2Words extends BaseModule {
   @override
@@ -44,7 +45,7 @@ class _State extends BaseModuleState<LessonCategory2Words> {
                         ...(listProcess as List<Map<String, List<Word>>>).map((value) {
                           Map<String,List<Word>> map = value;
                           String text = map.keys.first.toString();
-                          text = getCategoryFromId(listProcess2, int.parse(text)).title;
+                          text = Globals().getCategoryFromId(listProcess2, int.parse(text)).title;
                           return Text(
                             text,
                             style: TextStyle(
@@ -168,7 +169,7 @@ class _State extends BaseModuleState<LessonCategory2Words> {
   void _audioPlayCategory() {
     Map<String,List> map = (listProcess as List<Map<String,List<Word>>>).elementAt(_selectedSyllable);
     String _syllable = map.keys.first.toString();
-    Word word = getCategoryFromId(listProcess2, int.parse(_syllable));
+    Word word = Globals().getCategoryFromId(listProcess2, int.parse(_syllable));
     audioPlay(word.id);
   }
 

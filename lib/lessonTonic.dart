@@ -9,7 +9,12 @@ class LessonTonic extends BaseModule {
 }
 
 class _State extends BaseModuleState<LessonTonic> {
-  
+
+  @override void didChangeDependencies() {
+    super.didChangeDependencies();
+    listProcess.shuffle();
+  }
+
   @override
   Widget getMainTile() {
     return Column(

@@ -5,6 +5,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'globals.dart';
 import 'lessonCategory2Words.dart';
 import 'lessonWordPairs.dart';
+import 'moduleCategoryOption.dart';
 import 'moduleLetters2Picture.dart';
 import 'moduleTonicOption.dart';
 import 'moduleTonicSyllable.dart';
@@ -33,7 +34,7 @@ import 'moduleSyllablesWord.dart';
 import 'lessonOnset2Words.dart';
 import 'lessonWord2Onsets.dart';
 import 'lessonCategory2Word2Picture.dart';
-import 'moduleWords2Picture.dart';
+import 'modulePicture2Words.dart';
 import 'moduleWord2Numbers.dart';
 import 'moduleNumbers2Picture.dart';
 import 'moduleNumbers2Word.dart';
@@ -116,7 +117,7 @@ class MyApp extends StatelessWidget {
                 '/LessonOnset2Words'         : (context) => LessonOnset2Words(),
                 '/LessonWord2Onsets'         : (context) => LessonWord2Onsets(),
                 '/LessonWordsConsonantsVowels' : (context) => LessonCategory2Word2Picture(),
-                '/ModuleWords2Picture'       : (context) => ModuleWords2Picture(),
+                '/ModulePicture2Words'       : (context) => ModulePicture2Words(),
                 '/ModuleWord2Pictures'       : (context) => ModuleWord2Pictures(),
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),
                 '/ModuleSpelling02'          : (context) => ModuleSpelling02(),
@@ -129,8 +130,9 @@ class MyApp extends StatelessWidget {
                 '/LessonTonic'               : (context) => LessonTonic(),
                 '/ModuleTonicSyllable'       : (context) => ModuleTonicSyllable(),
                 '/ModuleTonicOption'         : (context) => ModuleTonicOption(),
+                '/ModuleCategoryOption'      : (context) => ModuleCategoryOption(),
 
-                '/BaseReport'                : (context) => Report(),
+                '/Report'                    : (context) => Report(),
               }
           );
         }

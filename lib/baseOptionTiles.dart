@@ -26,7 +26,6 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= listOption1.length) {
       int processedIndex = listProcess.indexWhere((word) => (word as Word).processed == false);
-      Globals().printList(listProcess);
       wordMain = listProcess[processedIndex] as Word;
       print("processed word: " + wordMain.title);
       wordMain.processed = true;
@@ -79,7 +78,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
   }
 
   ButtonTheme getOptionTile(Word wordOption) {
-    print("getOptionTile: " + wordOption.title);
+    //print("getOptionTile: " + wordOption.title);
     return ButtonTheme(
         child: Expanded(
             child: Column(
@@ -123,16 +122,20 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
   }
 
   void correctionLogic(Word wordOption) {
+    Globals().printDebug("correctionLogic 1 ");
     bool isCorrect = wordMain.id == wordOption.id;
     audioPlay(isCorrect);
     if (type == ModuleType.TEST) {
+      Globals().printDebug("correctionLogic 2 ");
       if (isCorrect) {
+        Globals().printDebug("correctionLogic 3 ");
         flagCorrect.value = 1;
         correctCount++;
       } else {
         flagWrong.value = 1;
         wrongCount++;
       }
+      Globals().printDebug("correctionLogic 4 ");
       Timer(Duration(milliseconds: 1000), () async {
         next();
       });

@@ -19,7 +19,7 @@ class _State extends BaseModuleState<LessonHangman> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     listProcess.shuffle();
-    Globals().alphabetLetterList.sort(criteria);
+    Globals().listAlphabetSounds.sort(criteria);
   }
 
   Widget getMainTile() {
@@ -73,9 +73,9 @@ class _State extends BaseModuleState<LessonHangman> {
           child: TextButton(
               onPressed: () => (listBadLetters.length<10 && !isDone())?checkLetterExists(i):null,
               child: Text(
-                Globals().alphabetLetterList[i].title.toUpperCase(),
+                Globals().listAlphabetSounds[i].title.toUpperCase(),
                 style: TextStyle(
-                  color: (!listBadLetters.contains(Globals().alphabetLetterList[i].title))?Colors.white:Colors.grey,
+                  color: (!listBadLetters.contains(Globals().listAlphabetSounds[i].title))?Colors.white:Colors.grey,
                   fontSize: 23,
                 ),
               ),
@@ -126,7 +126,7 @@ class _State extends BaseModuleState<LessonHangman> {
   }
 
   void checkLetterExists(int i) {
-    String chosenLetter = Globals().alphabetLetterList[i].title;
+    String chosenLetter = Globals().listAlphabetSounds[i].title;
     if (wordMain.title.contains(chosenLetter)) {
       // only add once
       if (!listGoodLetters.contains(chosenLetter)) listGoodLetters.add(chosenLetter);

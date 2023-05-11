@@ -27,16 +27,21 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
         case FieldType.TITLE:
           if (word.title == 'Domingo') rel = 1;
           if (word.title == 'Sábado') rel = -1;
+
           if (word.title == 'Janeiro') rel = 1;
           if (word.title == 'Dezembro') rel = -1;
+
           if (word.title == 'Primavera') rel = 1;
           if (word.title == 'Inverno') rel = -1;
+
           if (word.title == 'Mercúrio') rel = 1;
           if (word.title == 'Netuno') rel = -1;
+
           break;
         case FieldType.VAL1:
           if (word.val1.substring(0,1) == 'a') rel = 1;
           if (word.val1.substring(0,1) == 'z') rel = -1;
+
           if (word.val1.substring(0,1) == '1') rel = 1;
           if (word.val1.substring(0,1) == '9') rel = -1;
           break;
@@ -50,7 +55,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   Text getText(String text, [double fontSize = 100, Color color = Colors.teal]) {
     String rel = (listRel[listPosition] > 0)?"Antes":"Depois";
-    text = getWordFromId(listMain[listPosition].id + listRel[listPosition]).title;
+    text = Globals().getCategoryFromId(listProcess, listMain[listPosition].id + listRel[listPosition]).title;
     text = rel + " de $text";
     return super.getText(text, fontSize, Colors.red);
   }
@@ -85,7 +90,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
       Playlist(
           audios: [
             Audio("assets/audios/$rel.mp3"),
-            Audio("assets/audios/" + (getWordFromId(listMain[listPosition].id + listRel[listPosition]).id).toString() + ".mp3")
+            Audio("assets/audios/" + (Globals().getCategoryFromId(listProcess, listMain[listPosition].id + listRel[listPosition]).id).toString() + ".mp3")
           ]
       ),
     );

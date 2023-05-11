@@ -162,7 +162,7 @@ class _MenuState extends BaseModuleState<Menu> {
                   overflow: TextOverflow.ellipsis
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/BaseReport',
+                Navigator.pushNamed(context, '/Report',
                     arguments: _module.arguments);
               },
             );

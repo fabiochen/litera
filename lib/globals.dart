@@ -26,9 +26,11 @@ enum FieldType {
   TITLE,
   VAL1,
   VAL2,
+  VAL3,
   TITLE_ID,
   TITLE_VAL1,
   TITLE_VAL2,
+  TITLE_VAL3,
 }
 
 enum Sub {
@@ -86,8 +88,9 @@ class Globals {
   late List<Word> listNumber1t10Ordinal;
   late List<Word> listNumber20t100Ordinal;
   late List<Word> listVocab;
+  late List<Word> listAnimals;
   late List<Word> alphabetOnsetList;
-  late List<Word> alphabetLetterList;
+  late List<Word> listAlphabetSounds;
   late List<Word> letterOnsetList;
   late List<Word> listOnsetConsonants; // list of alphabet letters used for onset lesson
   late List<Word> lettersMatchCase;
@@ -150,12 +153,13 @@ class Globals {
     listVowels = [];
     listAlphabet = [];
     listVocab = [];
+    listAnimals = [];
     listNumber1t20 = [];
     listNumber30t100 = [];
     listNumber1t10Ordinal = [];
     listNumber20t100Ordinal = [];
     alphabetOnsetList = [];
-    alphabetLetterList = [];
+    listAlphabetSounds = [];
     letterOnsetList = [];
     listOnsetConsonants = [];
     lettersMatchCase = [];
@@ -251,23 +255,31 @@ class Globals {
     buildNumber = packageInfo.buildNumber;
 
     // populate vocab list
-    parsedWords['LIST']['CATEGORY']['VOCABULARY'].keys.forEach((key) {
-      int id = int.parse(key);
-      printDebug("******** populate 3.1");
-      List listElement = parsedWords['LIST']['CATEGORY']['VOCABULARY'][key];
+    List<dynamic> listKeys = parsedWords['LIST']['CATEGORY']['VOCABULARY'].keys.toList();
+    print("key count: " + listKeys.length.toString());
+    for (int id=0; id<listKeys.length; id++) {
+      printDebug("******** populate 3.1: $id");
+      var key = listKeys[id];
       printDebug("******** populate 3.2");
+      print("key $key");
+      List listElement = parsedWords['LIST']['CATEGORY']['VOCABULARY']["$key"];
       String title = listElement[0].replaceAll('-', '');
       printDebug("******** populate 3.3");
       String val2 = listElement[1].toString();
       printDebug("******** populate 3.4");
-      Word word = Word(id, title);
-      printDebug("******** populate 3.5");
+      Word word = Word(int.parse(key), title);
+      printDebug("******** populate 3.5 " + word.id.toString());
       word.val1 = listElement[0];
+      printDebug("******** populate 3.5 " + word.title.toString());
       word.val2 = val2;
+      word.containsAudio = await AssetExists('assets/audios/$key.mp3');
+      word.containsImage = await AssetExists('assets/images/$key.png');
+      print("$id contains audio: " + word.containsAudio.toString());
+      print("$id contains image: " + word.containsImage.toString());
       listVocab.add(word);
-    });
-
-    printDebug("******** populate 4");
+      print("word added to listVocab");
+      printDebug("******** populate 4");
+    }
 
     // populate vocab list
     parsedWords['LIST']['CATEGORY']['DAYS-OF-THE-WEEK'].keys.forEach((key) {
@@ -458,7 +470,7 @@ class Globals {
       int id = int.parse(key);
       String title = parsedWords['LIST']['CATEGORY']['ALPHABET-LETTER-SOUND'][key];
       Word word = Word(id, title, title);
-      alphabetLetterList.add(word);
+      listAlphabetSounds.add(word);
     });
 
     // populate letter onset
@@ -598,7 +610,7 @@ class Globals {
     });
 
     parsedWords['LIST']['CATEGORY']['VERTEBRATE-ANIMAL-MATCH'].forEach((key) {
-      String _syllable = key['CLASSIFICATION'].toString();
+      String category = key['CLASSIFICATION'].toString();
       List<Word> _listWords = [];
       key['ANIMAL'].forEach((key) {
         int id = int.parse(key.toString());
@@ -606,10 +618,12 @@ class Globals {
         Word word;
         if (result.isNotEmpty) {
           word = result.first;
+          word.val3 = category;
           _listWords.add(word);
+          listAnimals.add(word);
         }
       });
-      Map<String, List<Word>> map = {_syllable: _listWords};
+      Map<String, List<Word>> map = {category: _listWords};
       try {
         mapMatchVertebrateAnimal.add(map);
       } catch (e) {
@@ -675,7 +689,7 @@ class Globals {
           _subject,
           alphabet,
           '/LessonAlphabet',
-          numberQuestions: 26
+          numberQuestions: 999
       );
     }());
     listModules.add(() {
@@ -687,7 +701,7 @@ class Globals {
           ModuleType.LESSON,
           _year,
           _subject,
-          alphabetLetterList,
+          listAlphabetSounds,
           '/LessonAlphabetLetters',
           numberQuestions: 26
       );
@@ -741,7 +755,7 @@ class Globals {
         ModuleType.EXERCISE,
         _year,
         _subject,
-        alphabetLetterList,
+        listAlphabetSounds,
         '/ModuleSound2Words',
       );
     }());
@@ -889,6 +903,7 @@ class Globals {
         '/ModuleSound2Words',
       );
     }());
+
     listModules.add(() {
       String _title = "Palavras / Sílabas";
       int _modulePos = listModules.length;
@@ -1065,23 +1080,8 @@ class Globals {
         ModuleType.LESSON,
         _year,
         _subject,
-        alphabetLetterList,
+        listAlphabetSounds,
         '/LessonAlphabetCursive',
-        numberQuestions: 999,
-      );
-    }());
-
-    listModules.add(() {
-      String _title = "Alfabeto (Palavras)";
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.LESSON,
-        _year,
-        _subject,
-        alphabet,
-        '/LessonWordsAndPicture',
         numberQuestions: 999,
       );
     }());
@@ -1095,7 +1095,7 @@ class Globals {
         ModuleType.EXERCISE,
         _year,
         _subject,
-        alphabetLetterList,
+        listAlphabetSounds,
         '/ModuleBeforeAndAfter',
         fontSizeOption: 50,
       );
@@ -1140,9 +1140,9 @@ class Globals {
           ModuleType.LESSON,
           _year,
           _subject,
-          alphabet,
+          listVocab.where((word) => word.containsImage && word.containsAudio).toList(),  //alphabet,
           '/LessonWordsAndPicture',
-          numberQuestions: 999,
+          numberQuestions: 26,
           fieldTypeMain: FieldType.VAL1
       );
     }());
@@ -1192,6 +1192,7 @@ class Globals {
         '/LessonHangman',
       );
     }());
+
     listModules.add(() {
       String _title = getAssetsVocab('PICTURE') + " / " +
           getAssetsVocab('WORDS');
@@ -1203,9 +1204,11 @@ class Globals {
         _year,
         _subject,
         listVocab.where((word) => word.title.length <= 5).toList(),
-        '/ModuleWords2Picture',
+        '/ModulePicture2Words',
+        fieldTypeOption: FieldType.TITLE,
       );
     }());
+
     listModules.add(() {
       String _title = getAssetsVocab('PICTURE') + " / " +
           getAssetsVocab('WORDS') + " (cursiva)";
@@ -1217,7 +1220,8 @@ class Globals {
         _year,
         _subject,
         listVocab.where((word) => word.title.length <= 5).toList(),
-        '/ModuleWords2Picture',
+        '/ModulePicture2Words',
+        fieldTypeOption: FieldType.TITLE,
         fontFamily: "Maria_lucia",
       );
     }());
@@ -1277,7 +1281,7 @@ class Globals {
         ModuleType.TEST,
         _year,
         _subject,
-        alphabetLetterList,
+        listAlphabetSounds,
         '/ModuleBeforeAndAfter',
         fontSizeOption: 50,
       );
@@ -1292,8 +1296,10 @@ class Globals {
         ModuleType.TEST,
         _year,
         _subject,
-        alphabet.where((word) => word.title.length <= 5).toList(),
-        '/ModuleWords2Picture',
+        listVocab.where((word) => word.containsImage && word.containsAudio && word.title.length <= 5).toList(),
+        '/ModulePicture2Words',
+        fieldTypeOption: FieldType.TITLE,
+        sortCriteria: FieldType.TITLE,
       );
     }());
 
@@ -1722,7 +1728,7 @@ class Globals {
         _subject,
         listMonthsOfTheYear,
         '/ModuleBeforeAndAfter',
-        fontSizeOption: 30,
+        fontSizeOption: 25,
       );
     }());
 
@@ -1737,7 +1743,7 @@ class Globals {
         _subject,
         listMonthsOfTheYear,
         '/ModuleBeforeAndAfter',
-        fontSizeOption: 30,
+        fontSizeOption: 25,
       );
     }());
 
@@ -1892,17 +1898,18 @@ class Globals {
         // do not include single syllable words
         // queijo & xadrez have syllables that are too long
         listVocab.where((word) =>
-        (word).val1
+        word.containsAudio &&
+        word.val1
             .split('-')
             .length > 1 &&
             word.title != 'queijo' &&
             word.title != 'xadrez').toList(),
         '/LessonTonic',
-        numberQuestions: 50,
+        numberQuestions: 30,
         fontSizeMain: 60,
         fontSizeOption: 50,
         widthMain: 120,
-        containsAudio: false,
+        sortCriteria: FieldType.TITLE,
         fieldTypeMain: FieldType.VAL2,
       );
     }());
@@ -1919,9 +1926,11 @@ class Globals {
         // do not include single syllable words
         // queijo & xadrez have syllables that are too long
         listVocab.where((word) =>
-        (word).val1
+        word.containsAudio &&
+        word.val1
             .split('-')
             .length == 4 &&
+            word.containsAudio &&
             word.title != 'queijo' &&
             word.title != 'xadrez').toList(),
         '/ModuleTonicSyllable',
@@ -1945,7 +1954,8 @@ class Globals {
         // do not include single syllable words
         // queijo & xadrez have syllables that are too long
         listVocab.where((word) =>
-        (word).val1
+        word.containsAudio &&
+        word.val1
             .split('-')
             .length == 4 &&
             word.title != 'queijo' &&
@@ -1971,21 +1981,18 @@ class Globals {
         // do not include single syllable words
         // queijo & xadrez have syllables that are too long
         listVocab.where((word) =>
-        (word).val1
-            .split('-')
-            .length > 1 &&
+            word.val1.split('-').length > 1 &&
+            word.val1.split('-').length < 4 &&
             word.title != 'queijo' &&
             word.title != 'xadrez' &&
-            word.val1
-                .split('-')
-                .length == int.parse(word.val2)
+            word.containsAudio &&
+            word.val1.split('-').length == int.parse(word.val2)
         ).toList(),
         '/LessonTonic',
         numberQuestions: 30,
         fontSizeMain: 60,
         fontSizeOption: 50,
-        widthMain: 120,
-        containsAudio: false,
+        widthMain: 150,
         fieldTypeMain: FieldType.VAL2,
       );
     }());
@@ -2002,11 +2009,10 @@ class Globals {
         // do not include single syllable words
         // queijo & xadrez have syllables that are too long
         listVocab.where((word) =>
-        (word).val1
-            .split('-')
-            .length > 1 &&
+        word.val1.split('-').length == 3 &&
             word.title != 'queijo' &&
             word.title != 'xadrez' &&
+            word.containsAudio &&
             word.val1
                 .split('-')
                 .length - 1 == int.parse(word.val2)
@@ -2016,7 +2022,6 @@ class Globals {
         fontSizeMain: 60,
         fontSizeOption: 50,
         widthMain: 120,
-        containsAudio: false,
         fieldTypeMain: FieldType.VAL2,
       );
     }());
@@ -2047,7 +2052,6 @@ class Globals {
         fontSizeMain: 60,
         fontSizeOption: 50,
         widthMain: 120,
-        containsAudio: false,
         fieldTypeMain: FieldType.VAL2,
       );
     }());
@@ -2062,7 +2066,8 @@ class Globals {
         _year,
         _subject,
         listVocab.where((word) =>
-        (word).val1
+        word.containsAudio &&
+        word.val1
             .split('-')
             .length > 2).toList(),
         '/ModuleTonicOption',
@@ -2071,7 +2076,6 @@ class Globals {
         fontSizeOption: 50,
         widthMain: 120,
         widthOption: 300,
-        containsAudio: false,
         fieldTypeMain: FieldType.VAL2,
       );
     }());
@@ -2086,16 +2090,15 @@ class Globals {
         _year,
         _subject,
         listVocab.where((word) =>
-        (word).val1
-            .split('-')
-            .length > 2).toList(),
+          word.val1.split('-').length > 2 &&
+          word.containsAudio
+        ).toList(),
         '/ModuleTonicOption',
         numberQuestions: 20,
         fontSizeMain: 60,
         fontSizeOption: 50,
         widthMain: 120,
         widthOption: 300,
-        containsAudio: false,
         fieldTypeMain: FieldType.VAL2,
         sortCriteria: FieldType.TITLE,
       );
@@ -2122,10 +2125,9 @@ class Globals {
         listStateCapital,
         '/LessonWordAndWord',
         numberQuestions: 999,
-        fontSizeMain: 40,
+        fontSizeMain: 50,
         fontSizeOption: 50,
         widthMain: 300,
-        containsAudio: false,
         fieldTypeMain: FieldType.VAL2,
         fieldTypeOption: FieldType.TITLE_VAL1,
       );
@@ -2258,6 +2260,7 @@ class Globals {
         '/ModuleBeforeAndAfter',
         containsAudio:  false,
         fontSizeOption: 30,
+        fontSizeMain: 40,
         fieldTypeMain: FieldType.TITLE,
       );
     }());
@@ -2295,8 +2298,51 @@ class Globals {
       );
     }());
 
+    listModules.add(() {
+      String _title = "Qual é a Classificação?";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listAnimals,
+        '/ModuleCategoryOption',
+        containsAudio: false,
+        numberQuestions: 999,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Qual é a Classificação?";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        listAnimals,
+        '/ModuleCategoryOption',
+        containsAudio: false,
+        numberQuestions: 10,
+        sortCriteria: FieldType.TITLE,
+      );
+    }());
+
     listYears[_year.index].subjects.add(
         Subject(_subject, "Ciências", listModules));
+  }
+
+  Future<bool> AssetExists(String path) async {
+    try {
+      await rootBundle.load(path);
+      return true;
+    } catch (e) {
+      printDebug("ERROR: $e");
+      return false;
+    }
   }
 
   Icon? getLockIcon(bool isModuleLocked) {
@@ -2397,17 +2443,38 @@ class Globals {
     await prefs.setInt('unlockModuleIndex-$_year-$_subject', newIndex);
   }
 
-  printList(List<Object> list) {
-    print("List of elements: " + list.length.toString());
-    list.forEach((element) {
-      if (element is Word)
-        print("element: " + (element).title + " processed: " +
-            element.processed.toString());
-      else if (element is bool)
-        print("element: $element");
-      else
-        print("$element");
-    });
+  printList(Object list) {
+    print("**************** PRINT LIST START *******************");
+    print("object type: " + list.runtimeType.toString());
+    if (list is List<int>) {
+      print("List of elements: " + list.length.toString());
+      list.forEach((element) {
+          print("element $element");
+      });
+    }
+    if (list is List<Word>) {
+      int i = 0;
+      list.forEach((element) {
+        print("$i. element " + element.id.toString() + ": " + element.title +
+            " cat: " + (getWordFromId(int.parse(element.val3))).title);
+        i++;
+      });
+    }
+    if (list is Set<int>) {
+      list.forEach((element) {
+          print("element $element");
+      });
+    }
+    print("**************** PRINT LIST END *******************");
   }
+
+  Word getWordFromId(int id) {
+    return Globals().listVocab.singleWhere((word) => (word).id == id);
+  }
+
+  Word getCategoryFromId(List category, int id) {
+    return category.singleWhere((word) => (word).id == id);
+  }
+
 
 }

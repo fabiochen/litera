@@ -90,7 +90,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (_) {
-          Globals().printDebug('******** banner loaded: ' + DateTime.now().toString());
+          //Globals().printDebug('******** banner loaded: ' + DateTime.now().toString());
           isBannerAdReady.value = true;
         },
         onAdFailedToLoad: (ad, err) {
@@ -128,8 +128,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       // reset
       if (listProcess is List<Word>) listProcess.forEach((word) {(word as Word).processed = false;});
       if (listProcess is List<Map<String, List<Word>>>) listProcess as List<Map<String, List<Word>>>;
+      Globals().printDebug("test6.1: $modulePos");
       listOriginal = args?['list1']??[];
-
+      Globals().printDebug("test6.2: $modulePos");
       listProcess2 = args?['list2']??[];
       // reset
       //if (listProcess2 is List<Word>) listProcess2.forEach((word) {(word as Word).processed = false;});
@@ -309,6 +310,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getMainTile() {
+    print("listProcess count: $listProcess");
     wordMain = listProcess[listPosition] as Word;
     audioPlay(wordMain.id);
     return Column(
@@ -598,13 +600,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   void saveCorrectionValues () async {
-    //print("SaveCorrectionValues");
+    print("SaveCorrectionValues");
     String correctKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-correct';
-    //print("CorrectKey: $correctKey = " + flagCorrect.value.toString());
+    print("CorrectKey: $correctKey = " + flagCorrect.value.toString());
     int correctValue = (Globals().prefs.getInt(correctKey) ?? 0) + flagCorrect.value;
     await Globals().prefs.setInt(correctKey, correctValue);
     String wrongKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-wrong';
-    //print("WrongKey: $wrongKey =" + flagWrong.value.toString());
+    print("WrongKey: $wrongKey =" + flagWrong.value.toString());
     int wrongValue = (Globals().prefs.getInt(wrongKey) ?? 0) + flagWrong.value;
     await Globals().prefs.setInt(wrongKey, wrongValue);
     flagCorrect.value = 0;
@@ -778,16 +780,6 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     super.dispose();
   }
 
-  Word getWordFromId(int id) {
-    print("word by id: $id");
-    return Globals().listVocab.singleWhere((word) => (word).id == id);
-  }
-
-  Word getCategoryFromId(List category, int id) {
-    print("syllable by id: $id");
-    return category.singleWhere((word) => (word).id == id);
-  }
-
   void unlockNextModule() {
     modulePos++;
     if (modulePos > Globals().getUnlockModuleIndex(yearIndex, subjectIndex))
@@ -795,10 +787,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   void audioPlay(Object itemId) async {
-    if (containsAudio) {
-      audioStop();
-      Globals().audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
-    }
+    audioStop();
+    Globals().audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
   }
 
   void audioPlayOnset(String onset) {

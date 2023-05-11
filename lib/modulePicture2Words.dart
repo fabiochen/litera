@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'globals.dart';
 
 import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
 
-class ModuleWords2Picture extends BaseOptionTiles {
+class ModulePicture2Words extends BaseOptionTiles {
   @override
-  _ModuleWords2PictureState createState() => _ModuleWords2PictureState();
+  _State createState() => _State();
 }
 
-class _ModuleWords2PictureState extends BaseOptionTilesState<ModuleWords2Picture> {
+class _State extends BaseOptionTilesState<ModulePicture2Words> {
 
   @override
   Widget getCenterTile(word) {
@@ -17,10 +18,18 @@ class _ModuleWords2PictureState extends BaseOptionTilesState<ModuleWords2Picture
 
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
+    String text = word.title;
+    switch (fieldTypeOption) {
+      case FieldType.VAL3:
+        text = Globals().getWordFromId(int.parse(word.val3)).title;
+        break;
+      default:
+        text = word.title;
+    }
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
-        word.title,
+        text,
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,

@@ -615,6 +615,9 @@
         "65": [
           "ta-ça", 1
         ],
+        "66": [
+          "ta-xi", 1
+        ],
         "67": [
           "te-cla-do", 2
         ],
@@ -857,33 +860,33 @@
         "25": "12:10"
       },
       "STATE-CAPITAL": {
-        "1": ["Acre", "AC", "Rio Branco"],
-        "2": ["Alagoas", "AL", "Maceió"],
-        "3": ["Amapá", "AP", "Macapá"],
-        "4": ["Amazonas", "AM", "Manaus"],
-        "5": ["Bahia", "BA", "Salvador"],
-        "6": ["Ceará", "CE", "Fortaleza"],
-        "7": ["Distrito Federal*", "DF", "Brasília"],
-        "8": ["Espírito Santo", "ES", "Vitória"],
-        "9": ["Goiás", "GO", "Goiânia"],
-        "10": ["Maranhão", "MA", "São Luís"],
-        "11": ["Mato Grosso", "MT", "Cuiabá"],
-        "12": ["Mato Grosso do Sul", "MS", "Campo Grande"],
-        "13": ["Minas Gerais", "MG", "Belo Horizonte"],
-        "14": ["Pará", "PA", "Belém"],
-        "15": ["Paraíba", "PB", "João Pessoa"],
-        "16": ["Paraná", "PR", "Curitiba"],
-        "17": ["Pernambuco", "PE", "Recife"],
-        "18": ["Piauí", "PI", "Teresina"],
-        "19": ["Rio de Janeiro", "RJ", "Rio de Janeiro"],
-        "20": ["Rio Grande do Norte", "RN", "Natal"],
-        "21": ["Rio Grande do Sul", "RS", "Porto Alegre"],
-        "22": ["Rondônia", "RO", "Porto Velho"],
-        "23": ["Roraima", "RR", "Boa Vista"],
-        "24": ["Santa Catarina", "SC", "Florianópolis"],
-        "25": ["São Paulo", "SP", "São Paulo"],
-        "26": ["Sergipe", "SE", "Aracaju"],
-        "27": ["Tocantins", "TO", "Palmas"]
+        "2501": ["Acre", "AC", "Rio Branco"],
+        "2502": ["Alagoas", "AL", "Maceió"],
+        "2503": ["Amapá", "AP", "Macapá"],
+        "2504": ["Amazonas", "AM", "Manaus"],
+        "2505": ["Bahia", "BA", "Salvador"],
+        "2506": ["Ceará", "CE", "Fortaleza"],
+        "2507": ["Distrito Federal*", "DF", "Brasília"],
+        "2508": ["Espírito Santo", "ES", "Vitória"],
+        "2509": ["Goiás", "GO", "Goiânia"],
+        "2510": ["Maranhão", "MA", "São Luís"],
+        "2511": ["Mato Grosso", "MT", "Cuiabá"],
+        "2512": ["Mato Grosso do Sul", "MS", "Campo Grande"],
+        "2513": ["Minas Gerais", "MG", "Belo Horizonte"],
+        "2514": ["Pará", "PA", "Belém"],
+        "2515": ["Paraíba", "PB", "João Pessoa"],
+        "2516": ["Paraná", "PR", "Curitiba"],
+        "2517": ["Pernambuco", "PE", "Recife"],
+        "2518": ["Piauí", "PI", "Teresina"],
+        "2519": ["Rio de Janeiro", "RJ", "Rio de Janeiro"],
+        "2520": ["Rio Grande do Norte", "RN", "Natal"],
+        "2521": ["Rio Grande do Sul", "RS", "Porto Alegre"],
+        "2522": ["Rondônia", "RO", "Porto Velho"],
+        "2523": ["Roraima", "RR", "Boa Vista"],
+        "2524": ["Santa Catarina", "SC", "Florianópolis"],
+        "2525": ["São Paulo", "SP", "São Paulo"],
+        "2526": ["Sergipe", "SE", "Aracaju"],
+        "2527": ["Tocantins", "TO", "Palmas"]
       }
     }
   }

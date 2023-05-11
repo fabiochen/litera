@@ -25,7 +25,7 @@ class _State extends BaseModuleState<LessonCategory2Word2Picture> {
 
   Widget getMainTile() {
     String category = (listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).entries.first.key;
-    category = getCategoryFromId(listProcess2,int.parse(category)).title;
+    category = Globals().getCategoryFromId(listProcess2,int.parse(category)).title;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(

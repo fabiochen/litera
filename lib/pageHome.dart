@@ -34,7 +34,7 @@ class _PageHomeState<T extends PageHome> extends State<T> {
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (_) {
-          Globals().printDebug('******** banner loaded: ' + DateTime.now().toString());
+          //Globals().printDebug('******** banner loaded: ' + DateTime.now().toString());
           isBannerAdReady.value = true;
         },
         onAdFailedToLoad: (ad, err) {
