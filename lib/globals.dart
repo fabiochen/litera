@@ -97,7 +97,7 @@ class Globals {
   Color menuColor = Colors.teal;
   Color? menuColorDark = Colors.teal[800];
 
-  final bool debugMode = false;
+  final bool debugMode = true;
 
   late List<Word> alphabet;
   late List<Word> syllableUnique;
@@ -1598,7 +1598,7 @@ class Globals {
         ModuleType.EXERCISE,
         _year,
         _subject,
-        listVocab.where((word) => word.title.length < 10).toList(),
+        listVocab.where((word) => word.containsAudio && word.title.length < 10).toList(),
         '/ModuleSyllablesCount',
       );
     }());
@@ -3033,14 +3033,14 @@ class Globals {
       padding: EdgeInsets.all(padding),
       child: AnalogClock(
         decoration: BoxDecoration(
-            border: Border.all(width: 10.0, color: Colors.teal),
+            border: Border.all(width: 10.0, color: Colors.blue),
             color: Colors.white,
             shape: BoxShape.circle),
         isLive: false,
         hourHandColor: Colors.deepOrange,
-        minuteHandColor: Colors.black,
+        minuteHandColor: Colors.teal,
         showSecondHand: false,
-        numberColor: Colors.teal,
+        numberColor: Colors.blue,
         showNumbers: true,
         showAllNumbers: true,
         textScaleFactor: 1.0,

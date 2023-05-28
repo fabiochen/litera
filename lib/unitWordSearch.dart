@@ -27,7 +27,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
   final WordSearchSafety wordSearch = WordSearchSafety();
   late WSNewPuzzle newPuzzle;
 
-  final Set<int> selectedIndexes = Set<int>();
+  Set<int> selectedIndexes = Set<int>();
   Map<int,Color> selectedIndexColor = {};
   Set<int> selectedTempIndexes = Set<int>();
   List<Set<int>> listWordIndexes = [];
@@ -44,6 +44,14 @@ class _State extends BaseModuleState<UnitWordSearch> {
     listString = [];
     strPuzzle = '';
     selectedWord = '';
+
+    listWordsDone = [];
+    listString = [];
+
+    selectedIndexes = Set<int>();
+    selectedIndexColor = {};
+    selectedTempIndexes = Set<int>();
+    listWordIndexes = [];
 
     listProcess.shuffle();
     listWords = (listProcess).sublist(0,6).toList();
@@ -150,7 +158,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
         Flexible(
             flex: 1,
             child: GridView.builder(
-              itemCount: 6,
+              itemCount: listWords.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 2.0,
@@ -222,6 +230,10 @@ class _State extends BaseModuleState<UnitWordSearch> {
         listWordsDone.add(selectedWord);
         if (listWordsDone.length == listWords.length) {
           audioPlay("cheer");
+          Future.delayed(Duration(milliseconds: 3000), () {
+            didChangeDependencies();
+            setState(() {});
+          });
         } else {
           audioPlay("true");
         }

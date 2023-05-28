@@ -32,24 +32,28 @@ class _State extends BaseModuleState<LessonClockDigital> {
             Container(
               width: 150,
               height: 100,
-              child: CupertinoPicker(
-                backgroundColor: Colors.white,
-                itemExtent: 60,
-                children: [
-                  ...Globals().listTimeHour.map((word) {
-                    String title = word.title;
-                    return Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 50,
-                        color: Colors.deepOrange,
-                      ),
-                    );
-                  }).toList(),
-                ],
-                onSelectedItemChanged: (value) {
-                  setState(() {_selectedHour = value;});
-                },
+              color: Colors.red,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 60,
+                  children: [
+                    ...Globals().listTimeHour.map((word) {
+                      String title = word.title;
+                      return Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 50,
+                          color: Colors.deepOrange,
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                  onSelectedItemChanged: (value) {
+                    setState(() {_selectedHour = value;});
+                  },
+                ),
               ),
             ),  // hour
             Container(
@@ -59,30 +63,35 @@ class _State extends BaseModuleState<LessonClockDigital> {
                 ":",
                 style: TextStyle(
                   fontSize: 50,
+                  fontWeight: FontWeight.bold,
                   color: Colors.green,
                 ),
               )),  // :
             Container(
               width: 150,
               height: 100,
-              child: CupertinoPicker(
-                backgroundColor: Colors.white,
-                itemExtent: 60,
-                children: [
-                  ...Globals().listTimeMinutes.map((word) {
-                    String title = word.title;
-                    return Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 50,
-                        color: Colors.green,
-                      ),
-                    );
-                  }).toList(),
-                ],
-                onSelectedItemChanged: (value) {
-                  setState(() {_selectedMinute = value;});
-                },
+              color: Colors.teal,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 60,
+                  children: [
+                    ...Globals().listTimeMinutes.map((word) {
+                      String title = word.title;
+                      return Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 50,
+                          color: Colors.green,
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                  onSelectedItemChanged: (value) {
+                    setState(() {_selectedMinute = value;});
+                  },
+                ),
               ),
             ),  // minutes
           ],

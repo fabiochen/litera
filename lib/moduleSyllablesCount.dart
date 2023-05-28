@@ -15,8 +15,9 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
   @override
   Widget getMainTile() {
     Globals().printDebug("moduleSyllablesCount: getMainTile");
-    syllableOption = 0;
     listProcess.shuffle();
+    syllableOption = 0;
+    Globals().printDebug("moduleSyllablesCount: getMainTile syllable option: $syllableOption");
     // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= listOption1.length) {
       wordMain = listProcess[0] as Word;
@@ -52,6 +53,7 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
       }
     }
     wordMain = listMain[listPosition];
+    audioPlay(wordMain.id);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
