@@ -16,8 +16,8 @@ class _State extends BaseModuleState<LessonClockDigital> {
   int _selectedMinute = 0;
 
   Widget getMainTile() {
-    print("hour: $_selectedHour");
-    print("min: $_selectedMinute");
+    Globals().printDebug("hour: $_selectedHour");
+    Globals().printDebug("min: $_selectedMinute");
     Word hr = Globals().listTimeHour.elementAt(_selectedHour);
     Word mn = Globals().listTimeMinutes.elementAt(_selectedMinute);
     playTime(hr.title + ":" + mn.title);

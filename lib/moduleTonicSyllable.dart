@@ -46,8 +46,8 @@ class _State extends BaseOptionTilesState<ModuleTonicSyllable> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption1[listPosition]),
-              getOptionTile(listOption2[listPosition])
+              getOptionTile(listOption1[listPosition], listColor[0]!),
+              getOptionTile(listOption2[listPosition], listColor[1]!)
             ],
           ),
         ),
@@ -57,8 +57,8 @@ class _State extends BaseOptionTilesState<ModuleTonicSyllable> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption3[listPosition]),
-              getOptionTile(listOption4[listPosition])
+              getOptionTile(listOption3[listPosition], listColor[2]!),
+              getOptionTile(listOption4[listPosition], listColor[3]!)
             ],
           ),
         ),
@@ -93,11 +93,11 @@ class _State extends BaseOptionTilesState<ModuleTonicSyllable> {
     return getTextTile(
       word,
       containsAudio: containsAudio,
-      fontSize: fontSizeMain,
+      fontSize: mainFontSize,
     );
   }
 
-  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),

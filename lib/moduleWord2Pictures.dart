@@ -27,6 +27,16 @@ class _ModuleWord2PicturesState extends BaseOptionTilesState<ModuleWord2Pictures
   }
 
   @override
+  String getMainLabel(label) {
+    return label.toUpperCase();
+  }
+
+  @override
+  ButtonTheme getOptionTile(Word wordOption, [Color backGroundColor=Colors.white]) {
+    return super.getOptionTile(wordOption, Colors.white);
+  }
+
+  @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(5.0),

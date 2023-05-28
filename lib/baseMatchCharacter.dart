@@ -35,7 +35,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
   void didChangeDependencies() {
     super.didChangeDependencies();
     Map? args = ModalRoute.of(context)?.settings.arguments as Map;
-    print("args: " + args.toString());
+    Globals().printDebug("args: " + args.toString());
     isVisibleTarget = args['isVisibleTarget'] ?? false;
     load();
   }
@@ -64,10 +64,10 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           itemBuilder: (BuildContext context, int i) {
             if (!acceptedPositionOriginalMap[i.toString()]!) {
               return Draggable<List<String>>(
-                  feedback: getLetterModel(titleShuffled[i], Colors.yellow),
+                  feedback: getLetterModel(titleShuffled[i], listColor[i]!),
                   childWhenDragging: Container(),
                   data: [titleShuffled[i], i.toString()],
-                  child: getLetterModel(titleShuffled[i], Colors.yellow));
+                  child: getLetterModel(titleShuffled[i], listColor[i]!));
             } else {
               return Container();
             }
@@ -107,7 +107,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
                     rejectedData) {
                   charTarget = (isVisibleTarget) ? wordMain.title[i].toUpperCase() : '';
                   return acceptedPositionTargetList[i]
-                      ? getTargetLetterModel(wordScrambled[i], Colors.yellow)
+                      ? getTargetLetterModel(wordScrambled[i], listColor[i]!)
                       : getTargetLetterModel(charTarget, Colors.white);
                 });
           },

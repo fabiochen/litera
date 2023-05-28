@@ -16,7 +16,7 @@ class _MenuState extends BaseModuleState<Menu> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Globals().init(),
+      future: Globals().init(context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Theme(

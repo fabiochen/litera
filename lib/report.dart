@@ -14,13 +14,13 @@ class Report extends BaseModule {
 class BaseReportState<T extends Report> extends BaseModuleState<T> {
 
   Widget getBody() {
-    print("************************ Report: getBody");
+    Globals().printDebug("************************ Report: getBody");
     listProcess.sort(criteria);
     return FutureBuilder(
       future: Globals().getPrefs(),
       builder: (context, projectSnap) {
         if (projectSnap.connectionState == ConnectionState.done) {
-          print('project snapshot data is: ${projectSnap.data}');
+          Globals().printDebug('project snapshot data is: ${projectSnap.data}');
           return Container(
             color: Colors.black,
             child: Column(
@@ -37,8 +37,8 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
                     String keyCorrect = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-correct';
                     SharedPreferences pref = projectSnap.data as SharedPreferences;
                     int correctCount = pref.getInt(keyCorrect) ?? 0;
-                    print('correct count:' + correctCount.toString());
-                    print('id:' + wordMain.id.toString());
+                    Globals().printDebug('correct count:' + correctCount.toString());
+                    Globals().printDebug('id:' + wordMain.id.toString());
                     String keyWrong = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-wrong';
                     int wrongCount = pref.getInt(keyWrong) ?? 0;
                     double totalCount = correctCount + wrongCount + 0.0001;

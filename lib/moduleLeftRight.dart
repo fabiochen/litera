@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
 
@@ -40,8 +41,8 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption1[listPosition]),
-              getOptionTile(listOption2[listPosition])
+              getOptionTile(listOption1[listPosition], listColor[0]!),
+              getOptionTile(listOption2[listPosition], listColor[1]!)
             ],
           ),
         ),
@@ -52,12 +53,20 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
 
   @override
   Widget getCenterTile(word) {
-    print("center tile word: " + word.title);
+    Globals().printDebug("center tile word: " + word.title);
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
     int id = word.id;
+    String label = '';
+    switch (mainFieldType) {
+      case FieldType.VAL3:
+        label = Globals().getWordFromId(int.parse(word.val3)).title;
+        break;
+      default:
+        label = word.title;
+    }
     return ElevatedButton(
         onPressed: () => audioPlay(id),
         style: ElevatedButton.styleFrom(
@@ -71,7 +80,7 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
                 width: width,
                 height: 100,
                 alignment: Alignment.center,
-                child: getText(word.title,40,Colors.deepOrange),
+                child: getText(label,40,Colors.deepOrange),
               ),
             ),
             Positioned(

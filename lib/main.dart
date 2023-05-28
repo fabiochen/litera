@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:litera/unitMemoryGame.dart';
 
 import 'globals.dart';
 import 'lessonCategory2Words.dart';
+import 'lessonMath.dart';
+import 'lessonMusic.dart';
 import 'lessonWordPairs.dart';
+import 'moduleCategory2Option.dart';
 import 'moduleCategoryOption.dart';
+import 'moduleColors.dart';
 import 'moduleLetters2Picture.dart';
+import 'moduleMath.dart';
+import 'moduleSound2Images.dart';
 import 'moduleTonicOption.dart';
 import 'moduleTonicSyllable.dart';
 import 'moduleWord2Pictures.dart';
@@ -45,10 +52,10 @@ import 'moduleGenderNumber.dart';
 import 'lessonClock.dart';
 import 'lessonClockDigital.dart';
 import 'moduleClock.dart';
-import 'lessonHangman.dart';
+import 'unitHangman.dart';
 import 'moduleSyllablesCount.dart';
 import 'moduleLeftRight.dart';
-import 'lessonWordSearch.dart';
+import 'unitWordSearch.dart';
 import 'lessonTonic.dart';
 
 void main() {
@@ -71,7 +78,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return FutureBuilder(
-      future: Globals().init(),
+      future: Globals().init(context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
@@ -95,7 +102,7 @@ class MyApp extends StatelessWidget {
                 '/LessonLetters'             : (context) => LessonLetters(),
                 '/LessonClock'               : (context) => LessonClock(),
                 '/LessonClockDigital'        : (context) => LessonClockDigital(),
-                '/LessonHangman'             : (context) => LessonHangman(),
+                '/UnitHangman'               : (context) => UnitHangman(),
                 '/ModuleClock'               : (context) => ModuleClock(),
                 '/ModuleOrder'               : (context) => ModuleOrder(),
                 '/ModuleGenderNumber'        : (context) => ModuleGenderNumber(),
@@ -116,7 +123,7 @@ class MyApp extends StatelessWidget {
                 '/LessonWordPairs'           : (context) => LessonWordPairs(),
                 '/LessonOnset2Words'         : (context) => LessonOnset2Words(),
                 '/LessonWord2Onsets'         : (context) => LessonWord2Onsets(),
-                '/LessonWordsConsonantsVowels' : (context) => LessonCategory2Word2Picture(),
+                '/LessonCategory2Word2Picture' : (context) => LessonCategory2Word2Picture(),
                 '/ModulePicture2Words'       : (context) => ModulePicture2Words(),
                 '/ModuleWord2Pictures'       : (context) => ModuleWord2Pictures(),
                 '/ModuleSpelling01'          : (context) => ModuleSpelling01(),
@@ -126,11 +133,18 @@ class MyApp extends StatelessWidget {
                 '/ModuleWord2Numbers'        : (context) => ModuleWord2Numbers(),
                 '/ModuleSyllablesCount'      : (context) => ModuleSyllablesCount(),
                 '/ModuleLeftRight'           : (context) => ModuleLeftRight(),
-                '/LessonWordSearch'          : (context) => LessonWordSearch(),
+                '/UnitWordSearch'            : (context) => UnitWordSearch(),
                 '/LessonTonic'               : (context) => LessonTonic(),
                 '/ModuleTonicSyllable'       : (context) => ModuleTonicSyllable(),
                 '/ModuleTonicOption'         : (context) => ModuleTonicOption(),
                 '/ModuleCategoryOption'      : (context) => ModuleCategoryOption(),
+                '/ModuleCategory2Option'     : (context) => ModuleCategory2Option(),
+                '/LessonMath'                : (context) => LessonMath(),
+                '/ModuleColors'              : (context) => ModuleColors(),
+                '/LessonMusic'               : (context) => LessonMusic(),
+                '/ModuleSound2Images'        : (context) => ModuleSound2Images(),
+                '/ModuleMath'                : (context) => ModuleMath(),
+                '/UnitMemoryGame'            : (context) => UnitMemoryGame(),
 
                 '/Report'                    : (context) => Report(),
               }

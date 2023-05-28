@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'word.dart';
 import 'baseModule.dart';
+import 'globals.dart';
 
 class LessonTonic extends BaseModule {
   @override
@@ -33,13 +34,13 @@ class _State extends BaseModuleState<LessonTonic> {
     List listSyllables = wordMain.val1.split('-');
     List<Widget> listWidgets = [];
     List<Widget> listOrder = [];
-    print("# of syllables: " + wordMain.val1.split('-').length.toString());
-    print("accent syllable: " + wordMain.val2);
+    Globals().printDebug("# of syllables: " + wordMain.val1.split('-').length.toString());
+    Globals().printDebug("accent syllable: " + wordMain.val2);
     for (int i=0; i<listSyllables.length; i++) {
       listOrder.add(Container(
           alignment: Alignment.center,
-          width: widthMain,
-          height: widthMain,
+          width: mainWidth,
+          height: mainWidth,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
               border: Border.all(
@@ -47,12 +48,12 @@ class _State extends BaseModuleState<LessonTonic> {
                 width: 2,
               )
           ),
-          child: getText((listSyllables.length-i).toString(),fontSizeMain-15,Colors.blue)
+          child: getText((listSyllables.length-i).toString(),mainFontSize-15,Colors.blue)
       ));
       listWidgets.add(Container(
               alignment: Alignment.center,
-              width: widthMain,
-              height: widthMain,
+              width: mainWidth,
+              height: mainWidth,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   border: Border.all(
@@ -60,7 +61,7 @@ class _State extends BaseModuleState<LessonTonic> {
                     width: 2,
                   )
               ),
-              child: getText(listSyllables[i],fontSizeMain)
+              child: getText(listSyllables[i],mainFontSize)
           ));
     }
     Row row1 = Row(

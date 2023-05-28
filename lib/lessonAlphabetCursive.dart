@@ -33,7 +33,7 @@ class _LessonAlphabetCursiveState extends BaseModuleState<LessonAlphabetCursive>
           children: [
             getMainText(wordMain, 100, "Litera-Regular"),
             SizedBox(width: 80),
-            getMainText(wordMain, 100, "Maria_lucia")
+            getMainText(wordMain, 100, "Maria_lucia", Colors.red)
           ],
         ), // letter
         getSoundTile(wordMain),

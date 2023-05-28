@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
 
@@ -13,7 +14,7 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
 
   @override
   Widget getMainTile() {
-    print("moduleSyllablesCount: getMainTile");
+    Globals().printDebug("moduleSyllablesCount: getMainTile");
     syllableOption = 0;
     listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
@@ -21,8 +22,8 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
       wordMain = listProcess[0] as Word;
       listMain.add(wordMain);
       List<String> listSyllables = wordMain.val1.split('-');
-      print("word: " + wordMain.title);
-      print("syllable #: " + listSyllables.length.toString());
+      Globals().printDebug("word: " + wordMain.title);
+      Globals().printDebug("syllable #: " + listSyllables.length.toString());
       switch (listSyllables.length) {
         case 1:
           listOption1.add(listProcess[0] as Word);
@@ -59,8 +60,8 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption1[listPosition]),
-              getOptionTile(listOption2[listPosition])
+              getOptionTile(listOption1[listPosition], listColor[0]!),
+              getOptionTile(listOption2[listPosition], listColor[1]!)
             ],
           ),
         ),
@@ -70,8 +71,8 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption3[listPosition]),
-              getOptionTile(listOption4[listPosition])
+              getOptionTile(listOption3[listPosition], listColor[2]!),
+              getOptionTile(listOption4[listPosition], listColor[3]!)
             ],
           ),
         ),
@@ -84,7 +85,7 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),
@@ -127,7 +128,7 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
   Widget getOptionValue(Word word, [double fontSize=50]) {
     syllableOption++;
     if (syllableOption > 4) syllableOption = 1;
-    print("number of syllables: $syllableOption");
+    Globals().printDebug("number of syllables: $syllableOption");
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
@@ -135,7 +136,7 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: 30,
+          fontSize: 40,
         ),
       ),
     );

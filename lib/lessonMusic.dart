@@ -1,15 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_midi_pro/flutter_midi_pro.dart';
 
 import 'baseModule.dart';
 import 'globals.dart';
 
-class LessonWordsAndPicture extends BaseModule {
+class LessonMusic extends BaseModule {
   @override
-  _LessonWordsAndPictureState createState() => _LessonWordsAndPictureState();
+  _State createState() => _State();
 }
 
-class _LessonWordsAndPictureState extends BaseModuleState<LessonWordsAndPicture> {
+class _State extends BaseModuleState<LessonMusic> {
+
+  final _midiPro = MidiPro();
+  final String _sf2Path = 'assets/audios/FlorestanPiano.sf2';
+
+  @override
+  void initState() {
+    _midiPro.loadSoundfont(sf2Path: _sf2Path);
+    super.initState();
+  }
+
+  @override
+  void audioPlay(id) async {
+    int note = int.parse(wordMain.val1);
+    await Future.delayed(const Duration(milliseconds: 1000));
+    _midiPro.playMidiNote(midi: note, velocity: 127);
+  }
+
+  @override
+  String getMainLabel(text) {
+    return text.toUpperCase();
+  }
 
   @override
   Padding getImage(int id, [double width=100, double padding=15]) {

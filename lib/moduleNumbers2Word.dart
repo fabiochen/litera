@@ -14,7 +14,7 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
     return getTextTile(word);
   }
 
-  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),

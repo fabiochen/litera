@@ -229,19 +229,10 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
 
   void saveSettings() async {
     if (resetApp) {
-      await clearSettings('reports');
-      await clearSettings('unlockModuleIndex');
-      Globals().prefs.setInt('expandedId',1);
+      Globals().resetApp(context);
     }
     Globals().prefs.setString('percentUnlock',Globals().percentUnlock);
     Phoenix.rebirth(context);
-  }
-
-  Future clearSettings(String section) async {
-    for (int i=Globals().prefs.getKeys().length-1; i>=0; i--) {
-      String key = Globals().prefs.getKeys().elementAt(i);
-      if (key.startsWith(section + '-')) Globals().prefs.remove(key);
-    }
   }
 
 }

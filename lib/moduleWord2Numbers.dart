@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:litera/baseOptionTiles.dart';
-import 'package:litera/word.dart';
+import 'baseOptionTiles.dart';
+import 'word.dart';
+import 'globals.dart';
 
 class ModuleWord2Numbers extends BaseOptionTiles {
   @override
@@ -10,16 +11,16 @@ class ModuleWord2Numbers extends BaseOptionTiles {
 class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Numbers> {
 
   Widget getCenterTile(word) {
-    print("contains audio 1: $containsAudio");
+    Globals().printDebug("contains audio 1: $containsAudio");
     if (containsAudio) audioPlay(word.id);
     return getTextTile(word,
       containsAudio: containsAudio,
-      width: widthMain,
-      height: heightMain
+      width: mainWidth,
+      height: mainHeight
     );
   }
 
-  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=250, double height=200, bool containsAudio=true}) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor= Colors.teal, double width=250, double height=200, bool containsAudio=true}) {
     int id = word.id;
     if (containsAudio)
       return ElevatedButton(
@@ -35,7 +36,7 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
                 width: width,
                 height: height,
                 alignment: Alignment.center,
-                child: getText(word.title, fontSizeMain, colorMain),
+                child: getText(word.title, mainFontSize, mainFontColor),
               ),
             ),
             Positioned(
@@ -67,22 +68,22 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
             width: width,
             height: height,
             alignment: Alignment.center,
-            child: getText(word.title, fontSizeMain, colorMain),
+            child: getText(word.title, mainFontSize, mainFontColor),
           )
       );
   }
 
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
-    String text = getFieldTypeValue(word, fieldTypeOption);
+    String text = Globals().getLabelFromFieldType(word, optionFieldType);
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: colorOption,
-          fontSize: fontSizeOption,
+          color: optionFontColor,
+          fontSize: optionFontSize,
         ),
       ),
     );

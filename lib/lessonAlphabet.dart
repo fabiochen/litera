@@ -18,8 +18,16 @@ class _LessonAlphabetState extends BaseModuleState<LessonAlphabet> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         getImageTile(wordMain.id), // image
-        getMainText(wordMain,60), // letter
-        getOnsetTile(wordMain), // image
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: getMainText(wordMain,60),
+            ), // letter
+            getOnsetTile(wordMain), // image
+          ],
+        )
       ],
     );
   }

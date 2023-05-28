@@ -19,7 +19,7 @@ class _State extends BaseOptionTilesState<ModulePicture2Words> {
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     String text = word.title;
-    switch (fieldTypeOption) {
+    switch (optionFieldType) {
       case FieldType.VAL3:
         text = Globals().getWordFromId(int.parse(word.val3)).title;
         break;
@@ -33,7 +33,7 @@ class _State extends BaseOptionTilesState<ModulePicture2Words> {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: 30,
+          fontSize: 40,
           fontFamily: fontFamily,
         ),
       ),

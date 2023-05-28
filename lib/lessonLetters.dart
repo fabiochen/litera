@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:litera/baseModule.dart';
 import 'package:litera/word.dart';
 
+import 'globals.dart';
+
 class LessonLetters extends BaseModule {
   @override
   _LessonLettersState createState() => _LessonLettersState();
@@ -14,12 +16,8 @@ class _LessonLettersState extends BaseModuleState<LessonLetters> {
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
     audioPlay(wordMain.id);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        getMainText(wordMain, 100), // letter
-        getSoundTile(wordMain)
-      ],
+    return getImageTile(wordMain.id,
+      borderColor: listColor[listPosition%10]!
     );
   }
 

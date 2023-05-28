@@ -4,12 +4,12 @@ import 'baseModule.dart';
 import 'word.dart';
 import 'globals.dart';
 
-class LessonHangman extends BaseModule {
+class UnitHangman extends BaseModule {
   @override
   _State createState() => _State();
 }
 
-class _State extends BaseModuleState<LessonHangman> {
+class _State extends BaseModuleState<UnitHangman> {
 
   List<String> listGoodLetters = [];
   List<String> listBadLetters = [];
@@ -23,6 +23,7 @@ class _State extends BaseModuleState<LessonHangman> {
   }
 
   Widget getMainTile() {
+    Globals().printDebug("hangman: getMainTile 01");
     wordMain = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,7 +34,7 @@ class _State extends BaseModuleState<LessonHangman> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Flexible(
-                    flex: 1,
+                    flex: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Container(
@@ -44,7 +45,7 @@ class _State extends BaseModuleState<LessonHangman> {
                       ),
                     )),  // hangman
                 Flexible(
-                    flex: 2,
+                    flex: 3,
                     child: Container(
                       child: getGuessWord(),
                     )),  // word
@@ -132,7 +133,9 @@ class _State extends BaseModuleState<LessonHangman> {
       if (!listGoodLetters.contains(chosenLetter)) listGoodLetters.add(chosenLetter);
       if (isDone()) {
         audioPlay("cheer");
-      } else
+        Future.delayed(Duration(milliseconds: 3000), () {
+          next();
+        });      } else
       audioPlay("true");
     } else {
       // only add once
@@ -178,10 +181,9 @@ class Hangman extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
-    print("bad letters count: " + listBadLetters.length.toString());
+    Globals().printDebug("bad letters count: " + listBadLetters.length.toString());
     Paint paint = Paint()
-      ..color = Colors.black
+      ..color = Colors.brown
       ..strokeWidth = 4.0
       ..style = PaintingStyle.stroke
       ..strokeJoin = StrokeJoin.round;

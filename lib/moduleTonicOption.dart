@@ -42,10 +42,10 @@ class _State extends BaseModuleState<ModuleTonicOption> {
           },
         ),
         SizedBox(height: 30),
-        Flexible(child: getTextTile(wordMain)),
+        Flexible(child: getTextTile(wordMain, borderColor: listColor[wordMain.id%10])),
         SizedBox(height: 30),
         Container(
-          width: widthOption,
+          width: optionWidth,
           child: Column(
             children: [
               RadioListTile(
@@ -105,9 +105,9 @@ class _State extends BaseModuleState<ModuleTonicOption> {
   }
 
   void correctionLogic(Word wordOption) {
-    print("isRadioSelected : $_isRadioSelected");
-    print("number of syllables: " + wordMain.val1.split('-').length.toString());
-    print("wordMain val2: " + wordMain.val2);
+    Globals().printDebug("isRadioSelected : $_isRadioSelected");
+    Globals().printDebug("number of syllables: " + wordMain.val1.split('-').length.toString());
+    Globals().printDebug("wordMain val2: " + wordMain.val2);
     bool isCorrect = _isRadioSelected as int == wordMain.val1.split('-').length-int.parse(wordMain.val2)+1;
     audioPlay(isCorrect);
     if (type == ModuleType.TEST) {

@@ -17,8 +17,8 @@ class _State extends BaseModuleState<LessonWordPairs> {
   Comparator<Object> criteria = (a, b) => ((a as List<Word>)[0].id).compareTo((b as List<Word>)[0].id);
 
   Widget getMainTile() {
-    Word wordMas = (listProcess[listPosition] as List<Word>)[(fieldTypeMain as List<int>)[0]];
-    Word wordFem = (listProcess[listPosition] as List<Word>)[(fieldTypeMain as List<int>)[1]];
+    Word wordMas = (listProcess[listPosition] as List<Word>)[(mainFieldType as List<int>)[0]];
+    Word wordFem = (listProcess[listPosition] as List<Word>)[(mainFieldType as List<int>)[1]];
     Globals().audioPlayer.open(
         Playlist(
             audios: [
@@ -35,7 +35,8 @@ class _State extends BaseModuleState<LessonWordPairs> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(width: 50),
-            getImageTile(wordMas.id, 100), // image
+            getImageTile(wordMas.id,
+                imageSize: 100), // image
             SizedBox(width: 50),
             getMainText(wordMas,50), // words
           ],
@@ -44,7 +45,7 @@ class _State extends BaseModuleState<LessonWordPairs> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(width: 50),
-            getImageTile(wordFem.id, 100), // image
+            getImageTile(wordFem.id, imageSize: 100), // image
             SizedBox(width: 50),
             getMainText(wordFem,50), // words
           ],

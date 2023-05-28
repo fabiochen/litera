@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
+import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class LessonImageText extends BaseModule {
@@ -16,11 +17,12 @@ class _State extends BaseModuleState<LessonImageText> {
   Widget getMainTile() {
     Word word = listProcess[listPosition] as Word;
     audioPlay(word.id);
+    String text = Globals().getLabelFromFieldType(word, mainFieldType);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         getImageTile(word.id), // image
-        getText(word.title,70), // words
+        getText(text,mainFontSize), // words
       ],
     );
   }

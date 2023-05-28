@@ -14,7 +14,8 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
   int _selectedConsonant = 0;
   int _selectedVowel = 0;
 
-  Widget getBody() {
+  @override
+  Widget getMainTile() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -25,27 +26,31 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
               children: [
                 Container(
                   width: 150,
-                  height: 100,
-                  child: CupertinoPicker(
-                    backgroundColor: Colors.white,
-                    itemExtent: 60,
-                    scrollController: FixedExtentScrollController(initialItem: 0),
-                    children: [
-                      ...Globals().listOnsetConsonants.map((value) {
-                        return Text(
-                          value.title,
-                          style: TextStyle(
-                            fontSize: 50,
-                            color: Colors.green,
-                          ),
-                        );
-                      }).toList(),
-                    ],
-                    onSelectedItemChanged: (value) {
-                      setState(() {
-                        _selectedConsonant = value;
-                      });
-                    },
+                  height: 150,
+                  color: Colors.green,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CupertinoPicker(
+                      backgroundColor: Colors.white,
+                      itemExtent: 60,
+                      scrollController: FixedExtentScrollController(initialItem: 0),
+                      children: [
+                        ...Globals().listOnsetConsonants.map((value) {
+                          return Text(
+                            value.title,
+                            style: TextStyle(
+                              fontSize: 50,
+                              color: Colors.green,
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                      onSelectedItemChanged: (value) {
+                        setState(() {
+                          _selectedConsonant = value;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 40),
@@ -85,28 +90,32 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
             Column(
               children: [
                 Container(
+                  color: Colors.red,
                   width: 150,
-                  height: 100,
-                  child: CupertinoPicker(
-                    backgroundColor: Colors.white,
-                    itemExtent: 60,
-                    scrollController: FixedExtentScrollController(initialItem: 0),
-                    children: [
-                      ...Globals().listVowels.map((value) {
-                        return Text(
-                          value.title,
-                          style: TextStyle(
-                            fontSize: 50,
-                            color: Colors.red,
-                          ),
-                        );
-                      }).toList(),
-                    ],
-                    onSelectedItemChanged: (value) {
-                      setState(() {
-                        _selectedVowel = value;
-                      });
-                    },
+                  height: 150,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CupertinoPicker(
+                      backgroundColor: Colors.white,
+                      itemExtent: 60,
+                      scrollController: FixedExtentScrollController(initialItem: 0),
+                      children: [
+                        ...Globals().listVowels.map((value) {
+                          return Text(
+                            value.title,
+                            style: TextStyle(
+                              fontSize: 50,
+                              color: Colors.red,
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                      onSelectedItemChanged: (value) {
+                        setState(() {
+                          _selectedVowel = value;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 40),
@@ -145,7 +154,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
             ),
           ],
         ),  // consonant/vowel text & audio
-        SizedBox(height: 40),
+        SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -167,7 +176,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
             ),
           ],
         ),  // syllable
-        SizedBox(height: 40),
+        SizedBox(height: 10),
         ElevatedButton(
             onPressed: () => _playSyllableAudio(),
             style: ElevatedButton.styleFrom(

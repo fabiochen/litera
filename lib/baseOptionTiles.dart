@@ -21,13 +21,13 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
 
   @override
   Widget getMainTile() {
-    print("baseOptionTiles: contains audio 1: $containsAudio");
+    Globals().printDebug("baseOptionTiles: contains audio 1: $containsAudio");
     listProcess.shuffle();
     // get new random number only going forward.  going back gets value from stored list.
     if (listPosition == 0 || listPosition >= listOption1.length) {
       int processedIndex = listProcess.indexWhere((word) => (word as Word).processed == false);
       wordMain = listProcess[processedIndex] as Word;
-      print("processed word: " + wordMain.title);
+      Globals().printDebug("processed word: " + wordMain.title);
       wordMain.processed = true;
       listProcess[processedIndex] = wordMain;
       setProcessed = Set();
@@ -53,8 +53,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption1[listPosition]),
-              getOptionTile(listOption2[listPosition])
+              getOptionTile(listOption1[listPosition], listColor[0]!),
+              getOptionTile(listOption2[listPosition], listColor[1]!)
             ],
           ),
         ),
@@ -64,8 +64,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption3[listPosition]),
-              getOptionTile(listOption4[listPosition])
+              getOptionTile(listOption3[listPosition], listColor[2]!),
+              getOptionTile(listOption4[listPosition], listColor[3]!)
             ],
           ),
         ),
@@ -77,8 +77,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     return getImageTile(word.id);
   }
 
-  ButtonTheme getOptionTile(Word wordOption) {
-    //print("getOptionTile: " + wordOption.title);
+  ButtonTheme getOptionTile(Word wordOption, [Color backGroundColor=Colors.white]) {
+    //Globals().printDebug("getOptionTile: " + wordOption.title);
     return ButtonTheme(
         child: Expanded(
             child: Column(
@@ -98,14 +98,14 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
                   },
                 ),
                 SizedBox(
-                  width: widthOption,
-                  height: heightOption,
+                  width: optionWidth,
+                  height: optionHeight,
                   child: PlayerBuilder.isPlaying(
                       player: Globals().audioPlayer,
                       builder: (context, isPlaying) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white
+                              backgroundColor: backGroundColor
                           ),
                           onPressed: (!isPlaying) ? () {
                             correctionLogic(wordOption);
@@ -147,15 +147,15 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
   }
 
   Widget getOptionValue(Word word) {
-    print("baseOptionTiles: getOptionValue");
+    Globals().printDebug("baseOptionTiles: getOptionValue");
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
         word.title.substring(0,1),
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: colorOption,
-          fontSize: fontSizeOption,
+          color: optionFontColor,
+          fontSize: optionFontSize,
           fontFamily: fontFamily
         ),
       ),

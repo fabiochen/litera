@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litera/globals.dart';
 
 import 'package:litera/word.dart';
 import 'package:litera/baseModule.dart';
@@ -41,11 +42,15 @@ class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
   Padding _loadCharacter(String char) {
     //if (char != ' ') char = '[' + char + ']';
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(2.0),
       child: ElevatedButton(
         onPressed: () => audioPlayOnset(char),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
+            side: BorderSide(
+              width: 5.0,
+              color: listColor[1]!,
+            )
         ),
         child: Stack(
           children: [
@@ -58,10 +63,10 @@ class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
                   border: Border.all(color: Colors.white)
               ),
               child: Text(
-                char,
+                char.toUpperCase(),
                 style: TextStyle(
                   fontSize: 30,
-                  color: Colors.black,
+                  color: Colors.teal,
                 ),
               ),
             ), // onset letter

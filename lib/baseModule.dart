@@ -44,17 +44,19 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   bool useProgressBar = true;
   String fontFamily = "Litera-Regular";
 
-  late double fontSizeMain = 30;
-  late double fontSizeOption = 30;
-  late double widthMain = 250;
-  late double heightMain = 150;
-  late double widthOption = 200;
-  late double heightOption = 150;
-  late Color colorMain = Colors.teal;
-  late Color colorOption = Colors.teal;
-  late Object? fieldTypeMain = FieldType.TITLE;
-  late Object? fieldTypeOption = FieldType.VAL1;
+  late double mainFontSize = 30;
+  late double optionFontSize = 30;
+  late double mainWidth = 250;
+  late double mainHeight = 150;
+  late double optionWidth = 200;
+  late double optionHeight = 150;
+  late Color mainFontColor = Colors.teal;
+  late Color optionFontColor = Colors.teal;
+  late Object? mainFieldType = FieldType.TITLE;
+  late Object? optionFieldType = FieldType.VAL1;
+  late Object? optionTileType = TileType.TEXT;
   late Object? sortCriteria = FieldType.ID;
+  late Object? misc;
 
   bool loop = false;
   bool containsAudio = true;
@@ -139,6 +141,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       Globals().printDebug("test7");
       numberQuestions = args?['numberQuestions']??numberQuestions;
       if (listProcess.length < numberQuestions) numberQuestions = listProcess.length;
+      // test mode
+      // numberQuestions = 1;
       Globals().printDebug("test8");
       useNavigation = args?['useNavigation'] ?? true;
       Globals().printDebug("test9");
@@ -146,18 +150,24 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       Globals().printDebug("test10");
       fontFamily = args?['fontFamily'] ?? fontFamily;
       Globals().printDebug("test10.1");
-      fontSizeMain = args?['fontSizeMain'] ?? fontSizeMain;
+      mainFontSize = args?['mainFontSize'] ?? mainFontSize;
       Globals().printDebug("test10.2");
-      fontSizeOption = args?['fontSizeOption'] ?? fontSizeOption;
-      widthMain = args?['widthMain'] ?? widthMain;
-      heightMain = args?['heightMain'] ?? heightMain;
-      widthOption = args?['widthOption'] ?? widthOption;
-      heightOption = args?['heightOption'] ?? heightOption;
-      colorMain   = args?['colorMain'] ?? colorMain;
-      colorOption = args?['colorOption'] ?? colorOption;
-      fieldTypeMain = args?['fieldTypeMain'] ?? fieldTypeMain;
-      fieldTypeOption = args?['fieldTypeOption'] ?? fieldTypeOption;
+      optionFontSize = args?['optionFontSize'] ?? optionFontSize;
+      mainWidth = args?['mainWidth'] ?? mainWidth;
+      mainHeight = args?['mainHeight'] ?? mainHeight;
+      optionWidth = args?['optionWidth'] ?? optionWidth;
+      optionHeight = args?['optionHeight'] ?? optionHeight;
+      mainFontColor   = args?['mainFontColor'] ?? mainFontColor;
+      optionFontColor = args?['optionFontColor'] ?? optionFontColor;
+      mainFieldType = args?['mainFieldType'] ?? mainFieldType;
+      optionFieldType = args?['optionFieldType'] ?? optionFieldType;
+      optionTileType = args?['optionTileType'] ?? optionTileType;
       sortCriteria = args?['sortCriteria'] ?? sortCriteria;
+      try {
+        misc = args?['misc'] ?? misc;
+      } catch (e) {
+        misc = null;
+      }
       Globals().printDebug("test10.1");
 
       loop = args?['loop'] ?? loop;
@@ -170,11 +180,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       if (listProcess is List<Word>) {
         switch (sortCriteria) {
           case FieldType.ID:
-            print("sort criteria: $sortCriteria");
+            Globals().printDebug("sort criteria: $sortCriteria");
             criteria = (a, b) => (a as Word).id.compareTo((b as Word).id);
             break;
           case FieldType.TITLE:
-            print("sort criteria: $sortCriteria");
+            Globals().printDebug("sort criteria: $sortCriteria");
             criteria = (a, b) => (a as Word).title.compareTo((b as Word).title);
             break;
           default:
@@ -231,11 +241,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getBody() {
-    print("baseModule: getBody");
+    Globals().printDebug("baseModule: getBody 01");
     if (listProcess.length <= 1) {
       useNavigation = false;
       useProgressBar = false;
+      Globals().printDebug("baseModule: getBody 02");
     }
+    Globals().printDebug("baseModule: getBody 03");
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -243,18 +255,22 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         Flexible(
             child: getMainTile()
         ),
-        Row(
-          mainAxisAlignment: (useNavigation)? MainAxisAlignment.spaceBetween : MainAxisAlignment.spaceAround,
+        Column(
           children: [
-            if (useNavigation) getNavButtonPrevious(),
-            if (useNavigation) getNavButtonNext(),// navigation next
+            Row(
+              mainAxisAlignment: (useNavigation)? MainAxisAlignment.spaceBetween : MainAxisAlignment.spaceAround,
+              children: [
+                if (useNavigation) getNavButtonPrevious(),
+                if (useNavigation) getNavButtonNext(),// navigation next
+              ],
+            ),
+            ValueListenableBuilder(
+              valueListenable: isBannerAdReady,
+              builder: (context, value, widget) {
+                  return getAd();
+              }
+            ),
           ],
-        ),
-        ValueListenableBuilder(
-          valueListenable: isBannerAdReady,
-          builder: (context, value, widget) {
-              return getAd();
-          }
         )
       ],
     );
@@ -272,8 +288,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getProgressBar() {
-    // print("listPosition: $listPosition");
-    // print("numberQuestions: $numberQuestions");
+    Globals().printDebug("listPosition: $listPosition");
+    Globals().printDebug("numberQuestions: $numberQuestions");
     double percent = (numberQuestions>0)?(listPosition+1) / numberQuestions:0;
     return Container(
       color: Colors.white,
@@ -310,14 +326,14 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getMainTile() {
-    print("listProcess count: $listProcess");
+    Globals().printDebug("listProcess count: $listProcess");
     wordMain = listProcess[listPosition] as Word;
     audioPlay(wordMain.id);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         getImageTile(wordMain.id), // image
-        getMainText(wordMain,fontSizeMain), // words
+        getMainText(wordMain,mainFontSize), // words
       ],
     );
   }
@@ -326,9 +342,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     return text;
   }
 
-  Text getMainText(Word word, double fontSize, [String fontFamily = "Litera-Regular"]) {
-    String label;
-    switch (fieldTypeMain as dynamic) {
+  Text getMainText(Word word, double fontSize, [String fontFamily = "Litera-Regular", Color fontColor = Colors.teal]) {
+    String? label;
+    switch (mainFieldType as dynamic) {
       case FieldType.VAL1:
         label = word.val1;
         break;
@@ -342,19 +358,23 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       style: TextStyle(
         fontFamily: fontFamily,
         fontSize: fontSize,
-        color: Colors.teal,
+        color: fontColor,
       )
     );
   }
 
-  ElevatedButton getTextTile(Word word, {double fontSize=50, Color color= Colors.teal, double width=250, double height=200}) {
+  ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor=Colors.teal, double width=250, double height=200}) {
     int id = word.id;
     String text = word.title;
     if (containsAudio) {
       return ElevatedButton(
           onPressed: () => audioPlay(id),
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white
+            backgroundColor: backgroundColor,
+            side: BorderSide(
+              width: 10.0,
+              color: borderColor!,
+            )
           ),
           child: Stack(
             children: [
@@ -364,7 +384,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
                   width: width,
                   height: 200,
                   alignment: Alignment.center,
-                  child: getText(text, fontSize, color),
+                  child: getText(text, fontSize, fontColor),
                 ),
               ),
               Positioned(
@@ -390,7 +410,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     return ElevatedButton(
       onPressed: () => null,
       style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.white
+      backgroundColor: backgroundColor
     ),
     child: Padding(
       padding: const EdgeInsets.all(15.0),
@@ -398,7 +418,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         width: width,
         height: height,
         alignment: Alignment.center,
-        child: getText(text, fontSize, color),
+        child: getText(text, fontSize, fontColor),
       ),
     ),
 
@@ -406,43 +426,15 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     }
   }
 
-  Text getText(String text, [double fontSize = 100, Color color = Colors.teal]) {
+  Text getText(String text, [double fontSize = 100, Color fontColor = Colors.teal]) {
     return Text(
       text,
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: color,
+        color: fontColor,
         fontSize: fontSize,
       ),
     );
-  }
-
-  String getFieldTypeValue(word, fieldType) {
-    String text = word.id.toString();
-    switch (fieldType) {
-      case FieldType.ID:
-        text = word.id.toString();
-        break;
-      case FieldType.TITLE:
-        text = word.title;
-        break;
-      case FieldType.VAL1:
-        text = word.val1;
-        break;
-      case FieldType.VAL2:
-        text = word.val2;
-        break;
-      case FieldType.TITLE_ID:
-        text = word.title + "\n(" + word.id + ")";
-        break;
-      case FieldType.TITLE_VAL1:
-        text = word.title + "\n(" + word.val1 + ")";
-        break;
-      case FieldType.TITLE_VAL2:
-        text = word.title + "\n(" + word.val2 + ")";
-        break;
-    }
-    return text;
   }
 
   ElevatedButton getSoundTile(Word word) {
@@ -512,12 +504,16 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  ElevatedButton getImageTile(int id, [double imageSize=200]) {
+  ElevatedButton getImageTile(int id, {double imageSize=200, Color borderColor=Colors.white}) {
     if (containsAudio)
       return ElevatedButton(
         onPressed: () => audioPlay(id),
         style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white
+            backgroundColor: Colors.white,
+            side: BorderSide(
+              width: 10.0,
+              color: borderColor,
+            )
         ),
         child: Stack(
           children: [
@@ -545,15 +541,19 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       return ElevatedButton(
           onPressed: () => null,
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white
+              backgroundColor: Colors.white,
+              side: BorderSide(
+                width: 10.0,
+                color: borderColor,
+              )
           ),
           child: getImage(id,imageSize)
       );
   }
 
-  Padding getImage(int id, double width) {
+  Padding getImage(int id, [double width=100, double padding=15]) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(padding),
       child: Container(
         color: Colors.white,
         child: Image(
@@ -565,8 +565,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  PlayerBuilder getNavButtonPrevious() {
-    print("getNavButtonPrevious");
+  Widget getNavButtonPrevious() {
+    //Globals().printDebug("getNavButtonPrevious");
     return PlayerBuilder.isPlaying(
         player: Globals().audioPlayer,
         builder: (context, isPlaying) {
@@ -583,7 +583,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   Widget getNavButtonNext() {
-    print("getNavButtonNext");
+    //Globals().printDebug("getNavButtonNext");
     return PlayerBuilder.isPlaying(
         player: Globals().audioPlayer,
         builder: (context, isPlaying) {
@@ -600,13 +600,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   }
 
   void saveCorrectionValues () async {
-    print("SaveCorrectionValues");
+    //Globals().printDebug("SaveCorrectionValues");
     String correctKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-correct';
-    print("CorrectKey: $correctKey = " + flagCorrect.value.toString());
+    //Globals().printDebug("CorrectKey: $correctKey = " + flagCorrect.value.toString());
     int correctValue = (Globals().prefs.getInt(correctKey) ?? 0) + flagCorrect.value;
     await Globals().prefs.setInt(correctKey, correctValue);
     String wrongKey = 'reports-$yearIndex-$subjectIndex-$modulePos-' + wordMain.id.toString() + '-wrong';
-    print("WrongKey: $wrongKey =" + flagWrong.value.toString());
+    //Globals().printDebug("WrongKey: $wrongKey =" + flagWrong.value.toString());
     int wrongValue = (Globals().prefs.getInt(wrongKey) ?? 0) + flagWrong.value;
     await Globals().prefs.setInt(wrongKey, wrongValue);
     flagCorrect.value = 0;
@@ -627,7 +627,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
           correctCount/numberQuestions*100 >= int.parse(Globals().percentUnlock)  &&
           modulePos > Globals().getUnlockModuleIndex(yearIndex, subjectIndex)
       ) {
-        print("test1");
+        Globals().printDebug("test1");
         setUnlockModule(modulePos);
         showEndAlertDialog(context,true);
       } else if (
@@ -635,18 +635,18 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         type == ModuleType.TEST &&
         correctCount/numberQuestions*100 < int.parse(Globals().percentUnlock)
       ) {
-        print("test2");
+        Globals().printDebug("test2");
         showEndAlertDialog(context,false);
       } else if (
         // unlock if not TEST
         type != ModuleType.TEST &&
         modulePos > Globals().getUnlockModuleIndex(yearIndex, subjectIndex)
       ) {
-        print("test3");
+        Globals().printDebug("test3");
         setUnlockModule(modulePos);
         Navigator.of(context).pop();
       } else {
-        print("test4");
+        Globals().printDebug("test4");
         Navigator.of(context).pop();
       }
     } else {
@@ -690,9 +690,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         isEndPosition = true;
       }
     }
-    print("ListPosition: $listPosition");
-    print("EndPoint: $isEndPosition");
-    print("NumberOfQuestions: $numberQuestions");
+    Globals().printDebug("ListPosition: $listPosition");
+    Globals().printDebug("EndPoint: $isEndPosition");
+    Globals().printDebug("NumberOfQuestions: $numberQuestions");
   }
 
   showBeginningAlertDialog(BuildContext context) {
@@ -793,7 +793,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   void audioPlayOnset(String onset) {
     Word testWord = Globals().alphabetOnsetList.firstWhere((word) => word.title.startsWith(onset));
-    print("onset3: " + testWord.title);
+    Globals().printDebug("onset3: " + testWord.title);
     audioPlay(testWord.id);
   }
 

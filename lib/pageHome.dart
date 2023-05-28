@@ -120,7 +120,7 @@ class _PageHomeState<T extends PageHome> extends State<T> {
 
   List<Widget> getListYears() {
     List<Widget> listContainers = [];
-    print("number of years: " + Globals().listYears.length.toString());
+    Globals().printDebug("number of years: " + Globals().listYears.length.toString());
     for (int i=0; i<Globals().listYears.length; i++) {
       {
         bool lockYear = true;
@@ -129,23 +129,23 @@ class _PageHomeState<T extends PageHome> extends State<T> {
         if (i==0) lockYear = false;
         if (i>0) {
           // unlock year if all modules from previous years are unlocked, i.e., if saved unlock index is equal to length of module list
-          //print("$i: " + listYears[i].subjects.length.toString() + " subjects");
+          //Globals().printDebug("$i: " + listYears[i].subjects.length.toString() + " subjects");
           for (int s=0; s<Globals().listYears[i-1].subjects.length; s++) {
             int totalSubjectModules = Globals().listYears[i-1].subjects[s].modules.length;
             int lastSubjectUnlockedModule = Globals().getUnlockModuleIndex(Globals().listYears[i-1].id.index, Globals().listYears[i-1].subjects[s].id.index);
-            print("totalSubjectModules: $totalSubjectModules lastSubjectUnlockedModule: $lastSubjectUnlockedModule");
+            Globals().printDebug("totalSubjectModules: $totalSubjectModules lastSubjectUnlockedModule: $lastSubjectUnlockedModule");
             if (lastSubjectUnlockedModule >= totalSubjectModules) unlockSubjects.add(true);
           }
-          print("unlockSubjects ******************");
+          Globals().printDebug("unlockSubjects ******************");
           Globals().printList(unlockSubjects);
           int unlockedSubjectCount = unlockSubjects.where((item) => item == true).length;
           int subjectCount = Globals().listYears[i-1].subjects.length;
           bool unlockedSubjects = unlockedSubjectCount == subjectCount;
           lockYear = i>0 && !unlockedSubjects;
-          print("number of subject: $subjectCount");
-          print("number of unlocked subjects: $unlockedSubjectCount");
-          print("all subjects unlocked: $unlockedSubjects");
-          print("lock year: $i $lockYear");
+          Globals().printDebug("number of subject: $subjectCount");
+          Globals().printDebug("number of unlocked subjects: $unlockedSubjectCount");
+          Globals().printDebug("all subjects unlocked: $unlockedSubjects");
+          Globals().printDebug("lock year: $i $lockYear");
         }
         listContainers.add(Container(
           child: InkWell(

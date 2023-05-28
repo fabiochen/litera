@@ -1,31 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:litera/baseModule.dart';
+import 'baseModule.dart';
+import 'globals.dart';
 import 'word.dart';
 
 import 'package:word_search_safety/word_search_safety.dart';
 
-class LessonWordSearch extends BaseModule {
+class UnitWordSearch extends BaseModule {
   @override
   _State createState() => _State();
 }
 
-class _State extends BaseModuleState<LessonWordSearch> {
+class _State extends BaseModuleState<UnitWordSearch> {
 
   final List<String> wl = ['hello', 'world', 'foo', 'bar', 'baz', 'dart'];
 
   List<Object> listWords = [];
   final int puzzleWidth = 10;
   final int puzzleHeight = 7;
-  List<Color> listColors = [
-    Colors.red.shade100,
-    Colors.orange.shade100,
-    Colors.green.shade100,
-    Colors.blue.shade100,
-    Colors.yellow.shade100,
-    Colors.brown.shade100
-  ];
 
   // Create the puzzle object
   WSSettings? ws;
@@ -64,6 +57,8 @@ class _State extends BaseModuleState<LessonWordSearch> {
       orientations: List.from([
         WSOrientation.horizontal,
         WSOrientation.vertical,
+        WSOrientation.horizontalBack,
+        WSOrientation.verticalUp
         // WSOrientation.diagonal,
       ]),
     );
@@ -72,35 +67,42 @@ class _State extends BaseModuleState<LessonWordSearch> {
   }
 
   @override
-  Widget getBody() {
+  Widget getMainTile() {
     /// Check if there are errors generated while creating the puzzle
     if (newPuzzle.errors!.isEmpty) {
       // The puzzle output
-      print('Puzzle 2D List');
-      print(newPuzzle.toString());
+      Globals().printDebug('Puzzle 2D List');
+      Globals().printDebug(newPuzzle.toString());
 
       // Solve puzzle for given word list
       final WSSolved solved =
       wordSearch.solvePuzzle(newPuzzle.puzzle!, ['dart', 'word']);
       // All found words by solving the puzzle
-      print('Found Words!');
+      Globals().printDebug('Found Words!');
       solved.found!.forEach((element) {
-        print('word: ${element.word}, orientation: ${element.orientation}');
-        print('x:${element.x}, y:${element.y}');
+        Globals().printDebug('word: ${element.word}, orientation: ${element.orientation}');
+        Globals().printDebug('x:${element.x}, y:${element.y}');
       });
 
       // All words that could not be found
-      print('Not found Words!');
+      Globals().printDebug('Not found Words!');
       solved.notFound!.forEach((element) {
-        print('word: ${element}');
+        Globals().printDebug('word: ${element}');
       });
     } else {
       // Notify the user of the errors
       newPuzzle.errors!.forEach((error) {
-        print(error);
+        Globals().printDebug(error);
       });
     }
+    bool hideWord = false;
+    try {
+      hideWord = misc as bool;
+    } catch (e) {
+      hideWord = false;
+    }
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Flexible(
           flex: 2,
@@ -127,10 +129,10 @@ class _State extends BaseModuleState<LessonWordSearch> {
                         alignment: Alignment.center,
                         color: selectedIndexes.contains(index) ? selectedIndexColor[index] : Colors.white,
                         child: Text(
-                          strPuzzle.characters.elementAt(index),
+                          _removeDiacritics(strPuzzle.characters.elementAt(index).toUpperCase()),
                           style: TextStyle(
                             fontSize: 30,
-                            color: Colors.black,
+                            color: Colors.teal,
                           ),
                         ),
                       ),
@@ -139,6 +141,12 @@ class _State extends BaseModuleState<LessonWordSearch> {
                 ),
               ),
             )),
+        hideWord ? Flexible(child: Text(listWordsDone.length.toString() + " de " + listWords.length.toString(),
+          style: TextStyle(
+            color: Colors.teal,
+            fontSize: 30,
+          ),
+        )) :
         Flexible(
             flex: 1,
             child: GridView.builder(
@@ -154,7 +162,7 @@ class _State extends BaseModuleState<LessonWordSearch> {
                     style: TextStyle(
                       decoration: listWordsDone.contains(listString[index])?TextDecoration.lineThrough:TextDecoration.none,
                       fontSize: 30,
-                      color: Colors.black,
+                      color: Colors.teal,
                     ),
                   ),
                 );
@@ -162,6 +170,19 @@ class _State extends BaseModuleState<LessonWordSearch> {
             )),
       ],
     );
+  }
+
+  String _removeDiacritics(String str) {
+
+    var withDia = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+    var withoutDia = 'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
+
+    for (int i = 0; i < withDia.length; i++) {
+      str = str.replaceAll(withDia[i], withoutDia[i]);
+    }
+
+    return str;
+
   }
 
   _detectTapedItem(PointerEvent event) {
@@ -176,7 +197,7 @@ class _State extends BaseModuleState<LessonWordSearch> {
           _trackTaped.add(target);
           _selectIndex(target.index);
           selectedWord = selectedWord + strPuzzle.characters.elementAt(target.index);
-          print("char: " + strPuzzle.characters.elementAt(target.index));
+          Globals().printDebug("char: " + strPuzzle.characters.elementAt(target.index));
         }
       }
     }
@@ -192,8 +213,8 @@ class _State extends BaseModuleState<LessonWordSearch> {
   void _checkSelection(PointerUpEvent event) {
     _trackTaped.clear();
     setState(() {
-      print("listString: $listString");
-      print("selectedWord: $selectedWord");
+      Globals().printDebug("listString: $listString");
+      Globals().printDebug("selectedWord: $selectedWord");
       if (!listString.contains(selectedWord)) {
         removeIndexes(selectedTempIndexes);
       } else {
@@ -215,14 +236,14 @@ class _State extends BaseModuleState<LessonWordSearch> {
     listWordIndexes.asMap().forEach((index,set) {
       set.forEach((int) {
         selectedIndexes.add(int);
-        selectedIndexColor[int] = listColors[index];
+        selectedIndexColor[int] = listColor[index]!;
       });
     });
   }
 
   void removeIndexes(Set<int> set) {
     set.forEach((element) {
-      print("element: $element");
+      Globals().printDebug("element: $element");
       selectedIndexes.remove(element);
     });
   }

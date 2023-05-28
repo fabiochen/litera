@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
+import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class LessonSyllables extends BaseModule {
@@ -19,8 +20,12 @@ class _LessonSyllablesState extends BaseModuleState<LessonSyllables> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getText(wordMain.title,80), // words
-        getSoundTile(wordMain)
+        getTextTile(
+          wordMain,
+          fontSize: 100,
+          fontColor: Colors.red,
+          borderColor: listColor[listPosition%10],
+        ),
       ],
     );
   }

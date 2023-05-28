@@ -18,12 +18,12 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   @override
   Widget getCenterTile(word) {
-    print("listPosition: $listPosition option1.length: " + listOption1.length.toString());
+    Globals().printDebug("listPosition: $listPosition option1.length: " + listOption1.length.toString());
     if (listPosition == 0 || listPosition >= listOption1.length-1) {
       int rel = pow(-1,Random().nextInt(2)).toInt();
-      print("value: " + word.val1);
+      Globals().printDebug("value: " + word.val1);
       // set endpoint rel values
-      switch (fieldTypeMain) {
+      switch (mainFieldType) {
         case FieldType.TITLE:
           if (word.title == 'Domingo') rel = 1;
           if (word.title == 'Sábado') rel = -1;
@@ -48,7 +48,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
       }
       listRel.add(rel);
     }
-    print("contains audio: $containsAudio");
+    Globals().printDebug("contains audio: $containsAudio");
     if (containsAudio) return getSoundTile(word);
     return getTextTile(word);
   }
@@ -99,7 +99,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
   @override
   Widget getOptionValue(Word word) {
     String text = '';
-    switch(fieldTypeMain) {
+    switch(mainFieldType) {
       case FieldType.TITLE:
         text = word.title;
         break;
@@ -114,7 +114,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: fontSizeOption,
+          fontSize: optionFontSize,
         ),
       ),
     );

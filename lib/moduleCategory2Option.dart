@@ -3,12 +3,12 @@ import 'word.dart';
 import 'baseOptionTiles.dart';
 import 'globals.dart';
 
-class ModuleCategoryOption extends BaseOptionTiles {
+class ModuleCategory2Option extends BaseOptionTiles {
   @override
   _State createState() => _State();
 }
 
-class _State extends BaseOptionTilesState<ModuleCategoryOption> {
+class _State extends BaseOptionTilesState<ModuleCategory2Option> {
 
   @override
   Widget getMainTile() {
@@ -32,24 +32,24 @@ class _State extends BaseOptionTilesState<ModuleCategoryOption> {
       setOptions.add(int.parse(wordMain.val3));
       setOptions.add(listCategories[0]);
       setOptions.add(listCategories[1]);
-      setOptions.add(listCategories[2]);
+      // setOptions.add(listCategories[2]);
       if (setOptions.length == 3) setOptions.add(listCategories[3]);
       Word wordTemp = wordMain;
       temp.add(wordTemp);
       wordTemp = Globals().getWordFromId(setOptions.elementAt(1));
       wordTemp.val3 = setOptions.elementAt(1).toString();
       temp.add(wordTemp);
-      wordTemp = Globals().getWordFromId(setOptions.elementAt(2));
-      wordTemp.val3 = setOptions.elementAt(2).toString();
-      temp.add(wordTemp);
-      wordTemp = Globals().getWordFromId(setOptions.elementAt(3));
-      wordTemp.val3 = setOptions.elementAt(3).toString();
-      temp.add(wordTemp);
+      // wordTemp = Globals().getWordFromId(setOptions.elementAt(2));
+      // wordTemp.val3 = setOptions.elementAt(2).toString();
+      // temp.add(wordTemp);
+      // wordTemp = Globals().getWordFromId(setOptions.elementAt(3));
+      // wordTemp.val3 = setOptions.elementAt(3).toString();
+      // temp.add(wordTemp);
       temp.shuffle();
       listOption1.add(temp[0]);
       listOption2.add(temp[1]);
-      listOption3.add(temp[2]);
-      listOption4.add(temp[3]);
+      // listOption3.add(temp[2]);
+      // listOption4.add(temp[3]);
     }
     wordMain = listMain[listPosition];
     return Column(
@@ -60,29 +60,29 @@ class _State extends BaseOptionTilesState<ModuleCategoryOption> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption1[listPosition], listColor[0]!),
-              getOptionTile(listOption2[listPosition], listColor[1]!)
+              getOptionTile(listOption1[listPosition]),
+              getOptionTile(listOption2[listPosition])
             ],
           ),
         ),
         Flexible(child: getCenterTile(listMain[listPosition])),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              getOptionTile(listOption3[listPosition], listColor[2]!),
-              getOptionTile(listOption4[listPosition], listColor[3]!)
-            ],
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //     children: <Widget>[
+        //       getOptionTile(listOption3[listPosition]),
+        //       getOptionTile(listOption4[listPosition])
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
 
   @override
   Widget getCenterTile(word) {
-    return getImageTile(word.id);
+    return getTextTile(word);
   }
 
   ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
@@ -100,7 +100,7 @@ class _State extends BaseOptionTilesState<ModuleCategoryOption> {
                 width: width,
                 height: 100,
                 alignment: Alignment.center,
-                child: getText(word.title,40,Colors.deepOrange),
+                child: getText(word.val1,60,Colors.deepOrange),
               ),
             ),
             Positioned(
@@ -127,13 +127,13 @@ class _State extends BaseOptionTilesState<ModuleCategoryOption> {
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(15.0),
       child: Text(
         Globals().getWordFromId(int.parse(word.val3)).title,
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: optionFontSize,
+          fontSize: 30,
         ),
       ),
     );

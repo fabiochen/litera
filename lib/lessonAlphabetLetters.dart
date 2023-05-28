@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:litera/baseModule.dart';
+import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 
 class LessonAlphabetLetters extends BaseModule {
@@ -26,21 +27,12 @@ class _LessonAlphabetLettersState extends BaseModuleState<LessonAlphabetLetters>
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        getMainText(wordMain, 100, "Litera-Regular"), // letter
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            getSoundTile(wordMain),
-            getOnsetTile(wordMain)
-          ],
+        getImageTile(wordMain.id,
+          borderColor: listColor[listPosition%10]!,
         ),
+        getOnsetTile(wordMain)
       ],
     );
-  }
-
-  @override
-  String getMainLabel(text) {
-    return text.substring(0,1).toUpperCase() + ' ' + text.substring(0,1);
   }
 
 }

@@ -69,7 +69,7 @@ class _PageAboutState extends State<PageAbout> {
                 ),
                 SizedBox(height: 20),
                 Text('v.' + Globals().version + '+' +
-                    Globals().buildNumber,
+                    Globals().buildNumber.toString(),
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.black
@@ -120,7 +120,7 @@ class _PageAboutState extends State<PageAbout> {
     var temp = Globals().prefs.get("settings-language");
 
     if (temp != null) isFirstTime = false;
-    print('isFirstTime: ' + isFirstTime.toString());
+    Globals().printDebug('isFirstTime: ' + isFirstTime.toString());
   }
 
 }

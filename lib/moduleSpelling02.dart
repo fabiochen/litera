@@ -91,7 +91,7 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
 
   void _correction() {
     bool isCorrect = (userInputTextField.text.toLowerCase().trim() == wordMain.title);
-    print("isCorrect: $isCorrect");
+    Globals().printDebug("isCorrect: $isCorrect");
     audioPlay(isCorrect);
     if (type == ModuleType.TEST) {
       if (isCorrect) {

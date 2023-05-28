@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:litera/baseOptionTiles.dart';
-import 'package:litera/word.dart';
+
+import 'baseOptionTiles.dart';
+import 'word.dart';
+import 'globals.dart';
 
 class ModuleSyllablesWord extends BaseOptionTiles {
   @override
@@ -38,7 +40,7 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
 
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
-    print(word.title);
+    Globals().printDebug(word.title);
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(

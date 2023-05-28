@@ -36,11 +36,11 @@ class _State extends BaseModuleState<LessonCategory2Word2Picture> {
             category.toUpperCase(),
             style: TextStyle(
               color: Globals().appBarColorDark,
-              fontSize: fontSizeMain,
+              fontSize: mainFontSize,
               fontWeight: FontWeight.bold
             ),
           ), // category
-          Expanded(child: getImage((listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).values.first[_selectedChars].id, widthMain)),
+          Expanded(child: getImage((listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).values.first[_selectedChars].id, mainWidth)),
           Container(
             width: 250,
             height: 100,
@@ -50,12 +50,21 @@ class _State extends BaseModuleState<LessonCategory2Word2Picture> {
               scrollController: controller,
               children: [
                 ...(listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).values.first.map((word) {
+                  String label = '';
+                  switch (mainFieldType) {
+                    case (FieldType.VAL1):
+                      label = word.val1.replaceAll((listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).entries.first.key,'');
+                      break;
+                    default:
+                      label = word.title.replaceAll((listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).entries.first.key,'');
+                      break;
+                  }
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        word.title.replaceAll((listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).entries.first.key,''),
+                        label,
                         style: TextStyle(
                           fontSize: 50,
                           color: Colors.red,

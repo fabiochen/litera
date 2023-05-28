@@ -30,7 +30,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
     useProgressBar = false;
     _year = this.widget.year;
     _yearIndex = _year.id.index;
-    print("test 1 yearIndex $_yearIndex");
+    Globals().printDebug("test 1 yearIndex $_yearIndex");
     title = Globals().appTitle + ": " + (_yearIndex+1).toString() +"º Ano";
     bannerAd.load();
   }
@@ -48,7 +48,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
 
   @override
   Widget getMainTile() {
-    print("test 1.5 yearIndex $_yearIndex");
+    Globals().printDebug("test 1.5 yearIndex $_yearIndex");
     return SingleChildScrollView(
       child: ExpansionPanelList.radio(
         initialOpenPanelValue: Globals().expandedId[_yearIndex],
@@ -58,7 +58,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
   }
 
   List <ExpansionPanelRadio> _getListExpansionPanelRadio() {
-    print("test 1.6");
+    Globals().printDebug("test 1.6");
     List<ExpansionPanelRadio> listExpansionPanelRadio = [];
     _year.subjects.forEach((subject) {
       listExpansionPanelRadio.add(ExpansionPanelRadio(
@@ -66,7 +66,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
         headerBuilder: (BuildContext context, bool isExpanded) {
           if (isExpanded) {
             Globals().expandedId[_yearIndex] = subject.id.index;
-            print("test 2 yearIndex $_yearIndex");
+            Globals().printDebug("test 2 yearIndex $_yearIndex");
             Globals().prefs.setInt('expandedId-$_yearIndex',Globals().expandedId[_yearIndex]);
           }
           return ListTile(
@@ -101,7 +101,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
     int _subjectIndex = _module.subject.index;
     int _moduleStatus = _modulePos.compareTo(Globals().getUnlockModuleIndex(_yearIndex,_subjectIndex));
     Icon iconModuleType = Globals().getIcon(_module.type);
-    //print("$_yearIndex module: " + getUnlockModuleIndex(_yearIndex,_subjectIndex).toString());
+    //Globals().printDebug("$_yearIndex module: " + getUnlockModuleIndex(_yearIndex,_subjectIndex).toString());
 
     return ListTile(
       leading: iconModuleType,
