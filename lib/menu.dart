@@ -15,24 +15,17 @@ class _MenuState extends BaseModuleState<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Globals().init(context),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              canvasColor:
-              Globals().menuColor, //This will change the drawer background.
-              //other styles
-            ),
-            child: Drawer(
-                child: ListView(
-              children: getWidgets(),
-            )),
-          );
-        }
-        return SizedBox.shrink();
-      },
+    Globals().printDebug("************* menu: build");
+    return Theme(
+      data: Theme.of(context).copyWith(
+        canvasColor:
+        Globals().menuColor, //This will change the drawer background.
+        //other styles
+      ),
+      child: Drawer(
+          child: ListView(
+            children: getWidgets(),
+          )),
     );
   }
 

@@ -97,7 +97,7 @@ class Globals {
   Color menuColor = Colors.teal;
   Color? menuColorDark = Colors.teal[800];
 
-  final bool debugMode = true;
+  final bool debugMode = false;
 
   late List<Word> alphabet;
   late List<Word> syllableUnique;
@@ -186,36 +186,11 @@ class Globals {
   }
 
   Future init(context) async {
-    printDebug("******** init");
+    print("******** init");
 
     prefs = await SharedPreferences.getInstance();
 
     printDebug("******** init1");
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    printDebug("******** init2 " + packageInfo.version);
-
-    version = packageInfo.version;
-    buildNumber = int.parse(packageInfo.buildNumber);
-
-    printDebug("******** init3 $version");
-    try {
-      version = '0.0.0';
-      printDebug("version1: $version");
-      version = prefs.getString('version')!;
-      printDebug("version2: $version");
-    } catch (e) {
-      version = '0.0.0';
-      Globals().printDebug("Error: $e");
-    }
-    if (version != packageInfo.version) {
-      print ("version3: $version");
-      Globals().printDebug("packageinfo: " + packageInfo.version);
-      version = packageInfo.version;
-      prefs.setString('version',version);
-      prefs.setInt('expandedId',1);
-      resetApp(context);
-    }
-
     alphabet = [];
     syllableUnique = [];
     listWordOnset = [];
@@ -299,6 +274,28 @@ class Globals {
     Globals().printDebug("expandedId-1: " + expandedId[1].toString());
 
     percentUnlock = prefs.getString('percentUnlock') ?? percentUnlock;
+
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    print("******** init1.5 " + packageInfo.version);
+    version = packageInfo.version;
+    buildNumber = int.parse(packageInfo.buildNumber);
+    try {
+      version = '0.0.0';
+      printDebug("version1: $version");
+      version = prefs.getString('version')!;
+      printDebug("version2: $version");
+    } catch (e) {
+      version = '0.0.0';
+      Globals().printDebug("Error: $e");
+    }
+    if (version != packageInfo.version) {
+      print ("version3: $version");
+      Globals().printDebug("packageinfo: " + packageInfo.version);
+      version = packageInfo.version;
+      prefs.setString('version',version);
+      prefs.setInt('expandedId',1);
+      resetApp(context);
+    }
 
     printDebug("******** finished populate");
   }
