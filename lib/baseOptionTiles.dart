@@ -79,6 +79,12 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
 
   ButtonTheme getOptionTile(Word wordOption, [Color backGroundColor=Colors.white]) {
     //Globals().printDebug("getOptionTile: " + wordOption.title);
+    bool showBackground;
+    try {
+      showBackground = misc as bool;
+    } catch (e) {
+      showBackground = true;
+    }
     return ButtonTheme(
         child: Expanded(
             child: Column(
@@ -105,7 +111,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
                       builder: (context, isPlaying) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: backGroundColor
+                              backgroundColor: (showBackground)?backGroundColor:Colors.white
                           ),
                           onPressed: (!isPlaying) ? () {
                             correctionLogic(wordOption);

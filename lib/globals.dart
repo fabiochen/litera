@@ -97,7 +97,7 @@ class Globals {
   Color menuColor = Colors.teal;
   Color? menuColorDark = Colors.teal[800];
 
-  final bool debugMode = false;
+  final bool debugMode = true;
 
   late List<Word> alphabet;
   late List<Word> syllableUnique;
@@ -1201,6 +1201,7 @@ class Globals {
         listNumber1t20.where((word) => word.id <= 153).toList(),
         '/ModuleBeforeAndAfter',
         optionFontSize: 40,
+        mainFieldType: FieldType.VAL1,
       );
     }());
 
@@ -1249,6 +1250,7 @@ class Globals {
         '/ModuleBeforeAndAfter',
         sortCriteria: FieldType.ID,
         optionFontSize: 40,
+        mainFieldType: FieldType.VAL1,
       );
     }());
 
@@ -1295,7 +1297,7 @@ class Globals {
         _subject,
         listMath1,
         '/ModuleMath',
-        numberQuestions: 20,
+        numberQuestions: 10,
         misc: true, // show counting images for small numbers
       );
     }());
@@ -1311,7 +1313,7 @@ class Globals {
         _subject,
         listMath1,
         '/ModuleMath',
-        numberQuestions: 20,
+        numberQuestions: 10,
         misc: true, // show counting images for small numbers
       );
     }());
@@ -1367,6 +1369,7 @@ class Globals {
         listColors,
         '/ModuleColors',
         optionHeight: 150,
+        misc: false,
       );
     }());
 
@@ -1518,6 +1521,7 @@ class Globals {
         listAlphabetSounds,
         '/ModuleBeforeAndAfter',
         optionFontSize: 50,
+        mainFieldType: FieldType.VAL1,
       );
     }());
 
@@ -1617,8 +1621,7 @@ class Globals {
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('PICTURE') + " / " +
-          getAssetsVocab('WORDS');
+      String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS');
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -1626,15 +1629,14 @@ class Globals {
         ModuleType.EXERCISE,
         _year,
         _subject,
-        listVocab.where((word) => word.title.length <= 5).toList(),
+        listVocab.where((word) => word.containsImage && word.containsAudio && word.title.length <= 5).toList(),
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
       );
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('PICTURE') + " / " +
-          getAssetsVocab('WORDS') + " (cursiva)";
+      String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS') + " (cursiva)";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -1642,7 +1644,7 @@ class Globals {
         ModuleType.EXERCISE,
         _year,
         _subject,
-        listVocab.where((word) => word.containsImage && word.title.length <= 5).toList(),
+        listVocab.where((word) => word.containsImage && word.containsAudio && word.title.length <= 5).toList(),
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
         fontFamily: "Maria_lucia",
@@ -1708,6 +1710,7 @@ class Globals {
         listAlphabetSounds,
         '/ModuleBeforeAndAfter',
         optionFontSize: 50,
+        mainFieldType: FieldType.VAL1,
       );
     }());
 
@@ -1751,8 +1754,7 @@ class Globals {
         ModuleType.TEST,
         _year,
         _subject,
-        alphabet.where((word) =>
-        word.title.length <= 6 && word.title.length > 3).toList(),
+        alphabet.where((word) => word.title.length <= 6 && word.title.length > 3).toList(),
         '/ModuleSpelling01',
       );
     }());
@@ -1915,7 +1917,7 @@ class Globals {
         _subject,
         listMath2,
         '/ModuleMath',
-        numberQuestions: 999,
+        numberQuestions: 10,
         misc: false, // show counting images for small numbers
       );
     }());
@@ -1931,7 +1933,7 @@ class Globals {
         _subject,
         listMath2,
         '/ModuleMath',
-        numberQuestions: 999,
+        numberQuestions: 10,
         misc: false, // show counting images for small numbers
       );
     }());
@@ -2224,7 +2226,7 @@ class Globals {
         listDaysOfTheWeek,
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
-        optionFieldType: FieldType.VAL1,
+        mainFieldType: FieldType.TITLE,
       );
     }());
 
@@ -2240,7 +2242,7 @@ class Globals {
         listDaysOfTheWeek,
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
-        optionFieldType: FieldType.VAL1,
+        mainFieldType: FieldType.TITLE,
       );
     }());
 
@@ -2291,6 +2293,7 @@ class Globals {
         listMonthsOfTheYear,
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
+        mainFieldType: FieldType.TITLE,
       );
     }());
 
@@ -2306,6 +2309,7 @@ class Globals {
         listMonthsOfTheYear,
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
+        mainFieldType: FieldType.TITLE,
       );
     }());
 
@@ -2336,6 +2340,7 @@ class Globals {
         listSeasonsOfTheYear,
         '/ModuleBeforeAndAfter',
         optionFontSize: 30,
+        mainFieldType: FieldType.TITLE,
       );
     }());
 
@@ -2351,6 +2356,7 @@ class Globals {
         listSeasonsOfTheYear,
         '/ModuleBeforeAndAfter',
         optionFontSize: 30,
+        mainFieldType: FieldType.TITLE,
       );
     }());
 

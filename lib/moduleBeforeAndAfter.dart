@@ -86,6 +86,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   void _playAudio() {
     String rel = (listRel[listPosition] > 0)?"antes":"depois";
+    Globals().printDebug("rel: $rel");
     Globals().audioPlayer.open(
       Playlist(
           audios: [

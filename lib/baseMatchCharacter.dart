@@ -37,6 +37,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
     Map? args = ModalRoute.of(context)?.settings.arguments as Map;
     Globals().printDebug("args: " + args.toString());
     isVisibleTarget = args['isVisibleTarget'] ?? false;
+    listProcess.shuffle();
     load();
   }
 
