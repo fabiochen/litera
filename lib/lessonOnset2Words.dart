@@ -20,7 +20,7 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
   Widget getMainTile() {
     Word onset = listOriginal[listPosition] as Word;
     Globals().printDebug("onset0: " + onset.title);
-    listProcess = Globals().listVocab.where((word) => word.containsImage && word.title.startsWith(onset.title)).toList();
+    listProcess = Globals().listVocab.where((word) => word.containsImage && word.containsAudio && word.title.startsWith(onset.title)).toList();
     Globals().printList(listProcess);
     return super.getMainTile();
   }

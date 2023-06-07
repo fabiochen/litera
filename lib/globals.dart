@@ -277,11 +277,8 @@ class Globals {
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     print("******** init1.5 " + packageInfo.version);
-    version = packageInfo.version;
     buildNumber = int.parse(packageInfo.buildNumber);
     try {
-      version = '0.0.0';
-      printDebug("version1: $version");
       version = prefs.getString('version')!;
       printDebug("version2: $version");
     } catch (e) {
@@ -362,6 +359,8 @@ class Globals {
       listDaysOfTheWeek.add(word);
     });
 
+    printDebug("******** populate 4.1");
+
     // populate vocab list
     parsedWords['LIST']['DIRECTIONS'].keys.forEach((key) {
       int id = int.parse(key);
@@ -369,6 +368,8 @@ class Globals {
       Word word = Word(id, title);
       listDirections.add(word);
     });
+
+    printDebug("******** populate 4.2");
 
     // populate vocab list
     parsedWords['LIST']['MONTHS-OF-THE-YEAR'].keys.forEach((key) {
@@ -3148,6 +3149,5 @@ class Globals {
     Globals().printDebug("getCategoryFromId: $id");
     return category.singleWhere((word) => (word).id == id);
   }
-
 
 }
