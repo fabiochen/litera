@@ -46,10 +46,12 @@ class _PageAboutState extends State<PageAbout> {
                       Image(
                         image: AssetImage(
                             'assets/icon/icon.png'),
-                        width: 300,
+                        width: 100,
                         gaplessPlayback: true,
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Text(
                         Globals().appTitle.toUpperCase(),
                         style: TextStyle(
@@ -61,7 +63,7 @@ class _PageAboutState extends State<PageAbout> {
                   ),
                 ),
                 SizedBox(height: 80),
-                Text("Illustrations by FreePik, brgfx and others",
+                Text("Illustrations by FreePik, Triangle Squad, brgfx and others",
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.black
@@ -84,7 +86,7 @@ class _PageAboutState extends State<PageAbout> {
                   Container(
                     alignment: Alignment.bottomCenter,
                     child: Image(
-                      image: AssetImage('assets/icon/unitas.png'),
+                      image: AssetImage('assets/icon/unitas.jpg'),
                       width: 100,
                       gaplessPlayback: true,
                     ),

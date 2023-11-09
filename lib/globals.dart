@@ -76,6 +76,8 @@ class Globals {
 
   Globals._internal();
 
+  bool firstTime = true;
+
   late String appOralLanguage;
   late String appTitle;
   late String devName;
@@ -177,16 +179,27 @@ class Globals {
     }
   }
 
+  void unLockAll() {
+    for (int i=0; i<listYears.length; i++) {
+      Year year = listYears[i];
+      for (int j=0; j<year.subjects.length; j++) {
+        Subject subject = year.subjects[j];
+        setUnlockModuleIndex(subject.modules.length, year.id.index, subject.id.index);
+      }
+    }
+  }
+
   void resetApp(context) async {
+    debugPrint("resetApp");
     await clearSettings('reports');
     await clearSettings('unlockModuleIndex');
-    prefs.setInt('expandedId',1);
+//    prefs.setInt('expandedId',1);
     prefs.setString('percentUnlock',Globals().percentUnlock);
     Phoenix.rebirth(context);
   }
 
   Future init(context) async {
-    print("******** init");
+    print("******** init 0");
 
     prefs = await SharedPreferences.getInstance();
 
@@ -267,23 +280,28 @@ class Globals {
     getYear3Sci();
 
     printDebug("******** init 5");
-    expandedId.asMap().forEach((index, value) =>
-    prefs.getInt("expandedId-$index") ?? Sub.PORTUGUESE.index);
-    printDebug("******** init 6");
+    expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index") ?? Sub.PORTUGUESE.index);
     Globals().printDebug("expandedId-0: " + expandedId[0].toString());
     Globals().printDebug("expandedId-1: " + expandedId[1].toString());
+    printDebug("******** init 6");
 
     percentUnlock = prefs.getString('percentUnlock') ?? percentUnlock;
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     print("******** init1.5 " + packageInfo.version);
     buildNumber = int.parse(packageInfo.buildNumber);
+
     try {
       version = prefs.getString('version')!;
+      firstTime = false;
       printDebug("version2: $version");
     } catch (e) {
-      version = '0.0.0';
-      Globals().printDebug("Error: $e");
+      // first time
+      unLockAll();
+      version = packageInfo.version;
+      prefs.setString('version',version);
+      firstTime = true;
+      Globals().printDebug("Error getting version from smartphone: $e");
     }
     if (version != packageInfo.version) {
       print ("version3: $version");
@@ -293,6 +311,7 @@ class Globals {
       prefs.setInt('expandedId',1);
       resetApp(context);
     }
+    prefs.setBool('firsttime',firstTime);
 
     printDebug("******** finished populate");
   }
@@ -809,7 +828,8 @@ class Globals {
         _year,
         "1º Ano",
         Colors.red.shade200,
-        listSubjects);
+        listSubjects,
+    );
     expandedId.add(_subject.index);
 
     printDebug("******** init 4.1.3");
@@ -1124,7 +1144,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Português", listModules));
+        Subject(_subject, "Português", listModules, Image.asset('assets/icon/portuguese.png')));
   }
 
   void getYear1Mat() {
@@ -1320,7 +1340,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Matemática", listModules));
+        Subject(_subject, "Matemática", listModules,  Image.asset('assets/icon/maths.png')));
   }
 
   void getYear1Sci() {
@@ -1375,7 +1395,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Ciências", listModules));
+        Subject(_subject, "Ciências", listModules,  Image.asset('assets/icon/science.png')));
   }
 
   void getYear1Mus() {
@@ -1477,7 +1497,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Música", listModules));
+        Subject(_subject, "Música", listModules,  Image.asset('assets/icon/music.png')));
   }
 
   void getYear2Por() {
@@ -1820,7 +1840,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Português", listModules));
+        Subject(_subject, "Português", listModules,  Image.asset('assets/icon/portuguese.png')));
   }
 
   void getYear2Mat() {
@@ -2146,7 +2166,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Matemática", listModules));
+        Subject(_subject, "Matemática", listModules,  Image.asset('assets/icon/maths.png')));
   }
 
   void getYear2Sci() {
@@ -2437,7 +2457,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Ciências", listModules));
+        Subject(_subject, "Ciências", listModules,  Image.asset('assets/icon/science.png')));
   }
 
   void getYear3Por() {
@@ -2674,7 +2694,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Português", listModules));
+        Subject(_subject, "Português", listModules,  Image.asset('assets/icon/portuguese.png')));
   }
 
   void getYear3Geo() {
@@ -2812,7 +2832,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Geografia", listModules));
+        Subject(_subject, "Geografia", listModules,  Image.asset('assets/icon/geography.png')));
   }
 
   void getYear3Sci() {
@@ -2961,7 +2981,7 @@ class Globals {
     }());
 
     listYears[_year.index].subjects.add(
-        Subject(_subject, "Ciências", listModules));
+        Subject(_subject, "Ciências", listModules, Image.asset('assets/icon/science.png')));
   }
 
   Future<bool> AssetExists(String path) async {
@@ -2977,7 +2997,7 @@ class Globals {
   Icon? getLockIcon(bool isModuleLocked) {
     if (!isModuleLocked) return null;
     return Icon(
-      IconData(59545, fontFamily: 'LiteraIcons'),
+      Icons.lock_rounded,
       color: Colors.white,
     );
   }

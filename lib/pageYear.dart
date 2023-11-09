@@ -51,7 +51,7 @@ class _PageYearState extends BaseModuleState<PageYear> {
     Globals().printDebug("test 1.5 yearIndex $_yearIndex");
     return SingleChildScrollView(
       child: ExpansionPanelList.radio(
-        initialOpenPanelValue: Globals().expandedId[_yearIndex],
+        initialOpenPanelValue: (!Globals().firstTime) ? Globals().prefs.getInt('expandedId-$_yearIndex') : null,
         children: _getListExpansionPanelRadio(),
       ),
     );
@@ -66,15 +66,19 @@ class _PageYearState extends BaseModuleState<PageYear> {
         headerBuilder: (BuildContext context, bool isExpanded) {
           if (isExpanded) {
             Globals().expandedId[_yearIndex] = subject.id.index;
-            Globals().printDebug("test 2 yearIndex $_yearIndex");
-            Globals().prefs.setInt('expandedId-$_yearIndex',Globals().expandedId[_yearIndex]);
+            Globals().printDebug("test 2 yearIndex $_yearIndex subject ${subject.id.index}");
+            Globals().prefs.setInt('expandedId-$_yearIndex',subject.id.index);
           }
-          return ListTile(
-              title: Text(
-                  subject.value,
-                  textAlign: TextAlign.left,
-                  style: Globals().getModuleStyle(false)
-              )
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+              leading: subject.image,
+                title: Text(
+                    subject.value,
+                    textAlign: TextAlign.left,
+                    style: Globals().getModuleStyle(false)
+                )
+            ),
           );},
         canTapOnHeader: true,
         backgroundColor: Colors.teal[400],

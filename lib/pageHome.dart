@@ -14,6 +14,7 @@ class _PageHomeState<T extends PageHome> extends State<T> {
 
   bool useNavigation = true;
   bool useProgressBar = true;
+  bool isVisible = false;
   Color? backgroundColor = Colors.grey[200];
   late BannerAd bannerAd;
   final isBannerAdReady = ValueNotifier<bool>(false);
@@ -25,8 +26,9 @@ class _PageHomeState<T extends PageHome> extends State<T> {
     super.initState();
     useNavigation = false;
     useProgressBar = false;
-    title = "Litera Brasil";
+    title = Globals().appTitle;
     backgroundColor = Colors.teal;
+    isVisible = Globals().firstTime;
     bannerAd = BannerAd(
       adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
       //adUnitId: 'ca-app-pub-3940256099942544/6300978111', //test id
@@ -45,7 +47,6 @@ class _PageHomeState<T extends PageHome> extends State<T> {
       ),
     );
     bannerAd.load();
-
   }
 
   @override
@@ -69,7 +70,44 @@ class _PageHomeState<T extends PageHome> extends State<T> {
       children: [
         SizedBox(width: 50, height: 50),
         Flexible(
-            child: getMainTile()
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                getMainTile(),
+                Visibility(
+                  child: Container(
+                    width: 300,
+                    color: Colors.white,
+                    child: Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                            "\nBem-vindo ao Tutor Kids!\n\nTodos os módulos se encontram desbloqueados para que você possa conhecê-los sem impedimento.\n\nPara que o aluno desbloqueie os módulos à medida em que ele avança, basta visitar a área de Configuração.\n",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              isVisible = false;
+                              Globals().prefs.setBool('firstTime', false);
+                            });
+                          },
+                          child: Text("X"),
+                        ),
+                      ],
+                    ),
+                  ),
+                  visible: isVisible,
+                )
+              ],
+            )
         ),
         ValueListenableBuilder(
             valueListenable: isBannerAdReady,
@@ -177,8 +215,11 @@ class _PageHomeState<T extends PageHome> extends State<T> {
               child: Column(
                 children: [
                   Stack(
-                    alignment: Alignment.topRight,
+                    alignment: Alignment.center,
                     children: getYearIcon(i, lockYear),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   Text(
                     Globals().listYears[i].value,
@@ -220,12 +261,23 @@ class _PageHomeState<T extends PageHome> extends State<T> {
 
   List<Widget> getYearIcon(i,unlockModule) {
     List<Widget> list = [];
-      list.add(Icon(
-        Icons.calendar_month,
-        color: Globals().listYears[i].color,
-        size: 100,
+      list.add(Image.asset(
+        'assets/icon/calendar$i.png',
+        height: 80,
+        width: 80,
       ));
-      if (unlockModule)list.add(Globals().getLockIcon(true) as Widget);
+      if (unlockModule) {
+        list.add(Icon(
+          Icons.lock,
+          color: Colors.blueGrey,
+          size: 60,
+        ));
+      list.add(Icon(
+        Icons.lock_outline,
+        color: Colors.black,
+        size: 60,
+      ));
+    }
     return list;
   }
 

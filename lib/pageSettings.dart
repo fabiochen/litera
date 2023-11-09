@@ -115,7 +115,7 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                   color: Colors.black,
                 ),
                 title: Text(
-                  'Reset (inclue apagar relatórios)',
+                  'Reset (bloqueiar módulos e apagar relatórios)',
                   style: TextStyle(color: Colors.red),
                 ),
                 trailing: SizedBox(
