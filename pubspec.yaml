@@ -33,7 +33,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  package_info_plus: ^3.0.3
+  package_info_plus: ^5.0.1
   flutter_phoenix: ^1.1.1 # ^0.1.0
   shared_preferences: ^2.0.20 #^2.0.8
   flutter_switch: ^0.3.2 #^0.1.1

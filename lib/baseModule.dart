@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:assets_audio_player_web/assets_audio_player_web.dart';
 
 import 'menu.dart';
 import 'word.dart';
