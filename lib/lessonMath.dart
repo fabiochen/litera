@@ -31,7 +31,7 @@ class _State extends BaseModuleState<LessonMath> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        getMathWidgetsV(wordMain.title),
+        getMathWidgetsH(wordMain.title),
       ],
     );
   }
@@ -65,51 +65,34 @@ class _State extends BaseModuleState<LessonMath> {
     );
   }
 
-  Widget getMathWidgetsH(String expression) {
+  Widget getMathWidgetsH(String exp) {
     List<Widget> list = [];
-    for (int i=0; i<expression.length; i++) {
-      Word word = Globals().getWordFromField(Globals().listNumber1t20,FieldType.VAL1,1.toString());
-      String val = expression[i];
+    for (int i=0; i<exp.length; i++) {
+      String val = exp[i];
       if (isNumeric(val)) {
-        GridView gv = GridView.builder(
-          padding: const EdgeInsets.all(1),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: sqrt(int.parse(val)).ceil(),
-            childAspectRatio: 1,
-          ),
-          itemCount: int.parse(val),
-          itemBuilder: (BuildContext context, int i) {
-            return getImage(word.id, 100);
-          },
-        );
-        Column col = Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              width: tileSize,
-              height: tileSize,
-              child: gv,
-            ),
-            getText(val),
-          ],
-        );
-        list.add(col);
-      } else {
+        list.add(getText(val));
+      }
+      else {
         Column colOp = Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
+            if (showCountingImages) Container(
                 height: 200,
                 alignment: Alignment.center,
                 child: getText(val)),
-            Container(child: getText(val)),
+            Container(child: getText(val,100,Colors.blue)),
           ],
         );
         list.add(colOp);
       }
     }
+    list.add(getText('=',100,Colors.blue));
+    debugPrint("exp: $exp");
+    exp = exp.replaceAll('x', '*');
+    exp = exp.replaceAll('÷', '/');
+    debugPrint("exp: $exp");
+    Expression expression = Expression(exp);
+    list.add(getText(expression.eval().toString(),100,Colors.red));
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: list,
@@ -124,6 +107,7 @@ class _State extends BaseModuleState<LessonMath> {
     for (int j=0; j<exp.length; j++) {
       if (!isNumeric(exp[j])) {
         operation = exp[j];
+        if (operation == '/') operation = '÷';
         Globals().printDebug("op: $operation");
       }
     }
@@ -137,7 +121,7 @@ class _State extends BaseModuleState<LessonMath> {
       listNumbers.add(Container(
         alignment: Alignment.centerRight,
         height: tileSize,
-        width: tileSize,
+        width: tileSize*1.5,
         child: getText(val),
       ));
     }
@@ -156,12 +140,13 @@ class _State extends BaseModuleState<LessonMath> {
         child: getText(operation,100,Colors.blue)));
 
     Expression expression = Expression(exp);
+    debugPrint("total: " + expression.eval().toString());
     // divider
     Padding div = Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         height: 5,
-        width: tileSize,
+        width: tileSize*1.5,
         color: Colors.teal,
       ),
     );
@@ -171,7 +156,7 @@ class _State extends BaseModuleState<LessonMath> {
     listNumbers.add(Container(
         alignment: Alignment.centerRight,
         height: tileSize,
-        width: tileSize,
+        width: tileSize*1.5,
         child: getText(expression.eval().toString(),100,Colors.red)));
     listImages.add(getGridImages(expression.eval().toString()));
     Column colImages = Column(

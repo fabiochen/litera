@@ -83,7 +83,7 @@ class _State extends BaseModuleState<UnitHangman> {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color?>(
                     (Set<MaterialState> states) {
-                  return Colors.teal; // defer to the defaults
+                  return Globals().appButtonColor; // defer to the defaults
                 },
               ),
             ),
@@ -158,14 +158,14 @@ class _State extends BaseModuleState<UnitHangman> {
   }
 
   @override
-  next() {
+  next([bool refresh=true]) {
     listGoodLetters = [];
     listBadLetters = [];
     super.next();
   }
 
   @override
-  previous() {
+  previous([bool refresh=true]) {
     listGoodLetters = [];
     listBadLetters = [];
     super.previous();

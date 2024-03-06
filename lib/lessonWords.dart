@@ -14,12 +14,8 @@ class _State extends BaseModuleState<LessonWords> {
 
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
-    audioPlay(wordMain.id);
     return getTextTile(
-      wordMain,
-      borderColor: listColor[wordMain.id%10]!,
-      fontSize: mainFontSize,
-    );
+        wordMain, backgroundColor: optionColors[listPosition % 10]);
   }
 
 }

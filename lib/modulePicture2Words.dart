@@ -33,7 +33,7 @@ class _State extends BaseOptionTilesState<ModulePicture2Words> {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: 40,
+          fontSize: optionFontSize,
           fontFamily: fontFamily,
         ),
       ),

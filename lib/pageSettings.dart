@@ -143,14 +143,14 @@ class _PageSettingsState extends BaseModuleState<PageSettings> {
                     onPressed: () => saveSettings(),
                     child: Text(Globals().getAssetsVocab('SAVE'),
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.red,
                       ),
                     ),
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.teal)
+                                side: BorderSide(color: Colors.red)
                             )
                         )
                     )

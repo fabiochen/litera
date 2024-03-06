@@ -32,28 +32,38 @@ class _State extends BaseModuleState<LessonClockDigital> {
             Container(
               width: 150,
               height: 100,
-              color: Colors.red,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CupertinoPicker(
-                  backgroundColor: Colors.white,
-                  itemExtent: 60,
-                  children: [
-                    ...Globals().listTimeHour.map((word) {
-                      String title = word.title;
-                      return Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 50,
-                          color: Colors.deepOrange,
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                  onSelectedItemChanged: (value) {
-                    setState(() {_selectedHour = value;});
-                  },
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                border: Border.all(
+                  color: Colors.red,
+                  width: 5,
                 ),
+              ),
+              foregroundDecoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                border: Border.all(
+                  color: Colors.red,
+                  width: 5,
+                ),
+              ),
+              child: CupertinoPicker(
+                backgroundColor: Colors.white,
+                itemExtent: 60,
+                children: [
+                  ...Globals().listTimeHour.map((word) {
+                    String title = word.title;
+                    return Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 50,
+                        color: Colors.deepOrange,
+                      ),
+                    );
+                  }).toList(),
+                ],
+                onSelectedItemChanged: (value) {
+                  setState(() {_selectedHour = value;});
+                },
               ),
             ),  // hour
             Container(
@@ -70,28 +80,38 @@ class _State extends BaseModuleState<LessonClockDigital> {
             Container(
               width: 150,
               height: 100,
-              color: Colors.teal,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CupertinoPicker(
-                  backgroundColor: Colors.white,
-                  itemExtent: 60,
-                  children: [
-                    ...Globals().listTimeMinutes.map((word) {
-                      String title = word.title;
-                      return Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 50,
-                          color: Colors.green,
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                  onSelectedItemChanged: (value) {
-                    setState(() {_selectedMinute = value;});
-                  },
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                border: Border.all(
+                  color: Colors.teal,
+                  width: 5,
                 ),
+              ),
+              foregroundDecoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                border: Border.all(
+                  color: Colors.teal,
+                  width: 5,
+                ),
+              ),
+              child: CupertinoPicker(
+                backgroundColor: Colors.white,
+                itemExtent: 60,
+                children: [
+                  ...Globals().listTimeMinutes.map((word) {
+                    String title = word.title;
+                    return Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 50,
+                        color: Colors.green,
+                      ),
+                    );
+                  }).toList(),
+                ],
+                onSelectedItemChanged: (value) {
+                  setState(() {_selectedMinute = value;});
+                },
               ),
             ),  // minutes
           ],

@@ -27,38 +27,46 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                 Container(
                   width: 150,
                   height: 150,
-                  color: Colors.green,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CupertinoPicker(
-                      backgroundColor: Colors.white,
-                      itemExtent: 60,
-                      scrollController: FixedExtentScrollController(initialItem: 0),
-                      children: [
-                        ...Globals().listOnsetConsonants.map((value) {
-                          return Text(
-                            value.title,
-                            style: TextStyle(
-                              fontSize: 50,
-                              color: Colors.green,
-                            ),
-                          );
-                        }).toList(),
-                      ],
-                      onSelectedItemChanged: (value) {
-                        setState(() {
-                          _selectedConsonant = value;
-                        });
-                      },
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.green,
+                      width: 5,
                     ),
                   ),
+                  foregroundDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.green,
+                      width: 5,
+                    ),
+                  ),
+                  child: CupertinoPicker(
+                    backgroundColor: Colors.white,
+                    itemExtent: 60,
+                    scrollController: FixedExtentScrollController(initialItem: 0),
+                    children: [
+                      ...Globals().listOnsetConsonants.map((value) {
+                        return Text(
+                          value.title,
+                          style: TextStyle(
+                            fontSize: 50,
+                            color: Colors.green,
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                    onSelectedItemChanged: (value) {
+                      setState(() {
+                        _selectedConsonant = value;
+                      });
+                    },
+                  ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 20),
                 ElevatedButton(
                     onPressed: () => audioPlay(Globals().listOnsetConsonants[_selectedConsonant].id),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white
-                    ),
+                    style: Globals().buttonStyle(),
                     child: Stack(
                       children: [
                         Image(
@@ -90,40 +98,48 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
             Column(
               children: [
                 Container(
-                  color: Colors.red,
                   width: 150,
                   height: 150,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CupertinoPicker(
-                      backgroundColor: Colors.white,
-                      itemExtent: 60,
-                      scrollController: FixedExtentScrollController(initialItem: 0),
-                      children: [
-                        ...Globals().listVowels.map((value) {
-                          return Text(
-                            value.title,
-                            style: TextStyle(
-                              fontSize: 50,
-                              color: Colors.red,
-                            ),
-                          );
-                        }).toList(),
-                      ],
-                      onSelectedItemChanged: (value) {
-                        setState(() {
-                          _selectedVowel = value;
-                        });
-                      },
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.red,
+                      width: 5,
                     ),
                   ),
+                  foregroundDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.red,
+                      width: 5,
+                    ),
+                  ),
+                  child: CupertinoPicker(
+                    backgroundColor: Colors.white,
+                    itemExtent: 60,
+                    scrollController: FixedExtentScrollController(initialItem: 0),
+                    children: [
+                      ...Globals().listVowels.map((value) {
+                        return Text(
+                          value.title,
+                          style: TextStyle(
+                            fontSize: 50,
+                            color: Colors.red,
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                    onSelectedItemChanged: (value) {
+                      setState(() {
+                        _selectedVowel = value;
+                      });
+                    },
+                  ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 20),
                 ElevatedButton(
                     onPressed: () => audioPlay(Globals().listVowels[_selectedVowel].id),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white
-                    ),
+                    style: Globals().buttonStyle(),
                     child: Stack(
                       children: [
                         Image(
@@ -179,9 +195,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
         SizedBox(height: 10),
         ElevatedButton(
             onPressed: () => _playSyllableAudio(),
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white
-            ),
+            style: Globals().buttonStyle(),
             child: Stack(
               children: [
                 Icon(

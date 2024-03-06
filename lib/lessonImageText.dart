@@ -21,7 +21,10 @@ class _State extends BaseModuleState<LessonImageText> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getImageTile(word.id), // image
+        getImageTile(
+          word.id,
+          borderColor: optionColors[listPosition%10]!,
+        ), // image
         getText(text,mainFontSize), // words
       ],
     );

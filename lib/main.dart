@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:litera/lessonTableMult.dart';
+import 'package:litera/lessonTableDiv.dart';
 import 'package:litera/unitMemoryGame.dart';
+import 'package:litera/unitPiano.dart';
 
 import 'globals.dart';
-import 'lessonCategory2Words.dart';
+import 'unitCategory2Words.dart';
 import 'lessonMath.dart';
 import 'lessonMusic.dart';
 import 'lessonWordPairs.dart';
 import 'moduleCategory2Option.dart';
 import 'moduleCategoryOption.dart';
 import 'moduleColors.dart';
+import 'moduleHomophone2Options.dart';
 import 'moduleLetters2Picture.dart';
 import 'moduleMath.dart';
+import 'modulePiano.dart';
 import 'moduleSound2Images.dart';
+import 'moduleTimesTable.dart';
+import 'moduleTimesTable2.dart';
+import 'moduleTimesTable3.dart';
 import 'moduleTonicOption.dart';
 import 'moduleTonicSyllable.dart';
 import 'moduleWord2Pictures.dart';
@@ -83,11 +91,14 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
               theme: ThemeData(
-                  scaffoldBackgroundColor: Colors.grey[200],
-                  textTheme: Theme.of(context).textTheme.apply(
-                    bodyColor: Colors.white,
-                    displayColor: Colors.black,
-                  )
+                appBarTheme: AppBarTheme(
+                  backgroundColor: Globals().appBarColorDark,
+                  foregroundColor: Globals().appFontColorLight,
+                ),
+                textTheme: Theme.of(context).textTheme.apply(
+                  bodyColor: Colors.white,
+                  displayColor: Colors.white,
+                ),
               ),
               debugShowCheckedModeBanner: false,
               initialRoute: '/',
@@ -112,7 +123,7 @@ class MyApp extends StatelessWidget {
                 '/ModuleLetters2Picture'     : (context) => ModuleLetters2Picture(),
                 '/LessonSyllables'           : (context) => LessonSyllables(),
                 '/LessonSyllablesConsonantsVowels' : (context) => LessonSyllablesConsonantsVowels(),
-                '/LessonCategory2Words'     : (context) => LessonCategory2Words(),
+                '/UnitCategory2Words'        : (context) => UnitCategory2Words(),
                 '/ModuleSound2Words'         : (context) => ModuleSound2Words(),
                 '/ModuleSyllablesWord'       : (context) => ModuleSyllablesWord(),
                 '/LessonImageText'             : (context) => LessonImageText(),
@@ -145,6 +156,14 @@ class MyApp extends StatelessWidget {
                 '/ModuleSound2Images'        : (context) => ModuleSound2Images(),
                 '/ModuleMath'                : (context) => ModuleMath(),
                 '/UnitMemoryGame'            : (context) => UnitMemoryGame(),
+                '/LessonTableMult'           : (context) => LessonTableMult(),
+                '/LessonTableDiv'            : (context) => LessonTableDiv(),
+                '/ModuleTimesTable'          : (context) => ModuleTimesTable(),
+                '/ModuleTimesTable2'         : (context) => ModuleTimesTable2(),
+                '/ModuleTimesTable3'         : (context) => ModuleTimesTable3(),
+                '/UnitPiano'                 : (context) => UnitPiano(),
+                '/ModulePiano'               : (context) => ModulePiano(),
+                '/ModuleHomophone2Options'    : (context) => ModuleHomophone2Options(),
 
                 '/Report'                    : (context) => Report(),
               }

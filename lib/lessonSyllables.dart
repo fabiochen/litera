@@ -23,8 +23,8 @@ class _LessonSyllablesState extends BaseModuleState<LessonSyllables> {
         getTextTile(
           wordMain,
           fontSize: 100,
-          fontColor: Colors.red,
-          borderColor: listColor[listPosition%10],
+          fontColor: Colors.teal,
+          backgroundColor: optionColors[listPosition%10],
         ),
       ],
     );

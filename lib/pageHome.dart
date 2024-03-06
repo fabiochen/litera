@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:litera/baseModule.dart';
 
 import 'package:litera/globals.dart';
-import 'package:litera/menu.dart';
 import 'package:litera/pageYear.dart';
+import 'package:litera/menu.dart';
 
-class PageHome extends StatefulWidget {
+class PageHome extends BaseModule {
   @override
   _PageHomeState createState() => _PageHomeState();
 }
 
-class _PageHomeState<T extends PageHome> extends State<T> {
+class _PageHomeState extends BaseModuleState<PageHome> {
 
   bool useNavigation = true;
   bool useProgressBar = true;
   bool isVisible = false;
-  Color? backgroundColor = Colors.grey[200];
+  late Color backgroundColor;
   late BannerAd bannerAd;
   final isBannerAdReady = ValueNotifier<bool>(false);
 
@@ -27,7 +28,6 @@ class _PageHomeState<T extends PageHome> extends State<T> {
     useNavigation = false;
     useProgressBar = false;
     title = Globals().appTitle;
-    backgroundColor = Colors.teal;
     isVisible = Globals().firstTime;
     bannerAd = BannerAd(
       adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
@@ -49,19 +49,22 @@ class _PageHomeState<T extends PageHome> extends State<T> {
     bannerAd.load();
   }
 
+  // pageHome build is isolated from other widgets
+  // all other widgets get theme from baseModule
   @override
   Widget build(BuildContext context) {
     Globals().printDebug("******** baseModule build");
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          backgroundColor: Globals().appBarColor,
-          title: Text(title),
-        ),
-        drawer: Menu(),
+        backgroundColor: Globals().appColor,
+        appBar: getAppBar(),
+        drawer: getMenu(),
         body: getBody()
     );
+  }
+
+  Widget getMenu() {
+    return Menu();
   }
 
   Widget getBody() {

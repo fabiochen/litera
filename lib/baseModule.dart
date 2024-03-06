@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:assets_audio_player_web/assets_audio_player_web.dart';
 
 import 'menu.dart';
 import 'word.dart';
@@ -51,8 +50,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   late double mainHeight = 150;
   late double optionWidth = 200;
   late double optionHeight = 150;
-  late Color mainFontColor = Colors.teal;
-  late Color optionFontColor = Colors.teal;
+  Color mainFontColor = Globals().appFontColorLight;
+  Color optionFontColor = Globals().appFontColorLight;
   late Object? mainFieldType = FieldType.TITLE;
   late Object? optionFieldType = FieldType.VAL1;
   late Object? optionTileType = TileType.TEXT;
@@ -65,7 +64,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   Color buttonColor = Colors.grey;
 
   late Word wordMain;
-  Color? backgroundColor = Colors.grey[200];
+  Color backgroundColor = Globals().appBackgroundColor;
 
   late BannerAd bannerAd;
   final isBannerAdReady = ValueNotifier<bool>(false);
@@ -228,16 +227,23 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   Widget build(BuildContext context) {
     Globals().printDebug("******** baseModule build");
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          backgroundColor: Globals().appBarColor,
-          title: Text(title),
-        ),
-        drawer: () {
-          Menu;
-        } (),
-        body: getBody()
+      resizeToAvoidBottomInset: false,
+      backgroundColor: backgroundColor,
+      appBar: getAppBar(),
+      drawer: () {
+        getMenu();
+      } (),
+      body: getBody()
+    );
+  }
+
+  Widget getMenu() {
+    return Menu();
+  }
+
+  PreferredSizeWidget getAppBar() {
+    return AppBar(
+      title: Text(title),
     );
   }
 
@@ -265,11 +271,17 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
                 if (useNavigation) getNavButtonNext(),// navigation next
               ],
             ),
-            ValueListenableBuilder(
-              valueListenable: isBannerAdReady,
-              builder: (context, value, widget) {
-                  return getAd();
-              }
+            Container(
+              color: Globals().appBarColorDark,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: ValueListenableBuilder(
+                    valueListenable: isBannerAdReady,
+                    builder: (context, value, widget) {
+                      return getAd();
+                    }
+                ),
+              ),
             ),
           ],
         )
@@ -302,10 +314,16 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         percent: percent,
         animateFromLastPercent: true,
         leading: Text((listPosition+1).toString() + '  ',
-          style: TextStyle(fontSize: 15, color: Colors.black),
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Globals().appFontColorDark),
         ),
         trailing: Text(numberQuestions.toString() + '  ',
-          style: TextStyle(fontSize: 15, color: Colors.black),
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Globals().appFontColorDark),
         ),
         progressColor: Globals().appBarColor,
         backgroundColor: backgroundColor,
@@ -343,7 +361,14 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     return text;
   }
 
-  Text getMainText(Word word, double fontSize, [String fontFamily = "Litera-Regular", Color fontColor = Colors.teal]) {
+  Widget getMainText(
+      Word word,
+      double fontSize,
+      {String fontFamily = "Litera-Regular",
+        Color fontColor = Colors.teal,
+        Color backgroundColor = Colors.white
+      }
+    ) {
     String? label;
     switch (mainFieldType as dynamic) {
       case FieldType.VAL1:
@@ -353,14 +378,20 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         label = word.title;
         break;
     }
-    return Text(
-      getMainLabel(label),
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontFamily: fontFamily,
-        fontSize: fontSize,
-        color: fontColor,
-      )
+    return ElevatedButton(
+      onPressed: null,
+      child: Text(
+        getMainLabel(label),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: fontFamily,
+          fontSize: fontSize,
+          color: fontColor,
+        )
+      ),
+      style: Globals().buttonStyle(
+        backgroundColor: backgroundColor,
+      ),
     );
   }
 
@@ -370,12 +401,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     if (containsAudio) {
       return ElevatedButton(
           onPressed: () => audioPlay(id),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: backgroundColor,
-            side: BorderSide(
-              width: 10.0,
-              color: borderColor!,
-            )
+          style: Globals().buttonStyle(
+            backgroundColor: backgroundColor!,
           ),
           child: Stack(
             children: [
@@ -410,19 +437,18 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     } else {
     return ElevatedButton(
       onPressed: () => null,
-      style: ElevatedButton.styleFrom(
-      backgroundColor: backgroundColor
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Container(
-        width: width,
-        height: height,
-        alignment: Alignment.center,
-        child: getText(text, fontSize, fontColor),
+      style: Globals().buttonStyle(
+        backgroundColor: backgroundColor!
       ),
-    ),
-
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Container(
+          width: width,
+          height: height,
+          alignment: Alignment.center,
+          child: getText(text, fontSize, fontColor),
+        ),
+      ),
     );
     }
   }
@@ -438,12 +464,10 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  ElevatedButton getSoundTile(Word word) {
+  ElevatedButton getSoundTile(Word word, [Color border=Colors.white]) {
     return ElevatedButton(
         onPressed: () => audioPlay(word.id),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white
-        ),
+        style: Globals().buttonStyle(),
         child: Stack(
           children: [
             Icon(
@@ -473,9 +497,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     }
     return ElevatedButton(
         onPressed: () => (word.id==8)?{}:audioPlay(onset.id),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white
-        ),
+        style: Globals().buttonStyle(),
         child: Stack(
           children: [
             Image(
@@ -505,54 +527,62 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  ElevatedButton getImageTile(int id, {double imageSize=200, Color borderColor=Colors.white}) {
+  Widget getImageTile(int id, {double imageSize=200, Color borderColor=Colors.white, Color backgroundColor=Colors.white}) {
     if (containsAudio)
-      return ElevatedButton(
-        onPressed: () => audioPlay(id),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: BorderSide(
-              width: 10.0,
-              color: borderColor,
-            )
-        ),
-        child: Stack(
-          children: [
-            getImage(id,imageSize),
-            Positioned(
-              bottom: 10, right: 0,
-              child: Icon(
-                IconData(57400, fontFamily: 'LiteraIcons'),
-                color: Colors.blue,
-                size: 40,
-              ),
-            ),
-            Positioned(
-              bottom: 10, right: 0,
-              child: Icon(
-                IconData(57401, fontFamily: 'LiteraIcons'),
-                color: Colors.white,
-                size: 40,
-              ),
-            ), // second icon to "paint" previous transparent icon
-          ],
-        )
-    );
-    else
-      return ElevatedButton(
-          onPressed: () => null,
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () => audioPlay(id),
+          // style: Globals().buttonStyle(
+          //   backgroundColor: backgroundColor,
+          // ),
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              side: BorderSide(
-                width: 10.0,
-                color: borderColor,
-              )
+            backgroundColor: backgroundColor,
+            foregroundColor: backgroundColor,
+            surfaceTintColor: backgroundColor,
+            side: BorderSide(
+              width: 5.0,
+              color: borderColor,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            )
           ),
-          child: getImage(id,imageSize)
+          child: Stack(
+            children: [
+              getImage(id,imageSize),
+              Positioned(
+                bottom: 10, right: 0,
+                child: Icon(
+                  IconData(57400, fontFamily: 'LiteraIcons'),
+                  color: Colors.blue,
+                  size: 40,
+                ),
+              ),
+              Positioned(
+                bottom: 10, right: 0,
+                child: Icon(
+                  IconData(57401, fontFamily: 'LiteraIcons'),
+                  color: Colors.white,
+                  size: 40,
+                ),
+              ), // second icon to "paint" previous transparent icon
+            ],
+          )
+            ),
+      );
+    else
+      return Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: ElevatedButton(
+            onPressed: () => null,
+            style: Globals().buttonStyle(),
+            child: getImage(id,imageSize)
+        ),
       );
   }
 
-  Padding getImage(int id, [double width=100, double padding=15]) {
+  Widget getImage(int id, [double width=100, double padding=15]) {
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Container(
@@ -614,7 +644,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     flagWrong.value = 0;
   }
 
-  void next() {
+  void next([bool refresh=true]) {
     audioStop();
     Globals().printDebug("*********** next");
     if (isEndPosition) {
@@ -652,21 +682,30 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       }
     } else {
       listPosition++;
-      setState(() {
+      if (refresh)
+      {
+        setState(() {
+          setEndPoints();
+        });
+      } else {
         setEndPoints();
-      });
+      }
     }
   }
 
-  void previous() {
+  void previous([bool refresh=true]) {
     audioStop();
     if (isStartPosition) {
       showBeginningAlertDialog(context);
     } else {
       listPosition--;
-      setState(() {
+      if (refresh) {
+        setState(() {
+          setEndPoints();
+        });
+      } else {
         setEndPoints();
-      });
+      }
     }
   }
 
@@ -787,9 +826,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       setUnlockModule(modulePos);
   }
 
-  void audioPlay(Object itemId) async {
+  void audioPlay(Object itemId, [int delay=0]) async {
     audioStop();
-    Globals().audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
+    Globals().t1 = Timer(Duration(milliseconds: delay), () {
+      Globals().audioPlayer.open(Audio("assets/audios/$itemId.mp3"));
+    });
   }
 
   void audioPlayOnset(String onset) {

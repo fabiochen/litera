@@ -30,6 +30,7 @@ class _State extends BaseModuleState<LessonWordAndWord> {
         getTextTile(word,
             fontSize: mainFontSize,
             fontColor: Colors.teal,
+            borderColor: optionColors[listPosition%10],
             width: mainWidth,
             containsAudio: containsAudio),
         getText(text, optionFontSize, Colors.blueAccent), // words
@@ -43,12 +44,8 @@ class _State extends BaseModuleState<LessonWordAndWord> {
     if (containsAudio) {
       return ElevatedButton(
         onPressed: () => audioPlay(id),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: BorderSide(
-            width: 10.0,
-            color: listColor[id%10]!,
-          )
+        style: Globals().buttonStyle(
+          backgroundColor: optionColors[word.id%10]!
         ),
         child: Stack(
           children: [
@@ -83,12 +80,8 @@ class _State extends BaseModuleState<LessonWordAndWord> {
     } else {
       return ElevatedButton(
         onPressed: () => null,
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: BorderSide(
-              width: 10.0,
-              color: listColor[id%10]!,
-            )
+        style: Globals().buttonStyle(
+          backgroundColor: optionColors[word.id%10]!
         ),
         child: Padding(
           padding: const EdgeInsets.all(15.0),

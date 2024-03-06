@@ -65,10 +65,10 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           itemBuilder: (BuildContext context, int i) {
             if (!acceptedPositionOriginalMap[i.toString()]!) {
               return Draggable<List<String>>(
-                  feedback: getLetterModel(titleShuffled[i], listColor[i]!),
+                  feedback: getLetterModel(titleShuffled[i], optionColors[i]!),
                   childWhenDragging: Container(),
                   data: [titleShuffled[i], i.toString()],
-                  child: getLetterModel(titleShuffled[i], listColor[i]!));
+                  child: getLetterModel(titleShuffled[i], optionColors[i]!));
             } else {
               return Container();
             }
@@ -108,7 +108,7 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
                     rejectedData) {
                   charTarget = (isVisibleTarget) ? wordMain.title[i].toUpperCase() : '';
                   return acceptedPositionTargetList[i]
-                      ? getTargetLetterModel(wordScrambled[i], listColor[i]!)
+                      ? getTargetLetterModel(wordScrambled[i], optionColors[i]!)
                       : getTargetLetterModel(charTarget, Colors.white);
                 });
           },
@@ -136,15 +136,15 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
                   borderRadius: BorderRadius.circular(50.0),
                 ),
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
+                  style: Globals().buttonStyle(
+                    backgroundColor: Globals().appButtonColor
                   ),
                   onPressed: () => load(),
                   child: Text(
                     'Recomeçar',
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: Globals().appFontColorLight,
                     ),
                   ),
                 ),
@@ -159,15 +159,15 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
                   borderRadius: BorderRadius.circular(50.0),
                 ),
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
+                  style: Globals().buttonStyle(
+                      backgroundColor: Globals().appButtonColor
                   ),
                   onPressed: () => _correction(),
                   child: Text(
                     Globals().getAssetsVocab('CHECK'),
                     style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
+                      fontSize: Globals().appButtonFontSize,
+                      color: Globals().appFontColorLight,
                     ),
                   ),
                 ),
@@ -203,7 +203,8 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           letter,
           style: TextStyle(
             fontSize: 20,
-            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            color: Globals().appFontColorDark,
           ),
         ),
       ),
@@ -227,7 +228,8 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
           letter,
           style: TextStyle(
             fontSize: 20,
-            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            color: Globals().appFontColorDark,
           ),
         ),
       ),
@@ -235,14 +237,14 @@ class BaseMatchCharacterState<T extends BaseMatchCharacter> extends BaseModuleSt
   }
 
   @override
-  void next() {
-    super.next();
+  void next([bool refresh=true]) {
+    super.next(refresh);
     load();
   }
 
   @override
-  void previous() {
-    super.previous();
+  void previous([bool refresh=true]) {
+    super.previous(refresh);
     load();
   }
 

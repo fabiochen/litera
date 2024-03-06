@@ -28,7 +28,7 @@ class _ModuleWord2PicturesState extends BaseOptionTilesState<ModuleWord2Pictures
 
   @override
   String getMainLabel(label) {
-    return label.toUpperCase();
+    return label;
   }
 
   @override

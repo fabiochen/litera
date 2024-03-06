@@ -62,8 +62,8 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption1[listPosition], listColor[0]!),
-              getOptionTile(listOption2[listPosition], listColor[1]!)
+              getOptionTile(listOption1[listPosition], optionColors[0]!),
+              getOptionTile(listOption2[listPosition], optionColors[1]!)
             ],
           ),
         ),
@@ -73,8 +73,8 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption3[listPosition], listColor[2]!),
-              getOptionTile(listOption4[listPosition], listColor[3]!)
+              getOptionTile(listOption3[listPosition], optionColors[2]!),
+              getOptionTile(listOption4[listPosition], optionColors[3]!)
             ],
           ),
         ),
@@ -91,9 +91,7 @@ class _State extends BaseOptionTilesState<ModuleSyllablesCount> {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white
-        ),
+        style: Globals().buttonStyle(),
         child: Stack(
           children: [
             Padding(

@@ -14,12 +14,12 @@ class _ModuleMatchCaseState extends BaseMatchCharacterState<ModuleMatchCase> {
   double aspectRatioSmall = 1.5;
 
   @override
-  void next() {
+  void next([bool refresh=true]) {
     if (isEndPosition && type == 'test') {
       Globals().expandedId[yearIndex] = Sub.MATH.index;
       Globals().prefs.setInt('expandedId-$yearIndex',Sub.MATH.index);
     }
-    super.next();
+    super.next(refresh);
   }
 
 }

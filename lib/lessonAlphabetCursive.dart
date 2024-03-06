@@ -28,12 +28,15 @@ class _LessonAlphabetCursiveState extends BaseModuleState<LessonAlphabetCursive>
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.baseline,
+          crossAxisAlignment: CrossAxisAlignment.center,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            getMainText(wordMain, 100, "Litera-Regular"),
+            getMainText(wordMain, 100,
+              fontFamily :  "Litera-Regular"),
             SizedBox(width: 80),
-            getMainText(wordMain, 100, "Maria_lucia", Colors.red)
+            getMainText(wordMain, 100,
+              fontFamily: "Maria_lucia",
+              fontColor: Colors.red)
           ],
         ), // letter
         getSoundTile(wordMain),

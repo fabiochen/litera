@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:litera/word.dart';
+import 'package:litera/globals.dart';
 import 'package:litera/baseOptionTiles.dart';
 
 final correctCount = ValueNotifier<int>(0);
@@ -24,10 +24,10 @@ class _State extends BaseOptionTilesState<ModuleColors> {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Container(
-        decoration: new BoxDecoration(
-          border: Border.all(),
+        decoration: BoxDecoration(
           color: Color(int.parse(word.val1)),
           shape: BoxShape.circle,
+          border: Border.all(color: Globals().appColor)
         ),
     ));
   }

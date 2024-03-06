@@ -98,7 +98,8 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
     );
   }
 
-  Text _getMainText(word) {
-    return super.getMainText(word, 15);
+  Widget _getMainText(word) {
+    return super.getText(word.title,15, Colors.white);
   }
+
 }

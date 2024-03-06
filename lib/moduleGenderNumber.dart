@@ -33,21 +33,21 @@ class _State extends BaseOptionTilesState<ModuleGenderNumber> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            getOptionTile(listOption1[listPosition]),
-            getOptionTile(listOption2[listPosition])
+            getOptionTile(listOption1[listPosition],optionColors[0]!),
+            getOptionTile(listOption2[listPosition],optionColors[1]!)
           ],
         ),
-        Row(
+        Flexible(child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             getCenterTile(listMain[listPosition]),
           ],
-        ),
+        )),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            getOptionTile(listOption3[listPosition]),
-            getOptionTile(listOption4[listPosition])
+            getOptionTile(listOption3[listPosition],optionColors[2]!),
+            getOptionTile(listOption4[listPosition],optionColors[3]!)
           ],
         ),
       ],

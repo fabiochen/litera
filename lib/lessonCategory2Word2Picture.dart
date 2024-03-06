@@ -40,10 +40,27 @@ class _State extends BaseModuleState<LessonCategory2Word2Picture> {
               fontWeight: FontWeight.bold
             ),
           ), // category
-          Expanded(child: getImage((listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).values.first[_selectedChars].id, mainWidth)),
+          Expanded(
+            child: getImageTile((listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).values.first[_selectedChars].id)
+          ),
+          SizedBox(height: 20),
           Container(
             width: 250,
             height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              border: Border.all(
+                color: Colors.red,
+                width: 5,
+              ),
+            ),
+            foregroundDecoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              border: Border.all(
+                color: Colors.red,
+                width: 5,
+              ),
+            ),
             child: CupertinoPicker(
               backgroundColor: Colors.white,
               itemExtent: 60,
@@ -87,17 +104,17 @@ class _State extends BaseModuleState<LessonCategory2Word2Picture> {
   }
 
   @override
-  void next() {
+  void next([bool refresh=true]) {
     _selectedChars = 0;
     controller.animateTo(0, duration: Duration(milliseconds: 400), curve: Curves.ease);
-    super.next();
+    super.next(refresh);
   }
 
   @override
-  void previous() {
+  void previous([bool refresh=true]) {
     _selectedChars = 0;
     controller.animateTo(0, duration: Duration(milliseconds: 400), curve: Curves.ease);
-    super.previous();
+    super.previous(refresh);
   }
 
 }

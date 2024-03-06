@@ -53,8 +53,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption1[listPosition], listColor[0]!),
-              getOptionTile(listOption2[listPosition], listColor[1]!)
+              getOptionTile(listOption1[listPosition], optionColors[0]!),
+              getOptionTile(listOption2[listPosition], optionColors[1]!)
             ],
           ),
         ),
@@ -64,8 +64,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption3[listPosition], listColor[2]!),
-              getOptionTile(listOption4[listPosition], listColor[3]!)
+              getOptionTile(listOption3[listPosition], optionColors[2]!),
+              getOptionTile(listOption4[listPosition], optionColors[3]!)
             ],
           ),
         ),
@@ -85,6 +85,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     } catch (e) {
       showBackground = true;
     }
+    if (!showBackground) backGroundColor = Colors.white;
     return ButtonTheme(
         child: Expanded(
             child: Column(
@@ -110,8 +111,8 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
                       player: Globals().audioPlayer,
                       builder: (context, isPlaying) {
                         return ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: (showBackground)?backGroundColor:Colors.white
+                          style: Globals().buttonStyle(
+                            backgroundColor: backGroundColor,
                           ),
                           onPressed: (!isPlaying) ? () {
                             correctionLogic(wordOption);

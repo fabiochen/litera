@@ -17,7 +17,7 @@ class _LessonLettersState extends BaseModuleState<LessonLetters> {
     wordMain = listProcess[listPosition] as Word;
     audioPlay(wordMain.id);
     return getImageTile(wordMain.id,
-      borderColor: listColor[listPosition%10]!
+      borderColor: optionColors[listPosition%10]!
     );
   }
 

@@ -25,25 +25,14 @@ class _PageYearState extends BaseModuleState<PageYear> {
   @override
   void initState() {
     super.initState();
-    backgroundColor = Colors.teal;
     useNavigation = false;
     useProgressBar = false;
+    backgroundColor = Globals().appColorDark;
     _year = this.widget.year;
     _yearIndex = _year.id.index;
     Globals().printDebug("test 1 yearIndex $_yearIndex");
     title = Globals().appTitle + ": " + (_yearIndex+1).toString() +"º Ano";
     bannerAd.load();
-  }
-
-  PreferredSizeWidget getAppBar() {
-    return AppBar(
-      backgroundColor: Globals().appBarColor,
-      title: Text(title),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () => Navigator.pop(context),
-      ),
-    );
   }
 
   @override
@@ -81,9 +70,9 @@ class _PageYearState extends BaseModuleState<PageYear> {
             ),
           );},
         canTapOnHeader: true,
-        backgroundColor: Colors.teal[400],
+        backgroundColor: Globals().appColorDark,
         body: Container(
-          color: Colors.teal[300],
+          color: Globals().appColor,
           child: Column(
             children: _getListListTiles(context, subject.modules),
           ),
@@ -116,8 +105,9 @@ class _PageYearState extends BaseModuleState<PageYear> {
         animatedTexts: [
           TypewriterAnimatedText(
             _moduleTitle,
-            textStyle: const TextStyle(
+            textStyle: TextStyle(
               fontSize: 20.0,
+              color: Globals().appFontColorLight,
             ),
             speed: const Duration(milliseconds: 200),
           ),

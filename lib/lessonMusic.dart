@@ -22,19 +22,12 @@ class _State extends BaseModuleState<LessonMusic> {
   }
 
   @override
-  void audioPlay(id) async {
-    int note = int.parse(wordMain.val1);
-    await Future.delayed(const Duration(milliseconds: 1000));
-    _midiPro.playMidiNote(midi: note, velocity: 127);
-  }
-
-  @override
   String getMainLabel(text) {
-    return text.toUpperCase();
+    return text;
   }
 
   @override
-  Padding getImage(int id, [double width=100, double padding=15]) {
+  Widget getImage(int id, [double width=100, double padding=15]) {
     Globals().printDebug("title: $title");
     if (title == 'Lição: Cores')
       return Padding(

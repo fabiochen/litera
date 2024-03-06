@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:litera/baseOptionTiles.dart';
 import 'package:litera/word.dart';
+import 'package:litera/globals.dart';
 
 class ModuleLetters2Picture extends BaseOptionTiles {
   @override
@@ -8,6 +9,15 @@ class ModuleLetters2Picture extends BaseOptionTiles {
 }
 
 class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleLetters2Picture> {
+
+  @override
+  Widget getImageTile(int id, {double imageSize=200, Color borderColor=Colors.white, Color backgroundColor=Colors.white}) {
+    return super.getImageTile(
+      id,
+      imageSize: imageSize,
+      borderColor: Globals().appColor!
+    );
+  }
 
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {

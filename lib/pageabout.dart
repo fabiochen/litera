@@ -18,66 +18,67 @@ class _PageAboutState extends State<PageAbout> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Globals().appBarColor,
         title: Text(Globals().getAssetsVocab('ABOUT')),
       ),
       drawer: () {
         Menu();
       } (),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Expanded(
-            flex: 3,
+          SizedBox(height: 10),
+          Container(
+            margin: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: Colors.blueGrey),
+              borderRadius: BorderRadius.all(
+                  const Radius.circular(5.0)),
+            ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Colors.blueGrey),
-                    borderRadius: BorderRadius.all(
-                        const Radius.circular(5.0)),
-                  ),
-                  child: Column(
-                    children: [
-                      Image(
-                        image: AssetImage(
-                            'assets/icon/icon.png'),
-                        width: 100,
-                        gaplessPlayback: true,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        Globals().appTitle.toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.blueGrey
-                        ),
-                      ),
-                    ],
-                  ),
+                Image(
+                  image: AssetImage(
+                      'assets/icon/icon.png'),
+                  width: 100,
+                  gaplessPlayback: true,
                 ),
-                SizedBox(height: 80),
-                Text("Illustrations by FreePik, Triangle Squad, brgfx and others",
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black
-                  ),
+                SizedBox(
+                  height: 10,
                 ),
-                SizedBox(height: 20),
-                Text('v.' + Globals().version + '+' +
-                    Globals().buildNumber.toString(),
+                Text(
+                  Globals().appTitle.toUpperCase(),
                   style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black
+                      fontSize: 30,
+                      color: Colors.blueGrey
                   ),
                 ),
               ],
+            ),
+          ),
+          DefaultTextStyle(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Illustrations by:'),
+                Text('FreePik, Triangle Squad, brgfx, Pixabay and others'),
+                Text('\nMusic by:'),
+                Text('slip.stream'),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+          Text('v.' + Globals().version + '+' +
+              Globals().buildNumber.toString(),
+            style: TextStyle(
+                fontSize: 15,
+                color: Colors.black
             ),
           ),
           InkWell(
@@ -107,7 +108,7 @@ class _PageAboutState extends State<PageAbout> {
                 ));
               }
           ),
-          SizedBox(height: 20)
+          SizedBox(height: 10)
         ],
       ),
     );

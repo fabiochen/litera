@@ -1,69 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:litera/globals.dart';
-import 'package:litera/baseModule.dart';
 import 'package:litera/year.dart';
 import 'package:litera/module.dart';
 
 import 'package:share/share.dart';
 
-class Menu extends BaseModule {
+class Menu extends StatefulWidget {
   @override
   _MenuState createState() => _MenuState();
 }
 
-class _MenuState extends BaseModuleState<Menu> {
+class _MenuState<T extends Menu> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
     Globals().printDebug("************* menu: build");
-    return Theme(
-      data: Theme.of(context).copyWith(
-        canvasColor:
-        Globals().menuColor, //This will change the drawer background.
-        //other styles
-      ),
-      child: Drawer(
-          child: ListView(
-            children: getWidgets(),
-          )),
+    return Drawer(
+      backgroundColor: Globals().appColor,
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: Globals().appFontColorLight,
+        ),
+        child: ListView(
+          children: getWidgets(),
+        ),
+      )
     );
+    // return widget(
+    //   child: Drawer(
+    //     backgroundColor: Globals().appColorDark,
+    //     child: ListView(
+    //       children: getWidgets(),
+    //     )
+    //   ),
+    // );
   }
 
   List<Widget> getWidgets() {
     List<Widget> listWidgets = [];
-
-    listWidgets.add(DrawerHeader(
-        child: Column(
-          children: [
-            Divider(
-                color: Colors.white
+    listWidgets.add(Column(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          child: Text(
+            Globals().appTitle.toUpperCase(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w200,
+                letterSpacing: 20
             ),
-            Container(
-              alignment: Alignment.center,
-              child: Text(
-                Globals().appTitle.toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w200,
-                    letterSpacing: 20
-                ),
-              ),
-            ),
-            Divider(
-                color: Colors.white
-            )
-          ],
+          ),
         ),
-      ));
+        Divider()
+      ],
+    ));
     listWidgets.add(Container(
         child: ListTile(
+          textColor: Globals().appFontColorLight,
           leading: Icon(
             IconData(59403, fontFamily: 'LiteraIcons'),
-            color: Colors.white,
+            color: Globals().appFontColorLight,
           ),
           title: Text(
-              Globals().getAssetsVocab('ABOUT')),
+            Globals().getAssetsVocab('ABOUT'),
+          ),
           onTap: () {
             Navigator.pushNamed(context, '/PageAbout');
           },
@@ -72,9 +73,10 @@ class _MenuState extends BaseModuleState<Menu> {
       // about
     listWidgets.add(Container(
         child: ListTile(
+          textColor: Globals().appFontColorLight,
           leading: Icon(
             IconData(57574, fontFamily: 'LiteraIcons'),
-            color: Colors.white,
+            color: Globals().appFontColorLight,
           ),
           title: Text(
               Globals().getAssetsVocab('CONTACT')),
@@ -86,25 +88,28 @@ class _MenuState extends BaseModuleState<Menu> {
       // contact
     listWidgets.add(Container(
         child: ListTile(
+          textColor: Globals().appFontColorLight,
           leading: Icon(
             IconData(59405, fontFamily: 'LiteraIcons'),
-            color: Colors.white,
+            color: Globals().appFontColorLight,
           ),
           title: Text(
               Globals().getAssetsVocab('SHARE')),
-          onTap: () => Share.share('*$Globals().appTitle*\n\nhttps://play.google.com/store/apps/details?id=net.unitasoft.litera.portuguese'),
+          onTap: () => Share.share('*${Globals().appTitle}*\n\nhttps://play.google.com/store/apps/details?id=net.unitasoft.litera.portuguese'),
         ),
       ));
       // share
     listWidgets.add(Container(
         child: ListTile(
+          textColor: Globals().appFontColorLight,
           leading: Icon(
             IconData(59576, fontFamily: 'LiteraIcons'),
-            color: Colors.white,
+            color: Globals().appFontColorLight,
           ),
           title: Text(
               Globals().getAssetsVocab('SETTINGS')),
           onTap: () {
+            Navigator.pop(context);
             Navigator.pushNamed(context, '/PageSettings');
           },
         ),
@@ -115,11 +120,12 @@ class _MenuState extends BaseModuleState<Menu> {
       listWidgets.add(() {
         int _yearId = _year.id.index + 1;
         return ExpansionTile(
-          collapsedIconColor: Colors.white,
-          iconColor: Colors.white,
-          textColor: Colors.white,
+          collapsedIconColor: Globals().appFontColorLight,
+          iconColor: Globals().appFontColorLight,
+          textColor: Globals().appFontColorLight,
           leading: Globals().getIcon(ModuleType.REPORT),
           title: Text("Relatório - $_yearIdº Ano"),
+          collapsedTextColor: Globals().appFontColorLight,
           children: getListModules(_year),
         );
       } ());
@@ -131,18 +137,21 @@ class _MenuState extends BaseModuleState<Menu> {
   List<Widget> getListModules(Year _year) {
     List<Widget> listModulesNew = [];
     _year.subjects.forEach((_subject) {
+      listModulesNew.add(Divider(
+        color: Globals().appFontColorLight,
+      ));
       listModulesNew.add(Container(
         alignment: Alignment.centerLeft,
         margin: const EdgeInsets.only(left: 20.0),
         child: Text(
-            _subject.value,
-            style: TextStyle(
-                fontWeight: FontWeight. bold
-            )
+          _subject.value,
+          style: TextStyle(
+            fontSize: 20,
+          ),
         ),
       ));
       listModulesNew.add(Divider(
-        color: Colors.grey,
+        color: Globals().appFontColorLight,
       ));
       List<Module> _listModules = _subject.modules;
       _listModules = _listModules.where((_module) => _module.type == ModuleType.TEST).toList();
@@ -151,6 +160,7 @@ class _MenuState extends BaseModuleState<Menu> {
           child: () {
             return ListTile(
               leading: Globals().getIcon(ModuleType.REPORT),
+              textColor: Globals().appFontColorLight,
               title: Text(_module.title,
                   overflow: TextOverflow.ellipsis
               ),

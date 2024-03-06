@@ -113,7 +113,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Flexible(
-          flex: 2,
+          flex: 3,
             child: Listener(
               onPointerDown: _detectTapedItem,
               onPointerMove: _detectTapedItem,
@@ -151,7 +151,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
             )),
         hideWord ? Flexible(child: Text(listWordsDone.length.toString() + " de " + listWords.length.toString(),
           style: TextStyle(
-            color: Colors.teal,
+            color: Globals().appFontColorDark,
             fontSize: 30,
           ),
         )) :
@@ -161,7 +161,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
               itemCount: listWords.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                childAspectRatio: 2.0,
+                childAspectRatio: 3.0,
               ),
               itemBuilder: (context, index) {
                 return Center(
@@ -248,7 +248,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
     listWordIndexes.asMap().forEach((index,set) {
       set.forEach((int) {
         selectedIndexes.add(int);
-        selectedIndexColor[int] = listColor[index]!;
+        selectedIndexColor[int] = optionColors[index]!;
       });
     });
   }

@@ -22,6 +22,11 @@ enum ModuleType {
   GAME
 }
 
+enum AudioType {
+  MIDI,
+  FILE,
+}
+
 enum FieldType {
   ID,
   TITLE,
@@ -54,17 +59,17 @@ enum Yr {
   THREE,
 }
 
-List<Color?> listColor = [
-  Colors.pink[100],
-  Colors.blue[100],
-  Colors.green[100],
-  Colors.orange[100],
-  Colors.red[100],
-  Colors.yellow[100],
-  Colors.teal[100],
-  Colors.cyan[100],
-  Colors.brown[100],
-  Colors.purple[100]
+List<Color?> optionColors = [
+  Colors.pink[50],
+  Colors.blue[50],
+  Colors.green[50],
+  Colors.orange[50],
+  Colors.red[50],
+  Colors.yellow[50],
+  Colors.teal[50],
+  Colors.cyan[50],
+  Colors.brown[50],
+  Colors.purple[50]
 ];
 
 class Globals {
@@ -91,13 +96,18 @@ class Globals {
   List<MapEntry> settingsNavigationLanguage = [];
   late Map<String, dynamic> _assetsConfig;
 
-  Color? appBarColorLight = Colors.teal[200];
-  Color appBarColor = Colors.teal;
-  Color? appBarColorDark = Colors.teal[800];
+  Color? appBarColorLight = Colors.teal.shade200;
+  Color? appBarColor = Colors.teal.shade400;
+  Color? appBarColorDark = Colors.teal.shade800;
 
-  Color? menuColorLight = Colors.teal[200];
-  Color menuColor = Colors.teal;
-  Color? menuColorDark = Colors.teal[800];
+  Color appColorLight = Colors.teal.shade200;
+  Color appColor = Colors.teal.shade400;
+  Color appColorDark = Colors.teal.shade600;
+  Color appFontColorLight = Colors.white;
+  Color appFontColorDark = Colors.teal.shade800;
+  Color appBackgroundColor = Colors.teal.shade50;
+  Color appButtonColor = Colors.blue;
+  double appButtonFontSize = 20;
 
   final bool debugMode = true;
 
@@ -109,7 +119,8 @@ class Globals {
   late List<Word> listNumber1t20;
   late List<Word> listNumber30t100;
   late List<Word> listColors;
-  late List<Word> listMusic;
+  late List<Word> listMusicNotes;
+  late List<Word> listMusicInstruments;
   late List<Word> listNumber1t10Ordinal;
   late List<Word> listNumber20t100Ordinal;
   late List<Word> listVocab;
@@ -140,10 +151,18 @@ class Globals {
   late List<Word> listTimeMinutes;
   late List<Word> listTimeTest;
   late List<Word> listStateCapital;
+
   late List<Word> listMath1;
   late List<Word> listMath2;
-  late List<Word> listMath1Subtraction1;
-  late List<Word> listMath2Subtraction1;
+  late List<Word> listMath3;
+  late List<Word> listMath4;
+  late List<Word> listMath5;
+  late List<Word> listMath6;
+  late List<Word> listMath7;
+
+  // late List<Word> listMath1Subtraction1;
+  // late List<Word> listMath2Subtraction1;
+  late List<int> listTimesTableBase;
 
   late Map<String, dynamic> parsedWords;
 
@@ -164,10 +183,10 @@ class Globals {
   }
 
   List<String> enumGenderNumber = [
-    'Masculino/ Singular',
-    'Feminino/ Singular',
-    'Masculino/ Plural',
-    'Feminino/ Plural',
+    'Masculino / Singular',
+    'Feminino / Singular',
+    'Masculino / Plural',
+    'Feminino / Plural',
   ];
 
   List<Year> listYears = [];
@@ -216,7 +235,8 @@ class Globals {
     listNumber1t20 = [];
     listNumber30t100 = [];
     listColors = [];
-    listMusic = [];
+    listMusicNotes = [];
+    listMusicInstruments = [];
     listNumber1t10Ordinal = [];
     listNumber20t100Ordinal = [];
     alphabetOnsetList = [];
@@ -245,9 +265,15 @@ class Globals {
     listTimeTest = [];
     listMath1 = [];
     listMath2 = [];
-    listMath1Subtraction1 = [];
-    listMath2Subtraction1 = [];
+    listMath3 = [];
+    listMath4 = [];
+    listMath5 = [];
+    listMath6 = [];
+    listMath7 = [];
+    // listMath1Subtraction1 = [];
+    // listMath2Subtraction1 = [];
     listStateCapital = [];
+    listTimesTableBase = [1,2,3,4,5,6,7,8,9,10];
 
     printDebug("******** init 2");
 
@@ -278,6 +304,7 @@ class Globals {
     getYear3Por();
     getYear3Geo();
     getYear3Sci();
+    getYear3Math();
 
     printDebug("******** init 5");
     expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index") ?? Sub.PORTUGUESE.index);
@@ -467,7 +494,7 @@ class Globals {
       }
     });
 
-    printDebug("******** populate 4");
+    printDebug("******** populate 8");
 
     // populate vowel list
     parsedWords['LIST']['ALPHABET-VOWELS'].keys.forEach((key) {
@@ -485,7 +512,7 @@ class Globals {
       listAlphabet.add(word);
     });
 
-    printDebug("******** populate 5");
+    printDebug("******** populate 9");
 
     // populate number list
     parsedWords['LIST']['NUMBERS_1-20'].keys.forEach((key) {
@@ -504,6 +531,8 @@ class Globals {
       });
     });
 
+    printDebug("******** populate 10");
+
     parsedWords['LIST']['NUMBERS_30-100'].keys.forEach((key) {
       int id = int.parse(key);
       //printDebug('key: ' + key);
@@ -517,6 +546,8 @@ class Globals {
         listNumber30t100.add(word);
       });
     });
+
+    printDebug("******** populate 11");
 
     parsedWords['LIST']['COLORS'].keys.forEach((key) {
       int id = int.parse(key);
@@ -532,18 +563,34 @@ class Globals {
       });
     });
 
-    parsedWords['LIST']['MUSIC'].keys.forEach((key) {
+    printDebug("******** populate 12");
+
+    parsedWords['LIST']['MUSIC-NOTES'].keys.forEach((key) {
       int id = int.parse(key);
       //printDebug('key: ' + key);
-      parsedWords['LIST']['MUSIC'][id.toString()].keys
+      parsedWords['LIST']['MUSIC-NOTES'][id.toString()].keys
           .forEach((value) {
         //printDebug('value: ' + value);
-        String title = parsedWords['LIST']['MUSIC'][id
+        String title = parsedWords['LIST']['MUSIC-NOTES'][id
             .toString()][value];
         //printDebug('title: ' + title);
         Word word = Word(id, title, value);
-        listMusic.add(word);
+        word.val3 = AudioType.FILE.name;
+        listMusicNotes.add(word);
       });
+    });
+
+    printDebug("******** populate 13");
+
+    parsedWords['LIST']['MUSIC-INSTRUMENTS'].keys.forEach((key) {
+      int id = int.parse(key);
+      printDebug('key: ' + key);
+      String title = parsedWords['LIST']['MUSIC-INSTRUMENTS'][id
+          .toString()];
+      printDebug('title: ' + title);
+      Word word = Word(id, title, id.toString());
+      word.val3 = AudioType.FILE.name;
+      listMusicInstruments.add(word);
     });
 
     parsedWords['LIST']['NUMBERS_1-10_ORDINAL'].keys.forEach((key) {
@@ -575,7 +622,7 @@ class Globals {
       });
     });
 
-    printDebug("******** populate 6");
+    printDebug("******** populate 14");
 
     // populate alphabet onset
     parsedWords['LIST']['ALPHABET-ONSET'].keys.forEach((key) {
@@ -619,7 +666,7 @@ class Globals {
       lettersMatchCase.add(word);
     });
 
-    printDebug("******** populate 7");
+    printDebug("******** populate 15");
 
     // populate number order list
     parsedWords['LIST']['ORDER-NUMBERS_1-10'].keys.forEach((key) {
@@ -695,11 +742,60 @@ class Globals {
       listMath1.add(word);
     });
 
+    debugPrint("************* populate math2");
+
     parsedWords['LIST']['MATH2'].keys.forEach((key) {
       int id = int.parse(key);
       String title = parsedWords['LIST']['MATH2'][key];
       Word word = Word(id, title);
       listMath2.add(word);
+    });
+
+    debugPrint("************* populate math4");
+
+    parsedWords['LIST']['MATH4'].keys.forEach((key) {
+      int id = int.parse(key);
+      String title = parsedWords['LIST']['MATH4'][key];
+      Word word = Word(id, title);
+      debugPrint("************* populate math4: $title");
+      listMath4.add(word);
+      debugPrint("************* populate math4: add");
+    });
+
+    debugPrint("************* populate math3");
+
+    parsedWords['LIST']['MATH3'].keys.forEach((key) {
+      int id = int.parse(key);
+      String title = parsedWords['LIST']['MATH3'][key];
+      Word word = Word(id, title);
+      listMath3.add(word);
+    });
+
+    parsedWords['LIST']['MATH5'].keys.forEach((key) {
+      int id = int.parse(key);
+      String title = parsedWords['LIST']['MATH5'][key];
+      Word word = Word(id, title);
+      debugPrint("************* populate math4: $title");
+      listMath5.add(word);
+      debugPrint("************* populate math4: add");
+    });
+
+    parsedWords['LIST']['MATH6'].keys.forEach((key) {
+      int id = int.parse(key);
+      String title = parsedWords['LIST']['MATH6'][key];
+      Word word = Word(id, title);
+      debugPrint("************* populate math4: $title");
+      listMath6.add(word);
+      debugPrint("************* populate math4: add");
+    });
+
+    parsedWords['LIST']['MATH7'].keys.forEach((key) {
+      int id = int.parse(key);
+      String title = parsedWords['LIST']['MATH7'][key];
+      Word word = Word(id, title);
+      debugPrint("************* populate math4: $title");
+      listMath7.add(word);
+      debugPrint("************* populate math4: add");
     });
 
     printDebug("******** populate 8");
@@ -852,21 +948,21 @@ class Globals {
       );
     }());
 
-    listModules.add(() {
-      String _title = "Alfabeto (Letras)";
-      int _modulePos = listModules.length;
-      return Module(
-          _modulePos,
-          _title,
-          ModuleType.LESSON,
-          _year,
-          _subject,
-          listAlphabetSounds,
-          '/LessonAlphabetLetters',
-          numberQuestions: 26
-      );
-    }());
-
+    // listModules.add(() {
+    //   String _title = "Alfabeto (Letras)";
+    //   int _modulePos = listModules.length;
+    //   return Module(
+    //       _modulePos,
+    //       _title,
+    //       ModuleType.LESSON,
+    //       _year,
+    //       _subject,
+    //       listAlphabetSounds,
+    //       '/LessonAlphabetLetters',
+    //       numberQuestions: 26
+    //   );
+    // }());
+    //
     listModules.add(() {
       String _title = "Vogais";
       Globals().printDebug("length: " + listModules.length.toString());
@@ -1079,7 +1175,7 @@ class Globals {
         _year,
         _subject,
         mapMatchSyllable,
-        '/LessonCategory2Words',
+        '/UnitCategory2Words',
         noLock: true,
         list2: listSyllables,
         useProgressBar: false,
@@ -1287,7 +1383,7 @@ class Globals {
         listMath1.where((word) => word.title.contains("+")).toList(),
         '/LessonMath',
         numberQuestions: 999,
-        misc: true, // show counting images for small numbers
+        misc: false, // show counting images for small numbers
       );
     }());
 
@@ -1303,7 +1399,7 @@ class Globals {
         listMath1.where((word) => word.title.contains("-")).toList(),
         '/LessonMath',
         numberQuestions: 999,
-        misc: true, // show counting images for small numbers
+        misc: false, // show counting images for small numbers
       );
     }());
 
@@ -1404,6 +1500,70 @@ class Globals {
     List<Module> listModules = [];
 
     listModules.add(() {
+      String _title = "Instrumentos";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listMusicInstruments,
+        '/LessonMusic',
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Qual é o Instrumento?";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        // only use first C
+        listMusicInstruments,  //alphabet,
+        '/ModuleWord2Pictures',
+        optionHeight: 150,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Som de Instrumento";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.EXERCISE,
+          _year,
+          _subject,
+          listMusicInstruments,
+          '/ModuleSound2Images',
+          containsAudio: true,
+          optionHeight: 150,
+          misc: false // no reference note
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Som de Instrumento";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.TEST,
+          _year,
+          _subject,
+          listMusicInstruments,
+          '/ModuleSound2Images',
+          containsAudio: true,
+          optionHeight: 150,
+          misc: false // no reference note
+      );
+    }());
+
+    listModules.add(() {
       String _title = "Dó, Ré, Mi";
       int _modulePos = listModules.length;
       return Module(
@@ -1412,7 +1572,7 @@ class Globals {
         ModuleType.LESSON,
         _year,
         _subject,
-        listMusic,
+        listMusicNotes,
         '/LessonMusic',
       );
     }());
@@ -1427,7 +1587,7 @@ class Globals {
         _year,
         _subject,
         // only use first C
-        listMusic.where((word) => word.id < 808).toList(),  //alphabet,
+        listMusicNotes.where((word) => word.id < 808).toList(),  //alphabet,
         '/ModuleWord2Pictures',
         optionHeight: 150,
       );
@@ -1442,24 +1602,9 @@ class Globals {
         ModuleType.EXERCISE,
         _year,
         _subject,
-        listMusic.where((word) => word.id < 808).toList(),  // no upper C
+        listMusicNotes.where((word) => word.id < 808).toList(),  // no upper C
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
-        containsAudio: false,
-      );
-    }());
-
-    listModules.add(() {
-      String _title = "Qual é a Nota? (3)";
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        listMusic,
-        '/ModuleSound2Images',
         containsAudio: false,
       );
     }());
@@ -1474,7 +1619,7 @@ class Globals {
         _year,
         _subject,
         // only use first C
-        listMusic.where((word) => word.id < 808).toList(),  // no upper C
+        listMusicNotes.where((word) => word.id < 808).toList(),  // no upper C
         '/ModuleWord2Pictures',
         optionHeight: 150,
       );
@@ -1489,10 +1634,91 @@ class Globals {
         ModuleType.TEST,
         _year,
         _subject,
-        listMusic.where((word) => word.id < 808).toList(), // no upper C
+        listMusicNotes.where((word) => word.id < 808).toList(), // no upper C
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
         containsAudio: false,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Piano";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listMusicNotes,
+        '/UnitPiano',
+        noLock: true,
+        useNavigation: false,
+        useProgressBar: false,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Qual é a Tecla? (partitura)";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listMusicNotes,
+        '/ModulePiano',
+        useNavigation: false,
+        misc: true, // notation and sound
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Qual é a Tecla? (som)";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listMusicNotes,
+        '/ModulePiano',
+        useNavigation: false,
+        misc: false,  // sound only
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Qual é a Nota? (partitura)";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listMusicNotes,
+        '/ModuleSound2Images',
+        useNavigation: false,
+        misc: true // include reference note
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Qual tecla? (som)";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        listMusicNotes,
+        '/ModulePiano',
+        useNavigation: false,
+        misc: false,  // sound only
       );
     }());
 
@@ -1558,7 +1784,7 @@ class Globals {
         listOnsetConsonants,
         '/LessonOnset2Words',
         optionWidth: 100,
-        optionHeight: 100,
+        optionHeight: 50,
       );
     }());
 
@@ -1653,6 +1879,7 @@ class Globals {
         listVocab.where((word) => word.containsImage && word.containsAudio && word.title.length <= 5).toList(),
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
+        optionFontSize: 30,
       );
     }());
 
@@ -1668,6 +1895,7 @@ class Globals {
         listVocab.where((word) => word.containsImage && word.containsAudio && word.title.length <= 5).toList(),
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
+        optionFontSize: 40,
         fontFamily: "Maria_lucia",
       );
     }());
@@ -1697,8 +1925,11 @@ class Globals {
         _year,
         _subject,
         listVocab.where((word) =>
-        word.title.length > 3 && word.title.length <= 6 &&
-            !(word.title.contains(RegExp(r'[çáãéêôóõú]')))).toList(),
+          word.title.length == 6 &&
+          !(word.title.contains(RegExp(r'[çáãéêôóõú]'))) &&
+          (word.containsAudio) &&
+          (word.containsImage)
+        ).toList(),
         '/ModuleSpelling01',
       );
     }());
@@ -1713,8 +1944,11 @@ class Globals {
         _year,
         _subject,
         alphabet.where((word) =>
-        word.title.length <= 6 && !(word.title.contains(RegExp(r'[çáãéêôóõú]'))))
-            .toList(),
+        word.title.length <= 6 &&
+            !(word.title.contains(RegExp(r'[çáãéêôóõú]'))) &&
+            (word.containsAudio) &&
+            (word.containsImage)
+        ).toList(),
         '/ModuleSpelling02',
       );
     }());
@@ -2165,6 +2399,74 @@ class Globals {
       );
     }());
 
+    debugPrint("************* populate add 2");
+
+    listModules.add(() {
+      String _title = "Adição (2 casas com reserva)";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listMath4.where((word) => word.title.contains("+")).toList(),
+        '/LessonMath',
+        numberQuestions: 999,
+        misc: false,  // hide counting images for large numbers
+      );
+    }());
+
+    debugPrint("************* populate sub 2");
+
+    listModules.add(() {
+      String _title = "Subtração (2 casas com reserva)";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listMath4.where((word) => word.title.contains("-")).toList(),
+        '/LessonMath',
+        numberQuestions: 999,
+        misc: false,  // hide counting images for large numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Calcule";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listMath4,
+        '/ModuleMath',
+        numberQuestions: 10,
+        misc: false, // show counting images for small numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Calcule";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        listMath4,
+        '/ModuleMath',
+        numberQuestions: 10,
+        misc: false, // show counting images for small numbers
+      );
+    }());
+
     listYears[_year.index].subjects.add(
         Subject(_subject, "Matemática", listModules,  Image.asset('assets/icon/maths.png')));
   }
@@ -2360,7 +2662,7 @@ class Globals {
         _subject,
         listSeasonsOfTheYear,
         '/ModuleBeforeAndAfter',
-        optionFontSize: 30,
+        optionFontSize: 25,
         mainFieldType: FieldType.TITLE,
       );
     }());
@@ -2376,7 +2678,7 @@ class Globals {
         _subject,
         listSeasonsOfTheYear,
         '/ModuleBeforeAndAfter',
-        optionFontSize: 30,
+        optionFontSize: 25,
         mainFieldType: FieldType.TITLE,
       );
     }());
@@ -2494,10 +2796,10 @@ class Globals {
             word.title != 'queijo' &&
             word.title != 'xadrez').toList(),
         '/LessonTonic',
-        numberQuestions: 30,
-        mainFontSize: 60,
+        numberQuestions: 20,
+        mainFontSize: 40,
         optionFontSize: 50,
-        mainWidth: 120,
+        mainWidth: 100,
         sortCriteria: FieldType.TITLE,
         mainFieldType: FieldType.VAL2,
       );
@@ -2575,13 +2877,13 @@ class Globals {
             word.title != 'queijo' &&
             word.title != 'xadrez' &&
             word.containsAudio &&
-            word.val1.split('-').length == int.parse(word.val2)
+            word.val1.split('-').length == int.parse(word.val2) // oxítona
         ).toList(),
         '/LessonTonic',
         numberQuestions: 30,
-        mainFontSize: 60,
+        mainFontSize: 40,
         optionFontSize: 50,
-        mainWidth: 150,
+        mainWidth: 100,
         mainFieldType: FieldType.VAL2,
       );
     }());
@@ -2608,9 +2910,9 @@ class Globals {
         ).toList(),
         '/LessonTonic',
         numberQuestions: 30,
-        mainFontSize: 60,
+        mainFontSize: 40,
         optionFontSize: 50,
-        mainWidth: 120,
+        mainWidth: 100,
         mainFieldType: FieldType.VAL2,
       );
     }());
@@ -2638,9 +2940,9 @@ class Globals {
         ).toList(),
         '/LessonTonic',
         numberQuestions: 30,
-        mainFontSize: 60,
+        mainFontSize: 40,
         optionFontSize: 50,
-        mainWidth: 120,
+        mainWidth: 100,
         mainFieldType: FieldType.VAL2,
       );
     }());
@@ -2658,7 +2960,7 @@ class Globals {
         word.containsAudio &&
         word.val1
             .split('-')
-            .length > 2).toList(),
+            .length > 2).toList(), // more than 3 syllables
         '/ModuleTonicOption',
         numberQuestions: 20,
         mainFontSize: 60,
@@ -2690,6 +2992,190 @@ class Globals {
         optionWidth: 300,
         mainFieldType: FieldType.VAL2,
         sortCriteria: FieldType.TITLE,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Palavras com CH, X";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.LESSON,
+          _year,
+          _subject,
+          listVocab.where((word) =>
+            (word.title.contains('ch') ||
+            word.title.contains('x')) &&
+            word.title != 'taxi'
+          ).toList(),
+          '/LessonWords',
+          misc: "ch|x",
+          containsAudio: false,
+          numberQuestions: 999,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "CH ou X?";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listVocab.where((word) =>
+        (word.title.contains('ch') ||
+            word.title.contains('x')) &&
+            word.title != 'taxi'
+        ).toList(),
+        '/ModuleHomophone2Options',
+        misc: "ch|x",
+        containsAudio: false,
+        numberQuestions: 999
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "CH ou X?";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        listVocab.where((word) =>
+        (word.title.contains('ch') ||
+            word.title.contains('x')) &&
+            word.title != 'taxi'
+        ).toList(),
+        '/ModuleHomophone2Options',
+        misc: "ch|x",
+        containsAudio: false,
+        numberQuestions: 999
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Palavras com GE, JE";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listVocab.where((word) =>
+        word.title.contains('ge') ||
+            word.title.contains('je')
+        ).toList(),
+        '/LessonWords',
+        misc: "ge|je",
+        containsAudio: false,
+        numberQuestions: 999,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "GE ou JE?";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.EXERCISE,
+          _year,
+          _subject,
+          listVocab.where((word) =>
+          word.title.contains('ge') ||
+              word.title.contains('je')
+          ).toList(),
+          '/ModuleHomophone2Options',
+          misc: "ge|je",
+          containsAudio: false,
+          optionFontSize: 25,
+          numberQuestions: 999
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "GE ou JE?";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.TEST,
+          _year,
+          _subject,
+          listVocab.where((word) =>
+          word.title.contains('ge') ||
+              word.title.contains('je')
+          ).toList(),
+          '/ModuleHomophone2Options',
+          misc: "ge|je",
+          containsAudio: false,
+          numberQuestions: 999
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Palavras com GI, JI";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listVocab.where((word) =>
+        word.title.contains('gi') ||
+            word.title.contains('ji')
+        ).toList(),
+        '/LessonWords',
+        misc: "gi|ji",
+        containsAudio: false,
+        numberQuestions: 999,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "GI ou JI?";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.EXERCISE,
+          _year,
+          _subject,
+          listVocab.where((word) =>
+          word.title.contains('gi') ||
+              word.title.contains('ji')
+          ).toList(),
+          '/ModuleHomophone2Options',
+          misc: "gi|ji",
+          containsAudio: false,
+          numberQuestions: 999
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "GI ou JI?";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.TEST,
+          _year,
+          _subject,
+          listVocab.where((word) =>
+          word.title.contains('gi') ||
+              word.title.contains('ji')
+          ).toList(),
+          '/ModuleHomophone2Options',
+          misc: "gi|ji",
+          containsAudio: false,
+          numberQuestions: 999
       );
     }());
 
@@ -2733,8 +3219,8 @@ class Globals {
         _subject,
         listStateCapital,
         '/ModuleWord2Numbers',
-        mainFontSize: 40,
-        optionFontSize: 30,
+        mainFontSize: 30,
+        optionFontSize: 25,
         mainWidth: 300,
         mainHeight: 150,
         optionWidth: 150,
@@ -2774,8 +3260,8 @@ class Globals {
         _subject,
         listStateCapital,
         '/ModuleWord2Numbers',
-        mainFontSize: 40,
-        optionFontSize: 30,
+        mainFontSize: 30,
+        optionFontSize: 25,
         mainWidth: 300,
         mainHeight: 150,
         optionWidth: 250,
@@ -2797,8 +3283,8 @@ class Globals {
         _subject,
         listStateCapital,
         '/ModuleWord2Numbers',
-        mainFontSize: 40,
-        optionFontSize: 30,
+        mainFontSize: 30,
+        optionFontSize: 25,
         mainWidth: 300,
         mainHeight: 150,
         optionWidth: 150,
@@ -2819,8 +3305,8 @@ class Globals {
         _subject,
         listStateCapital,
         '/ModuleWord2Numbers',
-        mainFontSize: 40,
-        optionFontSize: 30,
+        mainFontSize: 30,
+        optionFontSize: 25,
         mainWidth: 300,
         mainHeight: 150,
         optionWidth: 250,
@@ -2886,7 +3372,7 @@ class Globals {
         '/ModuleBeforeAndAfter',
         containsAudio:  false,
         optionFontSize: 20,
-        optionWidth: 150,
+        optionWidth: 160,
         mainFontSize: 40,
         mainFieldType: FieldType.TITLE,
       );
@@ -2904,7 +3390,7 @@ class Globals {
         listPlanets,
         '/ModuleBeforeAndAfter',
         containsAudio:  false,
-        optionWidth: 150,
+        optionWidth: 160,
         optionFontSize: 20,
         mainFieldType: FieldType.TITLE,
       );
@@ -2957,7 +3443,7 @@ class Globals {
         containsAudio: false,
         numberQuestions: 999,
         optionFontSize: 20,
-        optionWidth: 150,
+        optionWidth: 180,
       );
     }());
 
@@ -2976,12 +3462,233 @@ class Globals {
         containsAudio: false,
         numberQuestions: 999,
         optionFontSize: 20,
-        optionWidth: 150,
+        optionWidth: 180,
       );
     }());
 
     listYears[_year.index].subjects.add(
         Subject(_subject, "Ciências", listModules, Image.asset('assets/icon/science.png')));
+  }
+
+  void getYear3Math() {
+    Yr _year = Yr.THREE;
+    Sub _subject = Sub.MATH;
+    List<Module> listModules = [];
+
+    listModules.add(() {
+      String _title = "Tabuada da Multiplicação";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listTimesTableBase,
+        '/LessonTableMult',
+        containsAudio:  false,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Tabuada 1";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listTimesTableBase,
+        '/ModuleTimesTable',
+        containsAudio:  false,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Tabuada 2";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listMath3, // endless exercise
+        '/ModuleTimesTable2',
+        numberQuestions: 20,
+        useNavigation: false,
+        useProgressBar: true,
+        containsAudio:  false,
+        misc: 'x', // type of operation
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Calcule a Multiplicação";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        listMath3,
+        '/ModuleTimesTable2',
+        numberQuestions: 20,
+        useNavigation: true,
+        useProgressBar: true,
+        misc: 'x', // type of operation
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Multiplicação (2 casas sem reserva)";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listMath5,
+        '/LessonMath',
+        numberQuestions: 999, // show all
+        misc: false,  // hide counting images for large numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Multiplicação sem reserva";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listMath5,
+        '/ModuleMath',
+        numberQuestions: 20,
+        misc: false, // show counting images for small numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Multiplicação sem reserva";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        listMath5,
+        '/ModuleMath',
+        numberQuestions: 20,
+        misc: false, // show counting images for small numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Multiplicação (2 casas com reserva)";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listMath6,
+        '/LessonMath',
+        numberQuestions: 999,
+        misc: false,  // hide counting images for large numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Multiplicação com reserva";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listMath6,
+        '/ModuleMath',
+        numberQuestions: 10,
+        misc: false, // show counting images for small numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Multiplicação com reserva";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        listMath6,
+        '/ModuleMath',
+        numberQuestions: 20,
+        misc: false, // show counting images for small numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Tabuada da Divisão";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listTimesTableBase,
+        '/LessonTableDiv',
+        containsAudio:  false,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Divisão Simples";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listMath7,
+        '/LessonMath',
+        numberQuestions: 999,
+        misc: false,  // hide counting images for large numbers
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Calcule a Divisão";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        listMath7,
+        '/ModuleTimesTable2',
+        numberQuestions: 20,
+        useNavigation: true,
+        useProgressBar: true,
+        misc: '÷', // type of operation
+      );
+    }());
+
+    listYears[_year.index].subjects.add(
+        Subject(_subject, "Matemática", listModules, Image.asset('assets/icon/maths.png')));
   }
 
   Future<bool> AssetExists(String path) async {
@@ -3015,7 +3722,7 @@ class Globals {
     switch (type) {
       case ModuleType.LESSON:
         code = 59404;
-        color = Colors.blue.shade500;
+        color = Colors.blue.shade700;
         break;
       case ModuleType.EXERCISE:
         code = 58740;
@@ -3057,7 +3764,7 @@ class Globals {
       padding: EdgeInsets.all(padding),
       child: AnalogClock(
         decoration: BoxDecoration(
-            border: Border.all(width: 10.0, color: Colors.blue),
+            border: Border.all(width: 5.0, color: Colors.blue),
             color: Colors.white,
             shape: BoxShape.circle),
         isLive: false,
@@ -3102,11 +3809,12 @@ class Globals {
       });
     }
     try {
-      if (list is List<Word>) {
+      Globals().printDebug("try");
+      if (list is List<Object>) {
+        Globals().printDebug("try is List<Word>");
         int i = 0;
         list.forEach((element) {
-          Globals().printDebug("$i. element " + element.id.toString() + ": " + element.title +
-              " cat: " + (getWordFromId(int.parse(element.val3))).title);
+          Globals().printDebug("$i. element " + (element as Word).id.toString() + ": " + element.title);
           i++;
         });
       }
@@ -3168,6 +3876,21 @@ class Globals {
   Word getCategoryFromId(List category, int id) {
     Globals().printDebug("getCategoryFromId: $id");
     return category.singleWhere((word) => (word).id == id);
+  }
+
+  ButtonStyle buttonStyle({Color backgroundColor=Colors.white, double borderWidth=5.0}) {
+    return ElevatedButton.styleFrom(
+      backgroundColor: backgroundColor,
+      surfaceTintColor: backgroundColor,
+      disabledBackgroundColor: backgroundColor,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            width: borderWidth,
+            color: Colors.blue,
+          )
+      ),
+    );
   }
 
 }

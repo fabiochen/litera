@@ -54,8 +54,8 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
                 borderRadius: BorderRadius.circular(50.0),
               ),
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal,
+                style: Globals().buttonStyle(
+                  backgroundColor: Globals().appButtonColor
                 ),
                 onPressed: () => _correction(),
                 child: Text(
@@ -63,7 +63,7 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: Globals().appButtonFontSize,
                   ),
                 ),
               ),
@@ -112,15 +112,15 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
   }
 
   @override
-  void next() {
+  void next([bool refresh=true]) {
     userInputTextField.text = '';
-    super.next();
+    super.next(refresh);
   }
 
   @override
-  void previous() {
+  void previous([bool refresh=true]) {
     userInputTextField.text = '';
-    super.previous();
+    super.previous(refresh);
   }
 
 }

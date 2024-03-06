@@ -28,7 +28,7 @@ class _LessonAlphabetLettersState extends BaseModuleState<LessonAlphabetLetters>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         getImageTile(wordMain.id,
-          borderColor: listColor[listPosition%10]!,
+          borderColor: optionColors[listPosition%10]!,
         ),
         getOnsetTile(wordMain)
       ],

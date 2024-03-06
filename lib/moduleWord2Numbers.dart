@@ -16,7 +16,8 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
     return getTextTile(word,
       containsAudio: containsAudio,
       width: mainWidth,
-      height: mainHeight
+      height: mainHeight,
+      borderColor: Globals().appButtonColor,
     );
   }
 
@@ -25,9 +26,7 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
     if (containsAudio)
       return ElevatedButton(
         onPressed: () => audioPlay(id),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white
-        ),
+        style: Globals().buttonStyle(),
         child: Stack(
           children: [
             Padding(
@@ -61,9 +60,7 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
     else
       return ElevatedButton(
           onPressed: () => null,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white
-          ),
+          style: Globals().buttonStyle(),
           child: Container(
             width: width,
             height: height,

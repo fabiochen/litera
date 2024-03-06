@@ -20,6 +20,7 @@ class _State extends BaseModuleState<UnitMemoryGame> {
   bool isLocked = false;
   int listStart = 0;
   int listEnd = 0;
+  Color cardColor = Colors.blue;
 
   @override
   void didChangeDependencies() {
@@ -76,8 +77,16 @@ class _State extends BaseModuleState<UnitMemoryGame> {
             }
             return ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: (isSelected) ? sColor : Colors.teal, // Background color
-                disabledBackgroundColor: (!unmatched || isSelected) ? listColor[word.id%10] : Colors.teal,
+                backgroundColor: (isSelected) ? sColor : cardColor, // Background color
+                disabledBackgroundColor: (!unmatched || isSelected) ? optionColors[word.id%10] : cardColor,
+                surfaceTintColor: cardColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(
+                      color: Colors.white,
+                      width: 10.0,
+                    )
+                ),
               ),
               onPressed: (unmatched && !isLocked) ? () {
                 int duration = 500;
@@ -146,7 +155,7 @@ class _State extends BaseModuleState<UnitMemoryGame> {
     if (optionTileType == TileType.AUDIO && isNumeric(word.title)) {
       return Icon(
         IconData(57400, fontFamily: 'LiteraIcons'),
-        color: Colors.teal,
+        color: cardColor,
         size: 40,
       );
     }
@@ -154,7 +163,7 @@ class _State extends BaseModuleState<UnitMemoryGame> {
       word.title,
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: Colors.teal,
+        color: cardColor,
         fontSize: mainFontSize
       ),
     );
@@ -177,8 +186,8 @@ class _State extends BaseModuleState<UnitMemoryGame> {
   }
 
   @override
-  void next() {
-    super.next();
+  void next([bool refresh=true]) {
+    super.next(refresh);
     int diff = listEnd - listStart;
     listStart = listEnd;
     listEnd = listStart + diff;
@@ -186,12 +195,14 @@ class _State extends BaseModuleState<UnitMemoryGame> {
   }
 
   @override
-  void previous() {
-    super.previous();
-    int diff = listEnd - listStart;
-    listEnd = listStart;
-    listStart = listEnd - diff;
-    initGame();
+  void previous([bool refresh=true]) {
+    super.previous(refresh);
+    if (listStart>0) {
+      int diff = listEnd - listStart;
+      listEnd = listStart;
+      listStart = listEnd - diff;
+      initGame();
+    }
   }
 
 }

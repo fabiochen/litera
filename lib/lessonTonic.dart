@@ -16,40 +16,30 @@ class _State extends BaseModuleState<LessonTonic> {
     listProcess.shuffle();
   }
 
-  @override
   Widget getMainTile() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    Globals().printDebug("listProcess count: $listProcess");
+    wordMain = listProcess[listPosition] as Word;
+    audioPlay(wordMain.id);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 50),
-        Flexible(child: getSyllablesTile()),
-        SizedBox(height: 50),
+        SizedBox(width:10),
+        getImageTile(
+          wordMain.id,
+          backgroundColor: optionColors[wordMain.id%10]!,
+        ),
+        SizedBox(width:10)
       ],
     );
   }
 
-  Widget getSyllablesTile() {
-    wordMain = listProcess[listPosition] as Word;
-    audioPlay(wordMain.id);
+  @override
+  Widget getImage(int id, [double width=100, double padding=15]) {
     List listSyllables = wordMain.val1.split('-');
     List<Widget> listWidgets = [];
-    List<Widget> listOrder = [];
     Globals().printDebug("# of syllables: " + wordMain.val1.split('-').length.toString());
     Globals().printDebug("accent syllable: " + wordMain.val2);
     for (int i=0; i<listSyllables.length; i++) {
-      listOrder.add(Container(
-          alignment: Alignment.center,
-          width: mainWidth,
-          height: mainWidth,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              border: Border.all(
-                color: (wordMain.val2 == (i+1).toString())?Colors.red:Colors.transparent,
-                width: 2,
-              )
-          ),
-          child: getText((listSyllables.length-i).toString(),mainFontSize-15,Colors.blue)
-      ));
       listWidgets.add(Container(
               alignment: Alignment.center,
               width: mainWidth,
@@ -64,21 +54,14 @@ class _State extends BaseModuleState<LessonTonic> {
               child: getText(listSyllables[i],mainFontSize)
           ));
     }
-    Row row1 = Row(
+    Row rowSyllables = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: listWidgets,
     );
-    // Row row2 = Row(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: listOrder,
-    // );
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // row2,
-        // SizedBox(height: 30),
-        row1,
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: rowSyllables,
     );
   }
+
 }

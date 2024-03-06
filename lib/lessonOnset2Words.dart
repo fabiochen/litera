@@ -33,13 +33,7 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
         children: [
           ElevatedButton(
             onPressed: () => _playTileAudio(word.id),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                side: BorderSide(
-                  width: 5.0,
-                  color: backgroundColor,
-                )
-              ),
+            style: Globals().buttonStyle(),
             child: Column(
               children: [
                 SizedBox(height: 10),

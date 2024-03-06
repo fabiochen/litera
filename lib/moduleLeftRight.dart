@@ -41,8 +41,8 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              getOptionTile(listOption1[listPosition], listColor[0]!),
-              getOptionTile(listOption2[listPosition], listColor[1]!)
+              getOptionTile(listOption1[listPosition], optionColors[0]!),
+              getOptionTile(listOption2[listPosition], optionColors[1]!)
             ],
           ),
         ),
@@ -54,7 +54,10 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
   @override
   Widget getCenterTile(word) {
     Globals().printDebug("center tile word: " + word.title);
-    return getTextTile(word);
+    return getTextTile(
+      word,
+      borderColor: Globals().appButtonColor
+    );
   }
 
   ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
@@ -69,9 +72,7 @@ class _State extends BaseOptionTilesState<ModuleLeftRight> {
     }
     return ElevatedButton(
         onPressed: () => audioPlay(id),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white
-        ),
+        style: Globals().buttonStyle(),
         child: Stack(
           children: [
             Padding(

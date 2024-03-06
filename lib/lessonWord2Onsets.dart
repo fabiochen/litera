@@ -17,7 +17,9 @@ class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Flexible(child: getImageTile(wordMain.id)),
-        Flexible(child: getMainText(wordMain, 70)),
+        Flexible(child: getMainText(wordMain, 70,
+          backgroundColor: optionColors[wordMain.id%10]!,
+        )),
         Flexible(child: _getOnsetsTile()), // letters
       ],
     );
@@ -45,13 +47,7 @@ class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
       padding: const EdgeInsets.all(2.0),
       child: ElevatedButton(
         onPressed: () => audioPlayOnset(char),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-            side: BorderSide(
-              width: 5.0,
-              color: listColor[1]!,
-            )
-        ),
+        style: Globals().buttonStyle(),
         child: Stack(
           children: [
             Container(

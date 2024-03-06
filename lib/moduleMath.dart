@@ -16,7 +16,7 @@ class ModuleMath extends BaseModule {
 class _State extends BaseModuleState<ModuleMath> {
 
   final userInputTextField = TextEditingController();
-  double tileSize = 120;
+//  double tileSize = 130;
   bool showCountingImages = true;
 
   @override
@@ -30,9 +30,8 @@ class _State extends BaseModuleState<ModuleMath> {
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        getMathWidgetsV(wordMain.title),
+        Flexible(child: getMathWidgetsV(wordMain.title)),
         ValueListenableBuilder(
           valueListenable: flagCorrect,
           builder: (context, value, widget) {
@@ -58,24 +57,32 @@ class _State extends BaseModuleState<ModuleMath> {
     return numericRegex.hasMatch(string);
   }
 
-  Container getGridImages(String val) {
+  Widget getGridImages(String val) {
     Word word = Globals().getWordFromField(Globals().listNumber1t20,FieldType.VAL1,1.toString());
-    return Container(
-      alignment: Alignment.center,
-      width: tileSize,
-      height: tileSize,
-      child: GridView.builder(
-        padding: const EdgeInsets.all(1),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: sqrt(int.parse(val)).ceil(),
-          childAspectRatio: 1,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            width: 2,
+            color: Globals().appButtonColor,
+          ),
         ),
-        itemCount: int.parse(val),
-        itemBuilder: (BuildContext context, int i) {
-          return getImage(word.id, tileSize, 0);
-        },
+        child: GridView.builder(
+          padding: const EdgeInsets.all(1),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, //sqrt(int.parse(val)).ceil(),
+            childAspectRatio: 1,
+          ),
+          itemCount: int.parse(val),
+          itemBuilder: (BuildContext context, int i) {
+            return getImage(word.id,100,0);
+          },
+        )
       ),
     );
   }
@@ -98,16 +105,11 @@ class _State extends BaseModuleState<ModuleMath> {
       //Globals().printDebug("val: $val");
       gv = getGridImages(val);
       if (!showCountingImages) gv = Container(
-        width: tileSize,
-        height: tileSize,
+        // width: tileSize,
+        // height: tileSize,
       );
-      listImages.add(gv);
-      listNumbers.add(Container(
-        alignment: Alignment.centerRight,
-        height: tileSize,
-        width: tileSize,
-        child: getText(val),
-      ));
+      listImages.add(Flexible(flex: 3, fit: FlexFit.tight, child: gv));
+      listNumbers.add(Flexible(flex: 3, fit: FlexFit.tight, child: getText(val)));
     }
     switch(operation) {
       case '*':
@@ -118,9 +120,9 @@ class _State extends BaseModuleState<ModuleMath> {
         break;
     }
     listOperations.add(Container(
-        alignment: Alignment.centerRight,
-        height: tileSize,
-        width: tileSize/2,
+        alignment: Alignment.topRight,
+        // height: tileSize,
+        // width: tileSize/2,
         child: getText(operation,100,Colors.blue)));
 
     // divider
@@ -128,77 +130,73 @@ class _State extends BaseModuleState<ModuleMath> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         height: 5,
-        width: tileSize,
-        color: Colors.teal,
+        // width: tileSize*1.5,
+        color: Colors.blue,
       ),
     );
-    listNumbers.add(div);
+    listNumbers.add(Flexible(flex: 1, child: div));
     if (!showCountingImages) div = Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         height: 5,
-        width: tileSize,
+        // width: tileSize,
         color: Colors.transparent,
       ),
     );
-    listImages.add(div);
+    listImages.add(Flexible(flex:  1, child: div));
     // total
-    listNumbers.add(Container(
-      width: tileSize,
-      height: tileSize,
-      padding: EdgeInsets.all(12),
-      child: TextField(
-        controller: userInputTextField,
-        textAlign: TextAlign.right,
-        textDirection: TextDirection.rtl,
-        keyboardType: TextInputType.number,
-        onChanged: (String string){
-          userInputTextField.selection = TextSelection.fromPosition(TextPosition(offset: 0));
-        },
-        style: TextStyle(
-            fontSize: 50.0,
-            color: Colors.red
-        ),
-        decoration: InputDecoration(
-          border: new OutlineInputBorder(
-              borderSide: new BorderSide(
-                  color: Colors.red)),
-          // hintText: Globals().getAssetsVocab('TYPE-WORD'),
-        ),
+    listNumbers.add(Flexible(flex: 2, child: TextField(
+      controller: userInputTextField,
+      textAlign: TextAlign.right,
+      textAlignVertical: TextAlignVertical.top,
+      textDirection: TextDirection.rtl,
+      keyboardType: TextInputType.number,
+      onChanged: (String string){
+        userInputTextField.selection = TextSelection.fromPosition(TextPosition(offset: 0));
+      },
+      decoration: InputDecoration(
+        border: new OutlineInputBorder(
+            borderSide: new BorderSide(
+                color: Colors.red)),
+        // hintText: Globals().getAssetsVocab('TYPE-WORD'),
       ),
-    ));
+      style: TextStyle(
+          fontSize: 100.0,
+          color: Colors.red
+      ),
+    )));
     // listImages.add(getGridImages(expression.eval().toString()));
-    listImages.add(Container(
-      width: tileSize,
-      height: tileSize,
-      child: Center(
-        child: ButtonTheme(
-          minWidth: 50.0,
-          height: 50.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50.0),
+    listImages.add(Flexible(flex: 2, child: Center(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        foregroundDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: ElevatedButton(
+          style: Globals().buttonStyle(
+            backgroundColor: Globals().appButtonColor,
           ),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.teal,
-            ),
-            onPressed: () => _correction(wordMain.title),
-            child: Text(
-              Globals().getAssetsVocab('CHECK'),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
+          onPressed: () => _correction(wordMain.title),
+          child: Text(
+            Globals().getAssetsVocab('CHECK'),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: Globals().appButtonFontSize,
             ),
           ),
         ),
       ),
-    ));
+    )));
     Column colImages = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: listImages,
     );
     Column colNumbers = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: listNumbers,
     );
     Column colOperations = Column(
@@ -207,16 +205,22 @@ class _State extends BaseModuleState<ModuleMath> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Expanded(child: Container()),
-        colOperations,
-        colNumbers,
-        colImages,
-        Expanded(child: Container()),
+        Flexible(
+          flex: 1,
+          child: colOperations),  // operation
+        Flexible(
+          flex: 2,
+          child: colNumbers),  // numbers
+        Flexible(
+          flex: 2,
+          child: colImages),  // images
       ],
     );
   }
 
   void _correction(String exp) {
+    exp = exp.replaceAll('x', '*');
+    exp = exp.replaceAll('÷', '/');
     Expression expression = Expression(exp);
     Globals().printDebug("textfield: " + userInputTextField.text);
     Globals().printDebug("eval: " + expression.eval().toString());
@@ -242,15 +246,15 @@ class _State extends BaseModuleState<ModuleMath> {
   }
 
   @override
-  void next() {
+  void next([bool refresh=true]) {
     userInputTextField.text = '';
-    super.next();
+    super.next(refresh);
   }
 
   @override
-  void previous() {
+  void previous([bool refresh=true]) {
     userInputTextField.text = '';
-    super.previous();
+    super.previous(refresh);
   }
 
 }

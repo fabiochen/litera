@@ -18,9 +18,7 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
       children: [
         ElevatedButton(
             onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white
-            ),
+            style: Globals().buttonStyle(),
             child: getImage(word.id,100)),
         SizedBox(width: 50),
         Padding(

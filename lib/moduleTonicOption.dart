@@ -42,7 +42,10 @@ class _State extends BaseModuleState<ModuleTonicOption> {
           },
         ),
         SizedBox(height: 30),
-        Flexible(child: getTextTile(wordMain, borderColor: listColor[wordMain.id%10])),
+        Flexible(child: getTextTile(
+          wordMain,
+          backgroundColor: optionColors[wordMain.id%10],
+        )),
         SizedBox(height: 30),
         Container(
           width: optionWidth,

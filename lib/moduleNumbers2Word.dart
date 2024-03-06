@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litera/globals.dart';
 import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
 
@@ -11,16 +12,17 @@ class _ModuleNumbers2WordState extends BaseOptionTilesState<ModuleNumbers2Word> 
 
   @override
   Widget getCenterTile(word) {
-    return getTextTile(word);
+    return getTextTile(
+      word,
+      borderColor: Globals().appButtonColor
+    );
   }
 
   ElevatedButton getTextTile(Word word, {double fontSize=50, Color? backgroundColor=Colors.white, Color? borderColor=Colors.white, Color fontColor= Colors.teal, double width=300, double height=200, bool containsAudio=true}) {
     int id = word.id;
     return ElevatedButton(
         onPressed: () => audioPlay(id),
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white
-        ),
+        style: Globals().buttonStyle(),
         child: Stack(
           children: [
             Padding(
