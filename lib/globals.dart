@@ -96,9 +96,9 @@ class Globals {
   List<MapEntry> settingsNavigationLanguage = [];
   late Map<String, dynamic> _assetsConfig;
 
-  Color? appBarColorLight = Colors.teal.shade200;
-  Color? appBarColor = Colors.teal.shade400;
-  Color? appBarColorDark = Colors.teal.shade800;
+  Color appBarColorLight = Colors.teal.shade200;
+  Color appBarColor = Colors.teal.shade400;
+  Color appBarColorDark = Colors.teal.shade800;
 
   Color appColorLight = Colors.teal.shade200;
   Color appColor = Colors.teal.shade400;
@@ -757,9 +757,9 @@ class Globals {
       int id = int.parse(key);
       String title = parsedWords['LIST']['MATH4'][key];
       Word word = Word(id, title);
-      debugPrint("************* populate math4: $title");
+//      debugPrint("************* populate math4: $title");
       listMath4.add(word);
-      debugPrint("************* populate math4: add");
+//      debugPrint("************* populate math4: add");
     });
 
     debugPrint("************* populate math3");
@@ -775,27 +775,27 @@ class Globals {
       int id = int.parse(key);
       String title = parsedWords['LIST']['MATH5'][key];
       Word word = Word(id, title);
-      debugPrint("************* populate math4: $title");
+//      debugPrint("************* populate math5: $title");
       listMath5.add(word);
-      debugPrint("************* populate math4: add");
+//      debugPrint("************* populate math5: add");
     });
 
     parsedWords['LIST']['MATH6'].keys.forEach((key) {
       int id = int.parse(key);
       String title = parsedWords['LIST']['MATH6'][key];
       Word word = Word(id, title);
-      debugPrint("************* populate math4: $title");
+//      debugPrint("************* populate math6: $title");
       listMath6.add(word);
-      debugPrint("************* populate math4: add");
+//      debugPrint("************* populate math6: add");
     });
 
     parsedWords['LIST']['MATH7'].keys.forEach((key) {
       int id = int.parse(key);
       String title = parsedWords['LIST']['MATH7'][key];
       Word word = Word(id, title);
-      debugPrint("************* populate math4: $title");
+//      debugPrint("************* populate math7: $title");
       listMath7.add(word);
-      debugPrint("************* populate math4: add");
+//      debugPrint("************* populate math7: add");
     });
 
     printDebug("******** populate 8");
@@ -1381,9 +1381,8 @@ class Globals {
         _year,
         _subject,
         listMath1.where((word) => word.title.contains("+")).toList(),
-        '/LessonMath',
+        '/ModuleExpressionEval',
         numberQuestions: 999,
-        misc: false, // show counting images for small numbers
       );
     }());
 
@@ -1397,9 +1396,8 @@ class Globals {
         _year,
         _subject,
         listMath1.where((word) => word.title.contains("-")).toList(),
-        '/LessonMath',
+        '/ModuleExpressionEval',
         numberQuestions: 999,
-        misc: false, // show counting images for small numbers
       );
     }());
 
@@ -1413,9 +1411,8 @@ class Globals {
         _year,
         _subject,
         listMath1,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 10,
-        misc: true, // show counting images for small numbers
       );
     }());
 
@@ -1429,9 +1426,8 @@ class Globals {
         _year,
         _subject,
         listMath1,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 10,
-        misc: true, // show counting images for small numbers
       );
     }());
 
@@ -1605,6 +1601,7 @@ class Globals {
         listMusicNotes.where((word) => word.id < 808).toList(),  // no upper C
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
+        optionFontSize: 30,
         containsAudio: false,
       );
     }());
@@ -1637,6 +1634,7 @@ class Globals {
         listMusicNotes.where((word) => word.id < 808).toList(), // no upper C
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
+        optionFontSize: 30,
         containsAudio: false,
       );
     }());
@@ -1981,6 +1979,7 @@ class Globals {
         listVocab.where((word) => word.containsImage && word.containsAudio && word.title.length <= 5).toList(),
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
+        optionFontSize: 30,
         sortCriteria: FieldType.TITLE,
       );
     }());
@@ -2133,15 +2132,15 @@ class Globals {
       String _title = "Adição (2 casas)";
       int _modulePos = listModules.length;
       return Module(
-          _modulePos,
-          _title,
-          ModuleType.LESSON,
-          _year,
-          _subject,
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
         listMath2.where((word) => word.title.contains("+")).toList(),
-        '/LessonMath',
-          numberQuestions: 999,
-          misc: false,  // hide counting images for large numbers
+        '/ModuleExpressionEval',
+        numberQuestions: 999,
+        misc: 'v'
       );
     }());
 
@@ -2155,9 +2154,9 @@ class Globals {
         _year,
         _subject,
         listMath2.where((word) => word.title.contains("-")).toList(),
-        '/LessonMath',
+        '/ModuleExpressionEval',
         numberQuestions: 999,
-        misc: false,  // hide counting images for large numbers
+        misc: 'v'
       );
     }());
 
@@ -2171,9 +2170,10 @@ class Globals {
         _year,
         _subject,
         listMath2,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 10,
-        misc: false, // show counting images for small numbers
+        misc: 'v',
+        mainFontSize: 90,
       );
     }());
 
@@ -2187,9 +2187,10 @@ class Globals {
         _year,
         _subject,
         listMath2,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 10,
-        misc: false, // show counting images for small numbers
+        misc: 'v',
+        mainFontSize: 90,
       );
     }());
 
@@ -2411,9 +2412,9 @@ class Globals {
         _year,
         _subject,
         listMath4.where((word) => word.title.contains("+")).toList(),
-        '/LessonMath',
+        '/ModuleExpressionEval',
         numberQuestions: 999,
-        misc: false,  // hide counting images for large numbers
+        misc: 'v'
       );
     }());
 
@@ -2429,9 +2430,9 @@ class Globals {
         _year,
         _subject,
         listMath4.where((word) => word.title.contains("-")).toList(),
-        '/LessonMath',
+        '/ModuleExpressionEval',
         numberQuestions: 999,
-        misc: false,  // hide counting images for large numbers
+        misc: 'v'
       );
     }());
 
@@ -2445,9 +2446,10 @@ class Globals {
         _year,
         _subject,
         listMath4,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 10,
-        misc: false, // show counting images for small numbers
+        misc: 'v',
+        mainFontSize: 90,
       );
     }());
 
@@ -2461,9 +2463,10 @@ class Globals {
         _year,
         _subject,
         listMath4,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 10,
-        misc: false, // show counting images for small numbers
+        misc: 'v',
+        mainFontSize: 90,
       );
     }());
 
@@ -3515,17 +3518,13 @@ class Globals {
         _year,
         _subject,
         listMath3, // endless exercise
-        '/ModuleTimesTable2',
+        '/ModuleExpressionEval',
         numberQuestions: 20,
-        useNavigation: false,
-        useProgressBar: true,
-        containsAudio:  false,
-        misc: 'x', // type of operation
       );
     }());
 
     listModules.add(() {
-      String _title = "Calcule a Multiplicação";
+      String _title = "Calcule";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -3534,11 +3533,8 @@ class Globals {
         _year,
         _subject,
         listMath3,
-        '/ModuleTimesTable2',
+        '/ModuleExpressionEval',
         numberQuestions: 20,
-        useNavigation: true,
-        useProgressBar: true,
-        misc: 'x', // type of operation
       );
     }());
 
@@ -3552,9 +3548,8 @@ class Globals {
         _year,
         _subject,
         listMath5,
-        '/LessonMath',
+        '/ModuleExpressionEval',
         numberQuestions: 999, // show all
-        misc: false,  // hide counting images for large numbers
       );
     }());
 
@@ -3568,9 +3563,10 @@ class Globals {
         _year,
         _subject,
         listMath5,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 20,
-        misc: false, // show counting images for small numbers
+        misc: 'v',
+        mainFontSize: 90,
       );
     }());
 
@@ -3584,9 +3580,10 @@ class Globals {
         _year,
         _subject,
         listMath5,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 20,
-        misc: false, // show counting images for small numbers
+        misc: 'v',
+        mainFontSize: 90,
       );
     }());
 
@@ -3600,9 +3597,8 @@ class Globals {
         _year,
         _subject,
         listMath6,
-        '/LessonMath',
+        '/ModuleExpressionEval',
         numberQuestions: 999,
-        misc: false,  // hide counting images for large numbers
       );
     }());
 
@@ -3616,9 +3612,10 @@ class Globals {
         _year,
         _subject,
         listMath6,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 10,
-        misc: false, // show counting images for small numbers
+        misc: 'v',
+        mainFontSize: 90,
       );
     }());
 
@@ -3632,9 +3629,10 @@ class Globals {
         _year,
         _subject,
         listMath6,
-        '/ModuleMath',
+        '/ModuleExpressionEval',
         numberQuestions: 20,
-        misc: false, // show counting images for small numbers
+        misc: 'v',
+        mainFontSize: 90,
       );
     }());
 
@@ -3663,14 +3661,13 @@ class Globals {
         _year,
         _subject,
         listMath7,
-        '/LessonMath',
+        '/ModuleExpressionEval',
         numberQuestions: 999,
-        misc: false,  // hide counting images for large numbers
       );
     }());
 
     listModules.add(() {
-      String _title = "Calcule a Divisão";
+      String _title = "Calcule";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -3679,11 +3676,8 @@ class Globals {
         _year,
         _subject,
         listMath7,
-        '/ModuleTimesTable2',
+        '/ModuleExpressionEval',
         numberQuestions: 20,
-        useNavigation: true,
-        useProgressBar: true,
-        misc: '÷', // type of operation
       );
     }());
 
@@ -3878,7 +3872,7 @@ class Globals {
     return category.singleWhere((word) => (word).id == id);
   }
 
-  ButtonStyle buttonStyle({Color backgroundColor=Colors.white, double borderWidth=5.0}) {
+  ButtonStyle buttonStyle({Color backgroundColor=Colors.white, Color borderColor=Colors.blue, double borderWidth=5.0}) {
     return ElevatedButton.styleFrom(
       backgroundColor: backgroundColor,
       surfaceTintColor: backgroundColor,
@@ -3887,7 +3881,7 @@ class Globals {
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
             width: borderWidth,
-            color: Colors.blue,
+            color: borderColor,
           )
       ),
     );

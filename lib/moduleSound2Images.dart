@@ -43,7 +43,7 @@ class _State extends BaseOptionTilesState<ModuleSound2Images> {
         SizedBox(
           width: 20,
         ),
-        getSoundTile(word, Colors.blue),
+        getSoundTile(word),
         SizedBox(
           width: 20,
         ),

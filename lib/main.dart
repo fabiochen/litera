@@ -20,7 +20,7 @@ import 'moduleMath.dart';
 import 'modulePiano.dart';
 import 'moduleSound2Images.dart';
 import 'moduleTimesTable.dart';
-import 'moduleTimesTable2.dart';
+import 'moduleExpressionEval.dart';
 import 'moduleTimesTable3.dart';
 import 'moduleTonicOption.dart';
 import 'moduleTonicSyllable.dart';
@@ -159,7 +159,7 @@ class MyApp extends StatelessWidget {
                 '/LessonTableMult'           : (context) => LessonTableMult(),
                 '/LessonTableDiv'            : (context) => LessonTableDiv(),
                 '/ModuleTimesTable'          : (context) => ModuleTimesTable(),
-                '/ModuleTimesTable2'         : (context) => ModuleTimesTable2(),
+                '/ModuleExpressionEval'         : (context) => ModuleExpressionEval(),
                 '/ModuleTimesTable3'         : (context) => ModuleTimesTable3(),
                 '/UnitPiano'                 : (context) => UnitPiano(),
                 '/ModulePiano'               : (context) => ModulePiano(),

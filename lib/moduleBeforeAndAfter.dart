@@ -60,7 +60,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
     return super.getText(text, fontSize, Colors.red);
   }
 
-  ElevatedButton getSoundTile(Word word, [Color border=Colors.white]) {
+  ElevatedButton getSoundTile(Word word, {Color borderColor=Colors.white}) {
     _playAudio();
     return ElevatedButton(
         onPressed: () => _playAudio(),

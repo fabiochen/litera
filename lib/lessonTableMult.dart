@@ -26,54 +26,60 @@ class _State extends BaseModuleState<LessonTableMult> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 150,
-              height: 350,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.green,
-                  width: 5,
+            Expanded(child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 350,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.green,
+                    width: 5,
+                  ),
+                ),
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.green,
+                    width: 5,
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 60,
+                  useMagnifier: true,
+                  magnification: 1.2,
+                  scrollController: controllerMultiplier,
+                  children: [
+                    ...listNumber.map((value) {
+                      return Text(
+                        value.toString(),
+                        style: TextStyle(
+                            fontSize: 50,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                  onSelectedItemChanged: (value) {
+                    setState(() {
+                      _selectedNumber = value;
+                      debugPrint("$listPosition x $_selectedNumber = ${_selectedNumber*listPosition}");
+                      controllerResult.animateToItem(_selectedNumber, duration: Duration(milliseconds: 400), curve: Curves.ease);
+                    });
+                  },
                 ),
               ),
-              foregroundDecoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.green,
-                  width: 5,
-                ),
-              ),
-              child: CupertinoPicker(
-                backgroundColor: Colors.white,
-                itemExtent: 60,
-                scrollController: controllerMultiplier,
-                children: [
-                  ...listNumber.map((value) {
-                    return Text(
-                      value.toString(),
-                      style: TextStyle(
-                        fontSize: 50,
-                        color: Colors.red,
-                      ),
-                    );
-                  }).toList(),
-                ],
-                onSelectedItemChanged: (value) {
-                  setState(() {
-                    _selectedNumber = value;
-                    debugPrint("$listPosition x $_selectedNumber = ${_selectedNumber*listPosition}");
-                    controllerResult.animateToItem(_selectedNumber, duration: Duration(milliseconds: 400), curve: Curves.ease);
-                  });
-                },
-              ),
-            ),  // multiplier
+            )),  // multiplier
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                 "x",
                 style: TextStyle(
-                    fontSize: 40,
-                    color: Colors.blue,
+                    fontSize: 50,
+                    color: Colors.yellowAccent,
                     fontWeight: FontWeight.bold
                 ),
               ),
@@ -81,60 +87,67 @@ class _State extends BaseModuleState<LessonTableMult> {
             Text(
               Globals().listTimesTableBase[listPosition].toString(),
               style: TextStyle(
-                fontSize: 50,
-                color: Colors.green,
+                fontSize: 70,
+                color: Colors.white,
+                fontWeight: FontWeight.bold
               ),
             ),  // base
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                 "=",
                 style: TextStyle(
-                    fontSize: 60,
-                    color: Colors.blue,
+                    fontSize: 50,
+                    color: Colors.yellowAccent,
                     fontWeight: FontWeight.bold
                 ),
               ),
             ),
-            Container(
-              width: 150,
-              height: 350,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.red,
-                  width: 5,
+            Expanded(child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Container(
+                height: 350,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.red,
+                    width: 5,
+                  ),
+                ),
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.red,
+                    width: 5,
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: AbsorbPointer(
+                  absorbing: true,
+                  child: CupertinoPicker(
+                    backgroundColor: Colors.white,
+                    itemExtent: 60,
+                    useMagnifier: true,
+                    magnification: 1.2,
+                    scrollController: controllerResult,
+                    children: [
+                      ...listNumber.map((value) {
+                        int result = value*(listPosition+1);
+                        return Text(
+                          result.toString(),
+                          style: TextStyle(
+                              fontSize: 50,
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                    onSelectedItemChanged: (value) {},
+                  ),
                 ),
               ),
-              foregroundDecoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.red,
-                  width: 5,
-                ),
-              ),
-              child: AbsorbPointer(
-                absorbing: true,
-                child: CupertinoPicker(
-                  backgroundColor: Colors.white,
-                  itemExtent: 60,
-                  scrollController: controllerResult,
-                  children: [
-                    ...listNumber.map((value) {
-                      int result = value*(listPosition+1);
-                      return Text(
-                        result.toString(),
-                        style: TextStyle(
-                          fontSize: 50,
-                          color: Colors.blue,
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                  onSelectedItemChanged: (value) {},
-                ),
-              ),
-            ),  // result
+            )),  // result
           ],
         ),
       ],

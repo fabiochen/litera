@@ -30,8 +30,8 @@ class _PageHomeState extends BaseModuleState<PageHome> {
     title = Globals().appTitle;
     isVisible = Globals().firstTime;
     bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
-      //adUnitId: 'ca-app-pub-3940256099942544/6300978111', //test id
+      //adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111', //test id
       request: AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
@@ -54,12 +54,21 @@ class _PageHomeState extends BaseModuleState<PageHome> {
   @override
   Widget build(BuildContext context) {
     Globals().printDebug("******** baseModule build");
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Globals().appColor,
-        appBar: getAppBar(),
-        drawer: getMenu(),
-        body: getBody()
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Colors.white, Globals().appBarColorDark],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            tileMode: TileMode.clamp),
+      ),
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.transparent,
+          appBar: getAppBar(),
+          drawer: getMenu(),
+          body: getBody()
+      ),
     );
   }
 
@@ -228,7 +237,8 @@ class _PageHomeState extends BaseModuleState<PageHome> {
                     Globals().listYears[i].value,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
                         fontFamily: 'Mynerve'
                     ),
                   )

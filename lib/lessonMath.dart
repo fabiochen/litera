@@ -59,18 +59,20 @@ class _State extends BaseModuleState<LessonMath> {
         ),
         itemCount: int.parse(val),
         itemBuilder: (BuildContext context, int i) {
-          return getImage(word.id, tileSize, 0);
+          return getImage(word.id, width:tileSize, padding:0);
         },
       ),
     );
   }
 
   Widget getMathWidgetsH(String exp) {
-    List<Widget> list = [];
+    List<Widget> row1 = [];
+    List<Widget> row2 = [];
+    List<Widget> row3 = [];
     for (int i=0; i<exp.length; i++) {
       String val = exp[i];
       if (isNumeric(val)) {
-        list.add(getText(val));
+        row1.add(getText(val,80));
       }
       else {
         Column colOp = Column(
@@ -80,22 +82,34 @@ class _State extends BaseModuleState<LessonMath> {
                 height: 200,
                 alignment: Alignment.center,
                 child: getText(val)),
-            Container(child: getText(val,100,Colors.blue)),
+            Container(child: getText(val,80,Colors.blue)),
           ],
         );
-        list.add(colOp);
+        row1.add(colOp);
       }
     }
-    list.add(getText('=',100,Colors.blue));
+    row2.add(getText('=',80,Colors.blue));
     debugPrint("exp: $exp");
     exp = exp.replaceAll('x', '*');
     exp = exp.replaceAll('÷', '/');
     debugPrint("exp: $exp");
     Expression expression = Expression(exp);
-    list.add(getText(expression.eval().toString(),100,Colors.red));
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: list,
+    row3.add(getText(expression.eval().toString(),80,Colors.red));
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: row1
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: row2
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: row3
+        ),
+      ],
     );
   }
 

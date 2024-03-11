@@ -19,13 +19,14 @@ class _LessonAlphabetState extends BaseModuleState<LessonAlphabet> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        Flexible(child: getImageTile(wordMain.id)),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(child: getImageTile(wordMain.id, borderColor: optionColors[listPosition%10]!,)),
-            Flexible(child: getImageTile(wordMain.id+4000)),
+            Flexible(child: getImageTile(wordMain.id+4000,imageSize: 100)),
+            Flexible(child: getOnsetTile(wordMain, imageSize: 100))
           ],
         ),
-        getOnsetTile(wordMain)
       ],
     );
   }

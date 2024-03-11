@@ -39,29 +39,33 @@ class _State extends BaseModuleState<ModuleTimesTable> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              Globals().listTimesTableBase[listPosition].toString(),
-              style: TextStyle(
-                fontSize: 50,
-                color: Colors.green,
+            Padding(
+              padding: EdgeInsets.fromLTRB(8,0,0,0),
+              child: Text(
+                Globals().listTimesTableBase[listPosition].toString(),
+                style: TextStyle(
+                  fontSize: 60,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                 "x",
                 style: TextStyle(
                     fontSize: 40,
-                    color: Colors.blue,
+                    color: Colors.yellow,
                     fontWeight: FontWeight.bold
                 ),
               ),
             ),
-            Container(
-              width: 150,
+            Expanded(child: Container(
               height: 250,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Colors.white,
                 border: Border.all(
                   color: Colors.red,
                   width: 5,
@@ -79,78 +83,85 @@ class _State extends BaseModuleState<ModuleTimesTable> {
                 child: AbsorbPointer(
                   absorbing: true,
                   child: CupertinoPicker(
-                      backgroundColor: Colors.white,
-                      itemExtent: 60,
-                      scrollController: controllerMultiplier,
-                      children: [
-                        ...listNumber.map((value) {
-                          return Text(
-                            value.toString(),
-                            style: TextStyle(
-                              fontSize: 50,
-                              color: Colors.red,
-                            ),
-                          );
-                        }).toList(),
-                      ],
-                      onSelectedItemChanged: (value) {
-                      },
+                    backgroundColor: Colors.white,
+                    itemExtent: 60,
+                    magnification: 1.2,
+                    useMagnifier: true,
+                    scrollController: controllerMultiplier,
+                    children: [
+                      ...listNumber.map((value) {
+                        return Text(
+                          value.toString(),
+                          style: TextStyle(
+                            fontSize: 45,
+                            color: Colors.red,
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                    onSelectedItemChanged: (value) {
+                    },
                   ),
                 ),
               ),
-            ),
+            )),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text(
                 "=",
                 style: TextStyle(
                     fontSize: 60,
-                    color: Colors.blue,
+                    color: Colors.yellow,
                     fontWeight: FontWeight.bold
                 ),
               ),
             ),
-            Container(
-              width: 150,
-              height: 250,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.green,
-                  width: 5,
+            Expanded(child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+              child: Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.green,
+                    width: 5,
+                  ),
+                ),
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.green,
+                    width: 5,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CupertinoPicker(
+                    backgroundColor: Colors.white,
+                    itemExtent: 60,
+                    magnification: 1.2,
+                    useMagnifier: true,
+                    scrollController: controllerResult,
+                    children: [
+                      ...listNumber.map((value) {
+                        int result = value*(listPosition+1);
+                        return Text(
+                          result.toString(),
+                          style: TextStyle(
+                            fontSize: 45,
+                            color: Colors.green,
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                    onSelectedItemChanged: (value) {
+                      _selectedOption = value;
+                    },
+                  ),
                 ),
               ),
-              foregroundDecoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.green,
-                  width: 5,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CupertinoPicker(
-                  backgroundColor: Colors.white,
-                  itemExtent: 60,
-                  scrollController: controllerResult,
-                  children: [
-                    ...listNumber.map((value) {
-                      int result = value*(listPosition+1);
-                      return Text(
-                        result.toString(),
-                        style: TextStyle(
-                          fontSize: 50,
-                          color: Colors.blue,
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                  onSelectedItemChanged: (value) {
-                    _selectedOption = value;
-                  },
-                ),
-              ),
-            ),
+            )),
           ],
         ),
         Container(

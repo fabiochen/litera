@@ -48,26 +48,20 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              getOptionTile(listOption1[listPosition], optionColors[0]!),
-              getOptionTile(listOption2[listPosition], optionColors[1]!)
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            getOptionTile(listOption1[listPosition], optionColors[0]!),
+            getOptionTile(listOption2[listPosition], optionColors[1]!)
+          ],
         ),
         Flexible(child: getCenterTile(listMain[listPosition])),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              getOptionTile(listOption3[listPosition], optionColors[2]!),
-              getOptionTile(listOption4[listPosition], optionColors[3]!)
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            getOptionTile(listOption3[listPosition], optionColors[2]!),
+            getOptionTile(listOption4[listPosition], optionColors[3]!)
+          ],
         ),
       ],
     );
@@ -77,7 +71,7 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
     return getImageTile(word.id);
   }
 
-  ButtonTheme getOptionTile(Word wordOption, [Color backGroundColor=Colors.white]) {
+  Widget getOptionTile(Word wordOption, [Color backGroundColor=Colors.white]) {
     //Globals().printDebug("getOptionTile: " + wordOption.title);
     bool showBackground;
     try {
@@ -86,45 +80,51 @@ class BaseOptionTilesState<T extends BaseOptionTiles> extends BaseModuleState<T>
       showBackground = true;
     }
     if (!showBackground) backGroundColor = Colors.white;
-    return ButtonTheme(
-        child: Expanded(
-            child: Column(
-              children: [
-                ValueListenableBuilder(
-                  valueListenable: flagCorrect,
-                  builder: (context, value, widget) {
-                    saveCorrectionValues();
-                    return SizedBox.shrink();
-                  },
-                ),
-                ValueListenableBuilder(
-                  valueListenable: flagWrong,
-                  builder: (context, value, widget) {
-                    saveCorrectionValues();
-                    return SizedBox.shrink();
-                  },
-                ),
-                SizedBox(
-                  width: optionWidth,
-                  height: optionHeight,
-                  child: PlayerBuilder.isPlaying(
-                      player: Globals().audioPlayer,
-                      builder: (context, isPlaying) {
-                        return ElevatedButton(
-                          style: Globals().buttonStyle(
-                            backgroundColor: backGroundColor,
-                          ),
-                          onPressed: (!isPlaying) ? () {
-                            correctionLogic(wordOption);
-                          } : () {},
-                          child: getOptionValue(wordOption),
-                        );
-                      }
-                  ),
-                ),
-              ],
+    return Flexible(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ButtonTheme(
+            child: Expanded(
+                child: Column(
+                  children: [
+                    ValueListenableBuilder(
+                      valueListenable: flagCorrect,
+                      builder: (context, value, widget) {
+                        saveCorrectionValues();
+                        return SizedBox.shrink();
+                      },
+                    ),
+                    ValueListenableBuilder(
+                      valueListenable: flagWrong,
+                      builder: (context, value, widget) {
+                        saveCorrectionValues();
+                        return SizedBox.shrink();
+                      },
+                    ),
+                    SizedBox(
+                      width: optionWidth,
+                      height: optionHeight,
+                      child: PlayerBuilder.isPlaying(
+                          player: Globals().audioPlayer,
+                          builder: (context, isPlaying) {
+                            return ElevatedButton(
+                              style: Globals().buttonStyle(
+                                backgroundColor: backGroundColor,
+                                borderColor: (!isPlaying) ? Colors.blue :  Colors.grey.shade50,
+                              ),
+                              onPressed: (!isPlaying) ? () {
+                                correctionLogic(wordOption);
+                              } : () {},
+                              child: getOptionValue(wordOption),
+                            );
+                          }
+                      ),
+                    ),
+                  ],
+                )
             )
-        )
+        ),
+      ),
     );
   }
 

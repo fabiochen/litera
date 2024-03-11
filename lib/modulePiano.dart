@@ -46,71 +46,68 @@ class _State extends BaseModuleState<ModulePiano> {
     wordMain = listProcess[listPosition] as Word;
     debugPrint("************** maintile audio ${wordMain.val1}");
     _audioDelay = 3500;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  getImageTile(
+    return Container(
+      child: Column(
+        children: [
+          Expanded(child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ValueListenableBuilder(
+                  valueListenable: flagCorrect,
+                  builder: (context, value, widget) {
+                    saveCorrectionValues();
+                    return SizedBox.shrink();
+                  },
+                ),
+                getImageTile(
                     801,
                     imageSize: 100,
                     borderColor: Colors.orange
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: flagCorrect,
-                    builder: (context, value, widget) {
-                      saveCorrectionValues();
-                      return SizedBox.shrink();
-                    },
-                  ),
-                  (bool.parse(misc.toString())) ? getImageTile(wordMain.id, imageSize: 100, borderColor: Colors.blue) : getSoundTile(wordMain,Colors.blue),
-                  ValueListenableBuilder(
-                    valueListenable: flagWrong,
-                    builder: (context, value, widget) {
-                      saveCorrectionValues();
-                      return SizedBox.shrink();
-                    },
-                  ),
-                  Text("?",
-                    style: TextStyle(
-                      fontSize: 70,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    )
-                  ),  // question mark
-                ],
-              ),
+                ),
+                (bool.parse(misc.toString())) ? getImageTile(wordMain.id, imageSize: 100, borderColor: Colors.blue) : getSoundTile(wordMain),
+                ValueListenableBuilder(
+                  valueListenable: flagWrong,
+                  builder: (context, value, widget) {
+                    saveCorrectionValues();
+                    return SizedBox.shrink();
+                  },
+                ),
+                // Text("?",
+                //     style: TextStyle(
+                //       fontSize: 70,
+                //       color: Colors.blue,
+                //       fontWeight: FontWeight.bold,
+                //     )
+                // ),  // question mark
+              ],
             ),
-            Expanded(child: Padding(
-              padding: const EdgeInsets.fromLTRB(0,0,0,20),
-              child: VirtualPiano(
-                noteRange: const RangeValues(60, 72),
-                highlightedNoteSets: [
-                  HighlightedNoteSet({60}, Colors.orange),
-                  HighlightedNoteSet({_noteFrequencyPlayed}, _keyColor),
-                ],
-                onNotePressed: (note, pos) {
-                  switch (note) {
-                    case 60:
-                    case 62:
-                    case 64:
-                    case 65:
-                    case 67:
-                    case 69:
-                    case 71:
-                    case 72:
+          )),
+          Expanded(child: Padding(
+            padding: const EdgeInsets.fromLTRB(5,0,5,20),
+            child: VirtualPiano(
+              noteRange: const RangeValues(60, 72),
+              highlightedNoteSets: [
+                HighlightedNoteSet({60}, Colors.orange),
+                HighlightedNoteSet({_noteFrequencyPlayed}, _keyColor),
+              ],
+              onNotePressed: (note, pos) {
+                switch (note) {
+                  case 60:
+                  case 62:
+                  case 64:
+                  case 65:
+                  case 67:
+                  case 69:
+                  case 71:
+                  case 72:
                     processNoteFromFrequency(note);
-                  }
-                },
-              ),
-            ))
-          ],
-        ),
+                }
+              },
+            ),
+          ))
+        ],
       ),
     );
   }

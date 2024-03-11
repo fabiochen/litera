@@ -62,25 +62,30 @@ class _State extends BaseModuleState<ModuleMath> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
+        foregroundDecoration: BoxDecoration(
+          border: Border.all(color: Colors.blue, width: 2),
+          borderRadius: BorderRadius.circular(10),
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 2,
             color: Globals().appButtonColor,
           ),
         ),
+        clipBehavior: Clip.antiAlias,
         child: GridView.builder(
           padding: const EdgeInsets.all(1),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, //sqrt(int.parse(val)).ceil(),
-            childAspectRatio: 1,
+            crossAxisCount: sqrt(int.parse(val)).ceil(),
+            childAspectRatio: 1.5,
           ),
           itemCount: int.parse(val),
           itemBuilder: (BuildContext context, int i) {
-            return getImage(word.id,100,0);
+            return getImage(word.id,width:100,padding:0);
           },
         )
       ),
@@ -200,6 +205,7 @@ class _State extends BaseModuleState<ModuleMath> {
       children: listNumbers,
     );
     Column colOperations = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: listOperations,
     );
     return Row(

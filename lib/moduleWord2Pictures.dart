@@ -32,7 +32,7 @@ class _ModuleWord2PicturesState extends BaseOptionTilesState<ModuleWord2Pictures
   }
 
   @override
-  ButtonTheme getOptionTile(Word wordOption, [Color backGroundColor=Colors.white]) {
+  Widget getOptionTile(Word wordOption, [Color backGroundColor=Colors.white]) {
     return super.getOptionTile(wordOption, Colors.white);
   }
 

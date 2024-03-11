@@ -15,7 +15,7 @@ class _State extends BaseModuleState<LessonWordAndWord> {
   void didChangeDependencies() {
     mainFieldType = FieldType.VAL1;
     optionFieldType = FieldType.TITLE;
-    mainFontSize = 50;
+    mainFontSize = 58;
     optionFontSize = 100;
     super.didChangeDependencies();
   }

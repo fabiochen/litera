@@ -14,10 +14,10 @@ class Module {
   int? numberQuestions;
   bool useNavigation;
   bool useProgressBar;
-  Map<String,Object>? args = {};
+  Map<String,Object> args = {};
   String fontFamily;
-  late double mainFontSize;
-  late double optionFontSize;
+  double mainFontSize;
+  double optionFontSize;
   double mainWidth;
   double mainHeight;
   double optionWidth;
@@ -48,8 +48,7 @@ class Module {
         bool this.useNavigation = true,
         bool this.useProgressBar = true,
         String this.fontFamily = "Litera-Regular",
-
-        double this.mainFontSize = 50,
+        double this.mainFontSize = 30,
         double this.optionFontSize = 100,
         Color this.mainFontColor = Colors.teal,
         Color this.optionFontColor = Colors.teal,
@@ -69,7 +68,7 @@ class Module {
       }
   );
 
-  Map<String,Object>? get arguments {
+  Map<String,Object> get arguments {
     args!['modulePos'] = this.pos;
     args!['title'] = this.title;
     args!['type'] = this.type;
@@ -82,8 +81,7 @@ class Module {
     args!['useNavigation'] = this.useNavigation;
     args!['useProgressBar'] = this.useProgressBar;
     args!['fontFamily'] = this.fontFamily;
-
-    args!['mainFontSize'] = this.mainFontSize;
+    args['mainFontSize'] = this.mainFontSize;
     args!['optionFontSize'] = this.optionFontSize;
     args!['mainFontColor'] = this.mainFontColor;
     args!['optionFontColor'] = this.optionFontColor;

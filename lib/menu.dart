@@ -26,34 +26,30 @@ class _MenuState<T extends Menu> extends State<T> {
         ),
       )
     );
-    // return widget(
-    //   child: Drawer(
-    //     backgroundColor: Globals().appColorDark,
-    //     child: ListView(
-    //       children: getWidgets(),
-    //     )
-    //   ),
-    // );
   }
 
   List<Widget> getWidgets() {
     List<Widget> listWidgets = [];
-    listWidgets.add(Column(
-      children: [
-        Container(
-          alignment: Alignment.center,
-          child: Text(
-            Globals().appTitle.toUpperCase(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w200,
-                letterSpacing: 20
+    listWidgets.add(Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Divider(),
+          Container(
+            alignment: Alignment.center,
+            child: Text(
+              Globals().appTitle.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w200,
+                  letterSpacing: 20
+              ),
             ),
           ),
-        ),
-        Divider()
-      ],
+          Divider()
+        ],
+      ),
     ));
     listWidgets.add(Container(
         child: ListTile(

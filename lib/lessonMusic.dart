@@ -27,7 +27,7 @@ class _State extends BaseModuleState<LessonMusic> {
   }
 
   @override
-  Widget getImage(int id, [double width=100, double padding=15]) {
+  Widget getImage(id, {double width=100, double padding=15, Color backgroundColor=Colors.white}) {
     Globals().printDebug("title: $title");
     if (title == 'Lição: Cores')
       return Padding(
@@ -41,7 +41,7 @@ class _State extends BaseModuleState<LessonMusic> {
             shape: BoxShape.circle,
           ),
         ));
-    return super.getImage(id,width,padding);
+    return super.getImage(id,width:width,padding:padding,backgroundColor: backgroundColor);
   }
 
 }

@@ -30,7 +30,7 @@ class _State extends BaseModuleState<UnitCategory2Words> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 width: 150,
@@ -75,9 +75,6 @@ class _State extends BaseModuleState<UnitCategory2Words> {
                   },
                 ),
               ),
-              SizedBox(
-                width: 50,
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
@@ -102,7 +99,7 @@ class _State extends BaseModuleState<UnitCategory2Words> {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 width: 240,
@@ -159,9 +156,6 @@ class _State extends BaseModuleState<UnitCategory2Words> {
                     });
                   },
                 ),
-              ),
-              SizedBox(
-                width: 50,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

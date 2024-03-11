@@ -34,7 +34,7 @@ class _State extends BaseModuleState<LessonTonic> {
   }
 
   @override
-  Widget getImage(int id, [double width=100, double padding=15]) {
+  Widget getImage(id, {double width=100, double padding=15, Color backgroundColor=Colors.white}) {
     List listSyllables = wordMain.val1.split('-');
     List<Widget> listWidgets = [];
     Globals().printDebug("# of syllables: " + wordMain.val1.split('-').length.toString());

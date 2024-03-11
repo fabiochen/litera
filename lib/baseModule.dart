@@ -44,12 +44,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   bool useProgressBar = true;
   String fontFamily = "Litera-Regular";
 
-  late double mainFontSize = 30;
-  late double optionFontSize = 30;
-  late double mainWidth = 250;
-  late double mainHeight = 150;
-  late double optionWidth = 200;
-  late double optionHeight = 150;
+  late double mainFontSize;
+  late double optionFontSize;
+  late double mainWidth;
+  late double mainHeight;
+  late double optionWidth;
+  late double optionHeight;
   Color mainFontColor = Globals().appFontColorLight;
   Color optionFontColor = Globals().appFontColorLight;
   late Object? mainFieldType = FieldType.TITLE;
@@ -86,8 +86,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       ),
     );
     bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
-      //adUnitId: 'ca-app-pub-3940256099942544/6300978111', //test id
+      //adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111', //test id
       request: AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
@@ -144,13 +144,15 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       // test mode
       // numberQuestions = 1;
       Globals().printDebug("test8");
-      useNavigation = args?['useNavigation'] ?? true;
+      useNavigation = (args?['useNavigation']) ?? useNavigation;
       Globals().printDebug("test9");
-      useProgressBar = args?['useProgressBar'] ?? true;
+      useProgressBar = args?['useProgressBar'] ?? useProgressBar;
       Globals().printDebug("test10");
       fontFamily = args?['fontFamily'] ?? fontFamily;
       Globals().printDebug("test10.1");
-      mainFontSize = args?['mainFontSize'] ?? mainFontSize;
+      //debugPrint("***************** mainFontSize3: $mainFontSize");
+      mainFontSize = args?['mainFontSize'];
+      debugPrint("******************* mainFontSize4: $mainFontSize");
       Globals().printDebug("test10.2");
       optionFontSize = args?['optionFontSize'] ?? optionFontSize;
       mainWidth = args?['mainWidth'] ?? mainWidth;
@@ -226,14 +228,23 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   @override
   Widget build(BuildContext context) {
     Globals().printDebug("******** baseModule build");
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: backgroundColor,
-      appBar: getAppBar(),
-      drawer: () {
-        getMenu();
-      } (),
-      body: getBody()
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Colors.white, Globals().appBarColorDark],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            tileMode: TileMode.clamp),
+      ),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
+        appBar: getAppBar(),
+        drawer: () {
+          getMenu();
+        } (),
+        body: getBody()
+      ),
     );
   }
 
@@ -244,6 +255,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   PreferredSizeWidget getAppBar() {
     return AppBar(
       title: Text(title),
+      backgroundColor: Colors.transparent,
     );
   }
 
@@ -272,7 +284,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
               ],
             ),
             Container(
-              color: Globals().appBarColorDark,
+              color: Colors.transparent,
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: ValueListenableBuilder(
@@ -305,7 +317,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     Globals().printDebug("numberQuestions: $numberQuestions");
     double percent = (numberQuestions>0)?(listPosition+1) / numberQuestions:0;
     return Container(
-      color: Colors.white,
+      color: Colors.transparent,
       padding: const EdgeInsets.all(10.0),
       child: LinearPercentIndicator(
         lineHeight: 10.0,
@@ -317,13 +329,13 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
-            color: Globals().appFontColorDark),
+            color: Colors.white),
         ),
         trailing: Text(numberQuestions.toString() + '  ',
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
-            color: Globals().appFontColorDark),
+            color: Colors.white),
         ),
         progressColor: Globals().appBarColor,
         backgroundColor: backgroundColor,
@@ -464,10 +476,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  ElevatedButton getSoundTile(Word word, [Color border=Colors.white]) {
+  ElevatedButton getSoundTile(Word word, {Color borderColor=Colors.blue}) {
     return ElevatedButton(
         onPressed: () => audioPlay(word.id),
-        style: Globals().buttonStyle(),
+        style: Globals().buttonStyle(
+          borderColor: borderColor
+        ),
         child: Stack(
           children: [
             Icon(
@@ -485,7 +499,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  ElevatedButton getOnsetTile(Word word) {
+  ElevatedButton getOnsetTile(Word word, {double imageSize=200}) {
     Globals().printDebug('********** onset tile 1 word:' + word.title);
     Globals().printDebug('********** onset tile 2 word:' + Globals().alphabetOnsetList.length.toString());
     late Word onset;
@@ -500,12 +514,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         style: Globals().buttonStyle(),
         child: Stack(
           children: [
-            Image(
-                image: AssetImage('assets/images/voice-onset.png'),
-                width: 100,
-                gaplessPlayback: true,
-                color: Colors.black.withOpacity((word.id==8)?0.5:1.0) // opacity on muted letter (h)
-            ),
+            getImage('voice-onset',width:imageSize),
             Positioned(
               bottom: 10, right: 0,
               child: Icon(
@@ -527,30 +536,18 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     );
   }
 
-  Widget getImageTile(int id, {double imageSize=200, Color borderColor=Colors.white, Color backgroundColor=Colors.white}) {
+  Widget getImageTile(int id, {double imageSize=200, Color borderColor=Colors.blue, Color backgroundColor=Colors.white}) {
     if (containsAudio)
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
           onPressed: () => audioPlay(id),
-          // style: Globals().buttonStyle(
-          //   backgroundColor: backgroundColor,
-          // ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: backgroundColor,
-            foregroundColor: backgroundColor,
-            surfaceTintColor: backgroundColor,
-            side: BorderSide(
-              width: 5.0,
-              color: borderColor,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            )
+          style: Globals().buttonStyle(
+            borderColor: borderColor
           ),
           child: Stack(
             children: [
-              getImage(id,imageSize),
+              getImage(id,width:imageSize),
               Positioned(
                 bottom: 10, right: 0,
                 child: Icon(
@@ -577,16 +574,16 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         child: ElevatedButton(
             onPressed: () => null,
             style: Globals().buttonStyle(),
-            child: getImage(id,imageSize)
+            child: getImage(id,width:imageSize)
         ),
       );
   }
 
-  Widget getImage(int id, [double width=100, double padding=15]) {
+  Widget getImage(id, {double width=100, double padding=10, Color backgroundColor=Colors.white}) {
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Container(
-        color: Colors.white,
+        color: backgroundColor,
         child: Image(
           image: AssetImage('assets/images/$id.png'),
           width: width,
