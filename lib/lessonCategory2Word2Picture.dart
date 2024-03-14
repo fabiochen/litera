@@ -35,7 +35,7 @@ class _State extends BaseModuleState<LessonCategory2Word2Picture> {
           Text(
             category.toUpperCase(),
             style: TextStyle(
-              color: Globals().appBarColorDark,
+              color: Colors.white,
               fontSize: mainFontSize,
               fontWeight: FontWeight.bold
             ),

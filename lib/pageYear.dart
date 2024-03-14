@@ -41,6 +41,8 @@ class _PageYearState extends BaseModuleState<PageYear> {
     return SingleChildScrollView(
       child: ExpansionPanelList.radio(
         initialOpenPanelValue: (!Globals().firstTime) ? Globals().prefs.getInt('expandedId-$_yearIndex') : null,
+        expandIconColor: Colors.white,
+        dividerColor: Colors.white,
         children: _getListExpansionPanelRadio(),
       ),
     );

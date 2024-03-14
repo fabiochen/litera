@@ -29,21 +29,32 @@ class _ModuleSpelling02State extends BaseModuleState<ModuleSpelling02> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 200.0,
-              padding: EdgeInsets.all(12),
-              child: TextField(
-                controller: userInputTextField,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 200.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
-                decoration: InputDecoration(
-                  border: new OutlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.teal)),
-                  hintText: Globals().getAssetsVocab('TYPE-WORD'),
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: TextField(
+                  controller: userInputTextField,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 40.0,
+                      color: Globals().appFontColorDark
+                  ),
+                  decoration: InputDecoration(
+                    hintText: Globals().getAssetsVocab('TYPE-WORD'),
+                    hintStyle: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey
+                    )
+                  ),
                 ),
               ),
             ), // textfield

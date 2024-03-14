@@ -236,6 +236,13 @@ class _PageHomeState extends BaseModuleState<PageHome> {
                   Text(
                     Globals().listYears[i].value,
                     style: TextStyle(
+                        shadows: <Shadow>[
+                          Shadow(
+                            offset: Offset(3,3),
+                            blurRadius: 3.0,
+                            color: Colors.blue,
+                          ),
+                        ],
                         color: Colors.white,
                         fontSize: 40,
                         fontWeight: FontWeight.bold,

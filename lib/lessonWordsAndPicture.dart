@@ -21,8 +21,11 @@ class _LessonWordsAndPictureState extends BaseModuleState<LessonWordsAndPicture>
         Color backgroundColor = Colors.white
       }
       ) {
-    return super.getMainText(word, fontSize,
-      backgroundColor: optionColors[listPosition%10]!,
+    return SizedBox(
+      height: 100,
+      child: super.getMainText(word, fontSize,
+        backgroundColor: optionColors[listPosition%10]!,
+      ),
     );
   }
 

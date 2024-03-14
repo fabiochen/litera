@@ -27,14 +27,12 @@ class _LessonAlphabetCursiveState extends BaseModuleState<LessonAlphabetCursive>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            getMainText(wordMain, 100,
+            getMainText(wordMain, 80,
               fontFamily :  "Litera-Regular"),
-            SizedBox(width: 80),
-            getMainText(wordMain, 100,
+            getMainText(wordMain, 80,
               fontFamily: "Maria_lucia",
               fontColor: Colors.red)
           ],

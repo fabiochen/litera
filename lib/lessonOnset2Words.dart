@@ -98,7 +98,10 @@ class _LessonOnset2WordsState extends BaseOptionTilesState<LessonOnset2Words> {
     Word onset = listProcess[listPosition] as Word;
     Globals().printDebug("onset1: " + onset.title);
     audioPlayOnset(onset.title.substring(0,1));
-    return getOnsetTile(onset);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: getOnsetTile(onset),
+    );
   }
 
   void _playTileAudio(Object itemId) {

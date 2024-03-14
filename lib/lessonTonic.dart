@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'word.dart';
 import 'baseModule.dart';
 import 'globals.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class LessonTonic extends BaseModule {
   @override
@@ -23,12 +24,10 @@ class _State extends BaseModuleState<LessonTonic> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(width:10),
         getImageTile(
           wordMain.id,
           backgroundColor: optionColors[wordMain.id%10]!,
         ),
-        SizedBox(width:10)
       ],
     );
   }
@@ -41,25 +40,32 @@ class _State extends BaseModuleState<LessonTonic> {
     Globals().printDebug("accent syllable: " + wordMain.val2);
     for (int i=0; i<listSyllables.length; i++) {
       listWidgets.add(Container(
-              alignment: Alignment.center,
-              width: mainWidth,
-              height: mainWidth,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  border: Border.all(
-                    color: (wordMain.val2 == (i+1).toString())?Colors.red:Colors.transparent,
-                    width: 2,
-                  )
+          alignment: Alignment.center,
+          height: mainWidth,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              border: Border.all(
+                color: (wordMain.val2 == (i+1).toString())?Colors.red:Colors.transparent,
+                width: 2,
+              )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: AutoSizeText(
+              listSyllables[i],
+              style: TextStyle(
+                fontSize: mainFontSize,
               ),
-              child: getText(listSyllables[i],mainFontSize)
-          ));
+            ),
+          )
+      ));
     }
     Row rowSyllables = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: listWidgets,
     );
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(8.0),
       child: rowSyllables,
     );
   }

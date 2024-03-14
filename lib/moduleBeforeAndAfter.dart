@@ -107,7 +107,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
         break;
     }
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(8.0),
       child: Text(
         text,
         textAlign: TextAlign.center,

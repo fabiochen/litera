@@ -4,6 +4,7 @@ import 'package:flutter_midi_pro/flutter_midi_pro.dart';
 
 import 'baseModule.dart';
 import 'globals.dart';
+import 'package:litera/word.dart';
 
 class LessonMusic extends BaseModule {
   @override
@@ -22,8 +23,20 @@ class _State extends BaseModuleState<LessonMusic> {
   }
 
   @override
-  String getMainLabel(text) {
-    return text;
+  Widget getMainText(
+      Word word,
+      double fontSize,
+      {String fontFamily = "Litera-Regular",
+        Color fontColor = Colors.teal,
+        Color backgroundColor = Colors.white
+      }
+      ) {
+    return SizedBox(
+      height: 100,
+      child: super.getMainText(word, fontSize,
+        backgroundColor: optionColors[listPosition%10]!,
+      ),
+    );
   }
 
   @override

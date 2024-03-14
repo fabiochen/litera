@@ -8,6 +8,8 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'menu.dart';
 import 'word.dart';
 import 'globals.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:just_audio/just_audio.dart';
 
 class BaseModule extends StatefulWidget {
   @override
@@ -17,6 +19,8 @@ class BaseModule extends StatefulWidget {
 class BaseModuleState<T extends BaseModule> extends State<T> {
 
   int listPosition=0;
+
+  AudioPlayer player = AudioPlayer();
 
   // year #: [portuguese module index, math module index]
   Map<String,int> unlockModuleIndex = {'0-0':0,'0-1':0,'1-0':0,'1-1':0, '1-2':0};
@@ -80,8 +84,9 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         maxAdContentRating: MaxAdContentRating.g,
         tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
         testDeviceIds: <String>[
-          "AD77649C27A07629F1CBF3D6291B6C84",
-          "5DA35B68B1037D249669C37E7087B993",
+//          "AD77649C27A07629F1CBF3D6291B6C84",
+//          "5DA35B68B1037D249669C37E7087B993",
+          "BB2C1C888DC418C2F6D73E1A5BE6F964"
         ],
       ),
     );
@@ -392,7 +397,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     }
     return ElevatedButton(
       onPressed: null,
-      child: Text(
+      child: AutoSizeText(
         getMainLabel(label),
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -836,38 +841,37 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     audioPlay(testWord.id);
   }
 
-  void playTime(String time) {
+  void playTime(String time) async {
     int hr = int.parse(time.substring(0,2));
     int min = int.parse(time.substring(3,5));
-    Globals().audioPlayer.stop();
+    player.stop();
     String strHr = (400+hr).toString();
     String strHrEnding = "horas";
     String strMin = (600+min).toString();
+    late final playlist;
     if (min == 0) {
       if (hr == 1) strHrEnding = "hora";
-      if (hr >  1) strHrEnding = "horas";
-      Globals().audioPlayer.open(
-        Playlist(
-            audios: [
-              Audio("assets/audios/$strHr.mp3"),
-              Audio("assets/audios/$strHrEnding.mp3")
-            ]
-        ),
+      if (hr > 1) strHrEnding = "horas";
+      playlist = ConcatenatingAudioSource(
+          children: [
+            AudioSource.asset("assets/audios/$strHr.mp3"),
+            AudioSource.asset("assets/audios/$strHrEnding.mp3"),
+          ],
       );
     } else {
       if (hr == 1) strHrEnding = "hora_e";
       if (hr >  1) strHrEnding = "horas_e";
-      Globals().audioPlayer.open(
-        Playlist(
-            audios: [
-              Audio("assets/audios/$strHr.mp3"),
-              Audio("assets/audios/$strHrEnding.mp3"),
-              Audio("assets/audios/$strMin.mp3"),
-              Audio("assets/audios/minutos.mp3"),
-            ]
-        ),
+      playlist = ConcatenatingAudioSource(
+        children: [
+          AudioSource.asset("assets/audios/$strHr.mp3"),
+          AudioSource.asset("assets/audios/$strHrEnding.mp3"),
+          AudioSource.asset("assets/audios/$strMin.mp3"),
+          AudioSource.asset("assets/audios/minutos.mp3"),
+        ],
       );
     }
+    await player.setAudioSource(playlist, initialIndex: 0, initialPosition: Duration.zero);
+    await player.play();
   }
 
   void audioStop() {

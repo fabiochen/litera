@@ -300,11 +300,13 @@ class Globals {
     printDebug("******** init 4.4");
     getYear2Mat();
     getYear2Sci();
+    getYear2Mus();
 
     getYear3Por();
     getYear3Geo();
     getYear3Sci();
     getYear3Math();
+    getYear3Mus();
 
     printDebug("******** init 5");
     expandedId.asMap().forEach((index, value) => prefs.getInt("expandedId-$index") ?? Sub.PORTUGUESE.index);
@@ -1496,70 +1498,6 @@ class Globals {
     List<Module> listModules = [];
 
     listModules.add(() {
-      String _title = "Instrumentos";
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.LESSON,
-        _year,
-        _subject,
-        listMusicInstruments,
-        '/LessonMusic',
-      );
-    }());
-
-    listModules.add(() {
-      String _title = "Qual é o Instrumento?";
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        // only use first C
-        listMusicInstruments,  //alphabet,
-        '/ModuleWord2Pictures',
-        optionHeight: 150,
-      );
-    }());
-
-    listModules.add(() {
-      String _title = "Som de Instrumento";
-      int _modulePos = listModules.length;
-      return Module(
-          _modulePos,
-          _title,
-          ModuleType.EXERCISE,
-          _year,
-          _subject,
-          listMusicInstruments,
-          '/ModuleSound2Images',
-          containsAudio: true,
-          optionHeight: 150,
-          misc: false // no reference note
-      );
-    }());
-
-    listModules.add(() {
-      String _title = "Som de Instrumento";
-      int _modulePos = listModules.length;
-      return Module(
-          _modulePos,
-          _title,
-          ModuleType.TEST,
-          _year,
-          _subject,
-          listMusicInstruments,
-          '/ModuleSound2Images',
-          containsAudio: true,
-          optionHeight: 150,
-          misc: false // no reference note
-      );
-    }());
-
-    listModules.add(() {
       String _title = "Dó, Ré, Mi";
       int _modulePos = listModules.length;
       return Module(
@@ -1639,6 +1577,88 @@ class Globals {
       );
     }());
 
+    listYears[_year.index].subjects.add(
+        Subject(_subject, "Música", listModules,  Image.asset('assets/icon/music.png')));
+  }
+
+  void getYear2Mus() {
+    Yr _year = Yr.TWO;
+    Sub _subject = Sub.MUSIC;
+    List<Module> listModules = [];
+
+    listModules.add(() {
+      String _title = "Instrumentos";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        listMusicInstruments,
+        '/LessonMusic',
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Qual é o Instrumento?";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        // only use first C
+        listMusicInstruments,  //alphabet,
+        '/ModuleWord2Pictures',
+        optionHeight: 150,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Som de Instrumento";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.EXERCISE,
+          _year,
+          _subject,
+          listMusicInstruments,
+          '/ModuleSound2Images',
+          containsAudio: true,
+          optionHeight: 150,
+          misc: false // no reference note
+      );
+    }());
+
+    listModules.add(() {
+      String _title = "Som de Instrumento";
+      int _modulePos = listModules.length;
+      return Module(
+          _modulePos,
+          _title,
+          ModuleType.TEST,
+          _year,
+          _subject,
+          listMusicInstruments,
+          '/ModuleSound2Images',
+          containsAudio: true,
+          optionHeight: 150,
+          misc: false // no reference note
+      );
+    }());
+
+    listYears[_year.index].subjects.add(
+        Subject(_subject, "Música", listModules,  Image.asset('assets/icon/music.png')));
+  }
+
+  void getYear3Mus() {
+    Yr _year = Yr.THREE;
+    Sub _subject = Sub.MUSIC;
+    List<Module> listModules = [];
+
     listModules.add(() {
       String _title = "Piano";
       int _modulePos = listModules.length;
@@ -1692,15 +1712,15 @@ class Globals {
       String _title = "Qual é a Nota? (partitura)";
       int _modulePos = listModules.length;
       return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        listMusicNotes,
-        '/ModuleSound2Images',
-        useNavigation: false,
-        misc: true // include reference note
+          _modulePos,
+          _title,
+          ModuleType.EXERCISE,
+          _year,
+          _subject,
+          listMusicNotes,
+          '/ModuleSound2Images',
+          useNavigation: false,
+          misc: true // include reference note
       );
     }());
 
@@ -1831,7 +1851,8 @@ class Globals {
           mapMatchWord,
           '/LessonCategory2Word2Picture',
           list2: listSyllables,
-          mainFieldType: FieldType.TITLE
+          mainFieldType: FieldType.TITLE,
+          mainFontSize: 80,
       );
     }());
 
@@ -1899,59 +1920,6 @@ class Globals {
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        alphabet,
-        '/ModuleWord2Pictures',
-        optionHeight: 150,
-      );
-    }());
-
-    listModules.add(() {
-      String _title = getAssetsVocab('SPELLING') + " 1";
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        listVocab.where((word) =>
-          word.title.length == 6 &&
-          !(word.title.contains(RegExp(r'[çáãéêôóõú]'))) &&
-          (word.containsAudio) &&
-          (word.containsImage)
-        ).toList(),
-        '/ModuleSpelling01',
-      );
-    }());
-
-    listModules.add(() {
-      String _title = getAssetsVocab('SPELLING') + " 2";
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        alphabet.where((word) =>
-        word.title.length <= 6 &&
-            !(word.title.contains(RegExp(r'[çáãéêôóõú]'))) &&
-            (word.containsAudio) &&
-            (word.containsImage)
-        ).toList(),
-        '/ModuleSpelling02',
-      );
-    }());
-
-    listModules.add(() {
       String _title = "Letras (Antes e Depois)";
       int _modulePos = listModules.length;
       return Module(
@@ -1981,49 +1949,6 @@ class Globals {
         optionFieldType: FieldType.TITLE,
         optionFontSize: 30,
         sortCriteria: FieldType.TITLE,
-      );
-    }());
-
-    listModules.add(() {
-      String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
-        _year,
-        _subject,
-        alphabet,
-        '/ModuleWord2Pictures',
-        optionHeight: 150,
-      );
-    }());
-
-    listModules.add(() {
-      String _title = getAssetsVocab('SPELLING') + " 1";
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
-        _year,
-        _subject,
-        alphabet.where((word) => word.title.length <= 6 && word.title.length > 3).toList(),
-        '/ModuleSpelling01',
-      );
-    }());
-
-    listModules.add(() {
-      String _title = getAssetsVocab('SPELLING') + ' 2';
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.TEST,
-        _year,
-        _subject,
-        alphabet.where((word) => word.title.length <= 6).toList(),
-        '/ModuleSpelling02',
       );
     }());
 
@@ -2069,6 +1994,102 @@ class Globals {
         _subject,
         listGenderNumber,
         '/ModuleGenderNumber',
+      );
+    }());
+
+    listModules.add(() {
+      String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        alphabet,
+        '/ModuleWord2Pictures',
+        optionHeight: 150,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = getAssetsVocab('SPELLING') + " 1";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listVocab.where((word) =>
+        word.title.length == 6 &&
+            !(word.title.contains(RegExp(r'[çáãéêôóõú]'))) &&
+            (word.containsAudio) &&
+            (word.containsImage)
+        ).toList(),
+        '/ModuleSpelling01',
+      );
+    }());
+
+    listModules.add(() {
+      String _title = getAssetsVocab('SPELLING') + " 2";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        alphabet.where((word) =>
+        word.title.length <= 6 &&
+            !(word.title.contains(RegExp(r'[çáãéêôóõú]'))) &&
+            (word.containsAudio) &&
+            (word.containsImage)
+        ).toList(),
+        '/ModuleSpelling02',
+      );
+    }());
+
+    listModules.add(() {
+      String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        alphabet,
+        '/ModuleWord2Pictures',
+        optionHeight: 150,
+      );
+    }());
+
+    listModules.add(() {
+      String _title = getAssetsVocab('SPELLING') + " 1";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        alphabet.where((word) => word.title.length <= 6 && word.title.length > 3).toList(),
+        '/ModuleSpelling01',
+      );
+    }());
+
+    listModules.add(() {
+      String _title = getAssetsVocab('SPELLING') + ' 2';
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.TEST,
+        _year,
+        _subject,
+        alphabet.where((word) => word.title.length <= 6).toList(),
+        '/ModuleSpelling02',
       );
     }());
 
@@ -3878,7 +3899,7 @@ class Globals {
       surfaceTintColor: backgroundColor,
       disabledBackgroundColor: backgroundColor,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           side: BorderSide(
             width: borderWidth,
             color: borderColor,

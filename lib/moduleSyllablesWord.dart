@@ -27,8 +27,15 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
             "__" + word.title.substring(2),
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.teal,
+              color: Colors.white,
               fontSize: 50,
+              shadows: <Shadow>[
+                Shadow(
+                  offset: Offset(3,3),
+                  blurRadius: 3.0,
+                  color: Colors.blue,
+                ),
+              ],
             ),
           ),
         )

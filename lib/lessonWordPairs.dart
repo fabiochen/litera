@@ -28,24 +28,13 @@ class _State extends BaseModuleState<LessonWordPairs> {
         ),
     );
 
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            getImageTile(wordMas.id, imageSize: 100), // image
-            getImageTile(wordFem.id, imageSize: 100), // image
-          ],
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            getMainText(wordMas,50), // words
-            getMainText(wordFem,50), // words
-          ],
-        )
+        getImageTile(wordMas.id, imageSize: 100), // image
+        getMainText(wordMas,50), // words
+        getImageTile(wordFem.id, imageSize: 100), // image
+        getMainText(wordFem,50), // words
       ],
     );
   }

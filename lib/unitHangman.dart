@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'baseModule.dart';
 import 'word.dart';
@@ -73,7 +74,7 @@ class _State extends BaseModuleState<UnitHangman> {
           padding: const EdgeInsets.all(3.0),
           child: TextButton(
               onPressed: () => (listBadLetters.length<10 && !isDone())?checkLetterExists(i):null,
-              child: Text(
+              child: AutoSizeText(
                 Globals().listAlphabetSounds[i].title.toUpperCase(),
                 style: TextStyle(
                   color: (!listBadLetters.contains(Globals().listAlphabetSounds[i].title))?Colors.white:Colors.grey,
@@ -116,7 +117,7 @@ class _State extends BaseModuleState<UnitHangman> {
             child: Text(
               space,
               style: TextStyle(
-                color: listGoodLetters.contains(testLetter)?Colors.teal:Colors.deepOrange,
+                color: listGoodLetters.contains(testLetter)?Colors.white:Colors.deepOrange,
                 fontSize: 80,
                 fontFamily: "Chivo-mono"
               ),
@@ -183,7 +184,7 @@ class Hangman extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Globals().printDebug("bad letters count: " + listBadLetters.length.toString());
     Paint paint = Paint()
-      ..color = Colors.brown
+      ..color = Colors.yellow
       ..strokeWidth = 4.0
       ..style = PaintingStyle.stroke
       ..strokeJoin = StrokeJoin.round;

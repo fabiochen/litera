@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_midi_pro/flutter_midi_pro.dart';
 import 'package:litera/baseModule.dart';
 import 'package:litera/globals.dart';
 import 'dart:async';
@@ -14,15 +13,7 @@ class ModulePiano extends BaseModule {
 
 class _State extends BaseModuleState<ModulePiano> {
 
-  final _midiPro = MidiPro();
-  final String _sf2Path = 'assets/audios/FlorestanPiano.sf2';
-
-  int _start = 5;
-  bool doCountdown = true;
-
   int _noteFrequencyPlayed = 0;
-  int _audioDelay = 0;
-  bool isPressed = false;
 
   Color _keyColor = Colors.white;
 
@@ -45,7 +36,9 @@ class _State extends BaseModuleState<ModulePiano> {
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
     debugPrint("************** maintile audio ${wordMain.val1}");
-    _audioDelay = 3500;
+    Globals().t1 = Timer(Duration(milliseconds: 2000), () {
+      audioPlay(wordMain.id);
+    });
     return Container(
       child: Column(
         children: [
@@ -74,13 +67,6 @@ class _State extends BaseModuleState<ModulePiano> {
                     return SizedBox.shrink();
                   },
                 ),
-                // Text("?",
-                //     style: TextStyle(
-                //       fontSize: 70,
-                //       color: Colors.blue,
-                //       fontWeight: FontWeight.bold,
-                //     )
-                // ),  // question mark
               ],
             ),
           )),
@@ -109,26 +95,6 @@ class _State extends BaseModuleState<ModulePiano> {
           ))
         ],
       ),
-    );
-  }
-
-  void startCountdown() {
-    const oneSec = const Duration(seconds: 1);
-    Timer.periodic(
-      oneSec,
-          (Timer timer) {
-        if (_start == 0) {
-          setState(() {
-            timer.cancel();
-            doCountdown = false;
-            useNavigation = true;
-          });
-        } else {
-          setState(() {
-            _start--;
-          });
-        }
-      },
     );
   }
 

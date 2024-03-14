@@ -49,6 +49,7 @@ class _State extends BaseModuleState<UnitCategory2Words> {
                     width: 5,
                   ),
                 ),
+                clipBehavior: Clip.antiAlias,
                 child: CupertinoPicker(
                   backgroundColor: Colors.white,
                   itemExtent: 60,
@@ -118,6 +119,7 @@ class _State extends BaseModuleState<UnitCategory2Words> {
                     width: 5,
                   ),
                 ),
+                clipBehavior: Clip.antiAlias,
                 child: CupertinoPicker(
                   backgroundColor: Colors.white,
                   itemExtent: 60,

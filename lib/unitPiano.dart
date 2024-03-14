@@ -44,26 +44,29 @@ class _State extends BaseModuleState<UnitPiano> {
           children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                runAlignment: WrapAlignment.spaceEvenly,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Container(
-                    child: Image.asset('assets/images/$_noteId.png'),
+                    width: 200,
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 15,
-                      ),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.white, width: 5 ),
+                      borderRadius: BorderRadius.all(Radius.circular(5))
                     ),
+                    child: Image.asset('assets/images/$_noteId.png'),
                   ),
                   Container(
-                    width: 120,
+                    width: 200,
                     child: Text(
                       _noteName.toString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 80,
-                          color: Colors.blue,
+                          color: Colors.orange,
                           fontWeight: FontWeight.bold
                       ),
                     ),
@@ -76,7 +79,7 @@ class _State extends BaseModuleState<UnitPiano> {
               child: VirtualPiano(
                 noteRange: const RangeValues(60, 72),
                 highlightedNoteSets: [
-                  HighlightedNoteSet({_noteFrequency}, Colors.blue),
+                  HighlightedNoteSet({_noteFrequency}, Colors.orange),
                 ],
                 onNotePressed: (note, pos) {
                   switch (note) {

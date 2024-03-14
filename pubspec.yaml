@@ -53,6 +53,7 @@ dev_dependencies:
   roulette: ^0.1.5
   flutter_virtual_piano: ^0.0.9
   auto_size_text: ^3.0.0
+  just_audio: ^0.9.36
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
