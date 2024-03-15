@@ -91,8 +91,8 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       ),
     );
     bannerAd = BannerAd(
-      //adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', //test id
+      adUnitId: 'ca-app-pub-4740796354683139/8664737042', // ad mob litera portuguese: bottom
+      //adUnitId: 'ca-app-pub-3940256099942544/6300978111', //test id
       request: AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(

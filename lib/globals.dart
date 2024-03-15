@@ -1262,7 +1262,7 @@ class Globals {
         listNumber1t20.where((word) => word.id <= 154).toList(),
         '/LessonImageText',
         mainFieldType: FieldType.VAL1,
-        mainFontSize: 80,
+        mainFontSize: 100,
       );
     }());
     listModules.add(() {

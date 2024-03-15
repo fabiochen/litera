@@ -17,7 +17,6 @@ class _State extends BaseModuleState<LessonImageText> {
   Widget getMainTile() {
     Word word = listProcess[listPosition] as Word;
     audioPlay(word.id);
-    String text = Globals().getLabelFromFieldType(word, mainFieldType);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -25,9 +24,26 @@ class _State extends BaseModuleState<LessonImageText> {
           word.id,
           borderColor: optionColors[listPosition%10]!,
         ), // image
-        getText(text,mainFontSize), // words
+        Text(
+          word.val1,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: mainFontSize,
+            fontFamily: 'mynerve',
+            shadows: <Shadow>[
+              Shadow(
+                offset: Offset(3,3),
+                blurRadius: 3.0,
+                color: Colors.blue,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
+
+
   
 }
