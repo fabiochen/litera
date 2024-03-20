@@ -15,7 +15,7 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleLetters2Pic
     return super.getImageTile(
       id,
       imageSize: imageSize,
-      borderColor: Globals().appColor!
+      borderColor: Globals().appColor
     );
   }
 

@@ -3,6 +3,7 @@ import 'globals.dart';
 
 import 'package:litera/word.dart';
 import 'package:litera/baseOptionTiles.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class ModulePicture2Words extends BaseOptionTiles {
   @override
@@ -28,7 +29,7 @@ class _State extends BaseOptionTilesState<ModulePicture2Words> {
     }
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Text(
+      child: AutoSizeText(
         text,
         textAlign: TextAlign.center,
         style: TextStyle(

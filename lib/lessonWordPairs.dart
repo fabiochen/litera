@@ -31,9 +31,9 @@ class _State extends BaseModuleState<LessonWordPairs> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getImageTile(wordMas.id, imageSize: 100), // image
+        Expanded(child:getImageTile(wordMas.id, imageSize: 100)), // image
         getMainText(wordMas,50), // words
-        getImageTile(wordFem.id, imageSize: 100), // image
+        Expanded(child:getImageTile(wordFem.id, imageSize: 100)), // image
         getMainText(wordFem,50), // words
       ],
     );

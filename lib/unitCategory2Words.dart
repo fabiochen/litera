@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'word.dart';
 import 'baseModule.dart';
@@ -76,25 +77,29 @@ class _State extends BaseModuleState<UnitCategory2Words> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                    onPressed: () => _audioPlayCategory(),
-                    style: Globals().buttonStyle(),
-                    child: Stack(
-                      children: [
-                        Icon(
-                          IconData(57400, fontFamily: 'LiteraIcons'),
-                          color: Colors.blue,
-                          size: 80,
-                        ),
-                        Icon(
-                          IconData(57401, fontFamily: 'LiteraIcons'),
-                          color: Colors.white,
-                          size: 80,
-                        ), // second icon to "paint" previous transparent icon
-                      ],
-                    )
+              Container(
+                height: 80,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      onPressed: () => _audioPlayCategory(),
+                      style: Globals().buttonStyle(),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Icon(
+                            IconData(57400, fontFamily: 'LiteraIcons'),
+                            color: Colors.blue,
+                            size: 49,
+                          ),
+                          Icon(
+                            IconData(57401, fontFamily: 'LiteraIcons'),
+                            color: Colors.white,
+                            size: 50,
+                          ), // second icon to "paint" previous transparent icon
+                        ],
+                      )
+                  ),
                 ),
               ),
             ],
@@ -103,7 +108,7 @@ class _State extends BaseModuleState<UnitCategory2Words> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                width: 240,
+                width: 220,
                 height: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -159,25 +164,29 @@ class _State extends BaseModuleState<UnitCategory2Words> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                    onPressed: () => _audioPlayWord(),
-                    style: Globals().buttonStyle(),
-                    child: Stack(
-                      children: [
-                        Icon(
-                          IconData(57400, fontFamily: 'LiteraIcons'),
-                          color: Colors.blue,
-                          size: 80,
-                        ),
-                        Icon(
-                          IconData(57401, fontFamily: 'LiteraIcons'),
-                          color: Colors.white,
-                          size: 80,
-                        ), // second icon to "paint" previous transparent icon
-                      ],
-                    )
+              Container(
+                height:80,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      onPressed: () => _audioPlayWord(),
+                      style: Globals().buttonStyle(),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Icon(
+                            IconData(57400, fontFamily: 'LiteraIcons'),
+                            color: Colors.blue,
+                            size: 49,
+                          ),
+                          Icon(
+                            IconData(57401, fontFamily: 'LiteraIcons'),
+                            color: Colors.white,
+                            size: 50,
+                          ), // second icon to "paint" previous transparent icon
+                        ],
+                      )
+                  ),
                 ),
               ),
             ],

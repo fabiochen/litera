@@ -22,7 +22,7 @@ class _State extends BaseModuleState<ModuleExpressionEval> {
   int _selectedResultLeft = 0;
   int _selectedResultRight = 0;
   late String op;
-  final double fontSizeMin = 100;
+  final double fontSizeMin = 75;
 
   List<int> listDigits = [0,1,2,3,4,5,6,7,8,9];
 
@@ -115,7 +115,7 @@ class _State extends BaseModuleState<ModuleExpressionEval> {
                   Expanded(
                     flex: 1,
                     child: SizedBox(),
-                  ),
+                  ),  // spacer
                   Expanded(
                       flex: 2,
                       child: AutoSizeText(
@@ -131,11 +131,11 @@ class _State extends BaseModuleState<ModuleExpressionEval> {
                             FontFeature.tabularFigures(),
                           ],
                         ),
-                      )),
+                      )),  // first value
                   Expanded(
                     flex: 1,
                     child: SizedBox(),
-                  ),
+                  ),  // spacer
                 ],
               )),
               Expanded(child: Row(
@@ -148,7 +148,7 @@ class _State extends BaseModuleState<ModuleExpressionEval> {
                         children: [
                           Expanded(child: getImage(op,backgroundColor: Colors.transparent))
                         ],
-                      )),
+                      )),  // operation
                   Expanded(
                       flex: 2,
                       child: AutoSizeText(
@@ -164,11 +164,11 @@ class _State extends BaseModuleState<ModuleExpressionEval> {
                             FontFeature.tabularFigures()
                           ],
                         ),
-                      )),
+                      )),  // second value
                   Expanded(
                     flex: 1,
                     child: SizedBox(),
-                  ),
+                  ),  // spacer
                 ],
               ))  // op + second number
             ],

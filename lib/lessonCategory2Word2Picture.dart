@@ -31,7 +31,7 @@ class _State extends BaseModuleState<LessonCategory2Word2Picture> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Text(
             category.toUpperCase(),
             style: TextStyle(
@@ -43,7 +43,7 @@ class _State extends BaseModuleState<LessonCategory2Word2Picture> {
           Expanded(
             child: getImageTile((listProcess as List<Map<String, List<Word>>>).elementAt(listPosition).values.first[_selectedChars].id)
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Container(
             width: 250,
             height: 100,

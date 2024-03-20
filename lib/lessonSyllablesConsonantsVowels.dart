@@ -34,6 +34,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                       width: 5,
                     ),
                   ),
+                  clipBehavior: Clip.antiAlias,
                   foregroundDecoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     border: Border.all(
@@ -71,15 +72,15 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                       children: [
                         Image(
                           image: AssetImage('assets/images/voice-onset.png'),
-                          width: 100,
+                          width: 80,
                           gaplessPlayback: true,
                         ),
                         Positioned(
-                          bottom: 10, right: 0,
+                          bottom: 11, right: 1,
                           child: Icon(
                             IconData(57400, fontFamily: 'LiteraIcons'),
                             color: Colors.green,
-                            size: 40,
+                            size: 38,
                           ),
                         ),
                         Positioned(
@@ -107,6 +108,7 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                       width: 5,
                     ),
                   ),
+                  clipBehavior: Clip.antiAlias,
                   foregroundDecoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     border: Border.all(
@@ -144,15 +146,15 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
                       children: [
                         Image(
                           image: AssetImage('assets/images/voice-onset.png'),
-                          width: 100,
+                          width: 80,
                           gaplessPlayback: true,
                         ),
                         Positioned(
-                          bottom: 10, right: 0,
+                          bottom: 11, right: 1,
                           child: Icon(
                             IconData(57400, fontFamily: 'LiteraIcons'),
                             color: Colors.red,
-                            size: 40,
+                            size: 38,
                           ),
                         ),
                         Positioned(
@@ -197,16 +199,17 @@ class _LessonSyllablesConsonantsVowelsState extends BaseModuleState<LessonSyllab
             onPressed: () => _playSyllableAudio(),
             style: Globals().buttonStyle(),
             child: Stack(
+              alignment: Alignment.center,
               children: [
                 Icon(
                   IconData(57400, fontFamily: 'LiteraIcons'),
                   color: Colors.blue,
-                  size: 100,
+                  size: 69,
                 ),
                 Icon(
                   IconData(57401, fontFamily: 'LiteraIcons'),
                   color: Colors.white,
-                  size: 100,
+                  size: 70,
                 ), // second icon to "paint" previous transparent icon
               ],
             )

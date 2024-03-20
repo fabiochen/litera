@@ -32,7 +32,7 @@ class _State extends BaseModuleState<LessonMusic> {
       }
       ) {
     return SizedBox(
-      height: 100,
+      height: 80,
       child: super.getMainText(word, fontSize,
         backgroundColor: optionColors[listPosition%10]!,
       ),
@@ -47,7 +47,6 @@ class _State extends BaseModuleState<LessonMusic> {
         padding: const EdgeInsets.all(15.0),
         child: Container(
           width: width,
-          height: width,
           decoration: new BoxDecoration(
             border: Border.all(),
             color: Color(int.parse(wordMain.val1)),

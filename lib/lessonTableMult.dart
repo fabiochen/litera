@@ -29,7 +29,7 @@ class _State extends BaseModuleState<LessonTableMult> {
             Expanded(child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 350,
+                height: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   border: Border.all(
@@ -106,7 +106,7 @@ class _State extends BaseModuleState<LessonTableMult> {
             Expanded(child: Padding(
               padding: EdgeInsets.all(8),
               child: Container(
-                height: 350,
+                height: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   border: Border.all(

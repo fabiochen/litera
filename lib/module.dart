@@ -69,35 +69,35 @@ class Module {
   );
 
   Map<String,Object> get arguments {
-    args!['modulePos'] = this.pos;
-    args!['title'] = this.title;
-    args!['type'] = this.type;
-    args!['year'] = this.year.index;
-    args!['subject'] = this.subject.index;
-    args!['list1'] = this.list1 as Object;
-    if (this.list2 != null) args!['list2'] = this.list2 as Object;
-    args!['isVisibleTarget'] = this.isVisibleTarget;
-    if (this.numberQuestions != null) args!['numberQuestions'] = this.numberQuestions as Object;
-    args!['useNavigation'] = this.useNavigation;
-    args!['useProgressBar'] = this.useProgressBar;
-    args!['fontFamily'] = this.fontFamily;
+    args['modulePos'] = this.pos;
+    args['title'] = this.title;
+    args['type'] = this.type;
+    args['year'] = this.year.index;
+    args['subject'] = this.subject.index;
+    args['list1'] = this.list1 as Object;
+    if (this.list2 != null) args['list2'] = this.list2 as Object;
+    args['isVisibleTarget'] = this.isVisibleTarget;
+    if (this.numberQuestions != null) args['numberQuestions'] = this.numberQuestions as Object;
+    args['useNavigation'] = this.useNavigation;
+    args['useProgressBar'] = this.useProgressBar;
+    args['fontFamily'] = this.fontFamily;
     args['mainFontSize'] = this.mainFontSize;
-    args!['optionFontSize'] = this.optionFontSize;
-    args!['mainFontColor'] = this.mainFontColor;
-    args!['optionFontColor'] = this.optionFontColor;
-    args!['mainWidth'] = this.mainWidth;
-    args!['mainHeight'] = this.mainHeight;
-    args!['optionWidth'] = this.optionWidth;
-    args!['optionHeight'] = this.optionHeight;
-    if (this.mainFieldType != null) args!['mainFieldType'] = this.mainFieldType as Object;
-    if (this.optionFieldType != null) args!['optionFieldType'] = this.optionFieldType as Object;
-    if (this.optionTileType != null) args!['optionTileType'] = this.optionTileType as Object;
-    if (this.sortCriteria != null) args!['sortCriteria'] = this.sortCriteria as Object;
-    if (this.misc != null) args!['misc'] = this.misc as Object;
+    args['optionFontSize'] = this.optionFontSize;
+    args['mainFontColor'] = this.mainFontColor;
+    args['optionFontColor'] = this.optionFontColor;
+    args['mainWidth'] = this.mainWidth;
+    args['mainHeight'] = this.mainHeight;
+    args['optionWidth'] = this.optionWidth;
+    args['optionHeight'] = this.optionHeight;
+    if (this.mainFieldType != null) args['mainFieldType'] = this.mainFieldType as Object;
+    if (this.optionFieldType != null) args['optionFieldType'] = this.optionFieldType as Object;
+    if (this.optionTileType != null) args['optionTileType'] = this.optionTileType as Object;
+    if (this.sortCriteria != null) args['sortCriteria'] = this.sortCriteria as Object;
+    if (this.misc != null) args['misc'] = this.misc as Object;
 
-    args!['loop'] = this.loop;
-    args!['containsAudio'] = this.containsAudio;
-    args!['noLock'] = this.noLock;
+    args['loop'] = this.loop;
+    args['containsAudio'] = this.containsAudio;
+    args['noLock'] = this.noLock;
     return args;
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litera/globals.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:litera/word.dart';
 import 'package:litera/baseModule.dart';
@@ -10,15 +11,17 @@ class LessonWord2Onsets extends BaseModule {
 }
 
 class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
-
   Widget getMainTile() {
     wordMain = listProcess[listPosition] as Word;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Flexible(child: getImageTile(wordMain.id)),
-        Flexible(child: getMainText(wordMain, 70,
-          backgroundColor: optionColors[wordMain.id%10]!,
+        Flexible(
+            child: getMainText(
+          wordMain,
+          70,
+          backgroundColor: optionColors[wordMain.id % 10]!,
         )),
         Flexible(child: _getOnsetsTile()), // letters
       ],
@@ -48,52 +51,55 @@ class _LessonWord2OnsetsState extends BaseModuleState<LessonWord2Onsets> {
       child: ElevatedButton(
         onPressed: () => audioPlayOnset(char),
         style: Globals().buttonStyle(),
-        child: Stack(
-          children: [
-            Container(
-              width: 45,
-              alignment: Alignment.center,
-              height: 100,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.white)
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+          Expanded(
+              child: Container(
+            alignment: Alignment.center,
+            height: 100,
+            decoration: BoxDecoration( color: Colors.white, border: Border.all(color: Colors.white)),
+            child: AutoSizeText(
+              char.toUpperCase(),
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.teal,
               ),
-              child: Text(
-                char.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.teal,
-                ),
-              ),
-            ), // onset letter
-            Positioned(
-              bottom: 0, right: 0,
-              child: (char != ' ') ? Icon(
-                IconData(57400, fontFamily: 'LiteraIcons'),
-                color: Colors.blue,
-                size: 20,
-              ) : Icon(
-                IconData(57400, fontFamily: 'LiteraIcons'),
-                color: Colors.white,
-                size: 20,
-              ),
-            ), // first icon
-            Positioned(
-              bottom: 0, right: 0,
-              child: (char != ' ') ? Icon(
-                IconData(57401, fontFamily: 'LiteraIcons'),
-                color: Colors.white,
-                size: 20,
-              ) : Icon(
-                IconData(57401, fontFamily: 'LiteraIcons'),
-                color: Colors.white,
-                size: 20,
-              ),
-            ), // second icon to "paint" previous transparent icon
-          ],
-        ),
+            ),
+          )),
+          Stack(
+            children: [
+              SizedBox(height: 40), // onset letter
+              Positioned(
+                child: (char != ' ')
+                    ? Icon(
+                        IconData(57400, fontFamily: 'LiteraIcons'),
+                        color: Colors.blue,
+                        size: 20,
+                      )
+                    : Icon(
+                        IconData(57400, fontFamily: 'LiteraIcons'),
+                        color: Colors.white,
+                        size: 20,
+                      ),
+              ), // first icon
+              Positioned(
+                child: (char != ' ')
+                    ? Icon(
+                        IconData(57401, fontFamily: 'LiteraIcons'),
+                        color: Colors.white,
+                        size: 20,
+                      )
+                    : Icon(
+                        IconData(57401, fontFamily: 'LiteraIcons'),
+                        color: Colors.white,
+                        size: 20,
+                      ),
+              ), // second icon to "paint" previous transparent icon
+            ],
+          )
+        ]),
       ),
     );
   }
-
 }

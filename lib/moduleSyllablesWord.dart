@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'baseOptionTiles.dart';
 import 'word.dart';
 import 'globals.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class ModuleSyllablesWord extends BaseOptionTiles {
   @override
@@ -20,10 +21,10 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
             onPressed: () {},
             style: Globals().buttonStyle(),
             child: getImage(word.id,width:100)),
-        SizedBox(width: 50),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Text(
+        SizedBox(width: 20),
+        Expanded(child:Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: AutoSizeText(
             "__" + word.title.substring(2),
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -38,7 +39,7 @@ class _ModuleSyllablesWordState extends BaseOptionTilesState<ModuleSyllablesWord
               ],
             ),
           ),
-        )
+        ))
       ],
     );
   }

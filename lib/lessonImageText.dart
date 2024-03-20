@@ -20,10 +20,10 @@ class _State extends BaseModuleState<LessonImageText> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getImageTile(
+        Expanded(child: getImageTile(
           word.id,
           borderColor: optionColors[listPosition%10]!,
-        ), // image
+        )), // image
         Text(
           word.val1,
           textAlign: TextAlign.center,

@@ -24,98 +24,107 @@ class _State extends BaseModuleState<LessonClockDigital> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SizedBox(height: 40),
-        Flexible(child: Globals().getClock(hr.title + ":" + mn.title, 5)),
-        Flexible(child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 150,
-              height: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.red,
-                  width: 5,
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Globals().getClock(hr.title + ":" + mn.title, 5),
+          )),
+        Expanded(
+          flex:1,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+            child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.red,
+                    width: 5,
+                  ),
                 ),
-              ),
-              foregroundDecoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.red,
-                  width: 5,
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.red,
+                    width: 5,
+                  ),
                 ),
-              ),
-              child: CupertinoPicker(
-                backgroundColor: Colors.white,
-                itemExtent: 60,
-                children: [
-                  ...Globals().listTimeHour.map((word) {
-                    String title = word.title;
-                    return Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 50,
-                        color: Colors.deepOrange,
-                      ),
-                    );
-                  }).toList(),
-                ],
-                onSelectedItemChanged: (value) {
-                  setState(() {_selectedHour = value;});
-                },
-              ),
-            ),  // hour
-            Container(
-              width:50,
-              alignment: Alignment.center,
-              child: Text(
-                ":",
-                style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
+                clipBehavior: Clip.antiAlias,
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 60,
+                  children: [
+                    ...Globals().listTimeHour.map((word) {
+                      String title = word.title;
+                      return Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 50,
+                          color: Colors.deepOrange,
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                  onSelectedItemChanged: (value) {
+                    setState(() {_selectedHour = value;});
+                  },
                 ),
-              )),  // :
-            Container(
-              width: 150,
-              height: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.teal,
-                  width: 5,
+              ),  // hour
+              Container(
+                width:50,
+                alignment: Alignment.center,
+                child: Text(
+                  ":",
+                  style: TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                )),  // :
+              Container(
+                width: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.teal,
+                    width: 5,
+                  ),
                 ),
-              ),
-              foregroundDecoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                border: Border.all(
-                  color: Colors.teal,
-                  width: 5,
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  border: Border.all(
+                    color: Colors.teal,
+                    width: 5,
+                  ),
                 ),
-              ),
-              child: CupertinoPicker(
-                backgroundColor: Colors.white,
-                itemExtent: 60,
-                children: [
-                  ...Globals().listTimeMinutes.map((word) {
-                    String title = word.title;
-                    return Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 50,
-                        color: Colors.green,
-                      ),
-                    );
-                  }).toList(),
-                ],
-                onSelectedItemChanged: (value) {
-                  setState(() {_selectedMinute = value;});
-                },
-              ),
-            ),  // minutes
-          ],
-        )),  // consonant/vowel text
+                clipBehavior: Clip.antiAlias,
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 60,
+                  children: [
+                    ...Globals().listTimeMinutes.map((word) {
+                      String title = word.title;
+                      return Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 50,
+                          color: Colors.green,
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                  onSelectedItemChanged: (value) {
+                    setState(() {_selectedMinute = value;});
+                  },
+                ),
+              ),  // minutes
+            ],
+                    ),
+          )),  // consonant/vowel text
       ],
     );
   }

@@ -62,13 +62,13 @@ class _State extends BaseOptionTilesState<ModuleGenderNumber> {
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(5.0),
       child: Text(
         Globals().enumGenderNumber[int.parse(word.val1)],
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.teal,
-          fontSize: 25,
+          fontSize: optionFontSize,
           fontFamily: fontFamily,
         ),
       ),

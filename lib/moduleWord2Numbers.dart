@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'baseOptionTiles.dart';
 import 'word.dart';
 import 'globals.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class ModuleWord2Numbers extends BaseOptionTiles {
   @override
@@ -74,9 +75,10 @@ class _ModuleLetters2PictureState extends BaseOptionTilesState<ModuleWord2Number
   Widget getOptionValue(Word word, [double fontSize=50]) {
     String text = Globals().getLabelFromFieldType(word, optionFieldType);
     return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Text(
+      padding: const EdgeInsets.all(5.0),
+      child: AutoSizeText(
         text,
+        maxLines: 1,
         textAlign: TextAlign.center,
         style: TextStyle(
           color: optionFontColor,

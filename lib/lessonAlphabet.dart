@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:litera/baseModule.dart';
 import 'package:litera/word.dart';
 
-import 'globals.dart';
-
 class LessonAlphabet extends BaseModule {
   @override
   _LessonAlphabetState createState() => _LessonAlphabetState();

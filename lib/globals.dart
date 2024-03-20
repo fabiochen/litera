@@ -1019,6 +1019,7 @@ class Globals {
         _subject,
         listAlphabetSounds,
         '/ModuleSound2Words',
+        optionWidth: 150,
       );
     }());
 
@@ -1196,6 +1197,7 @@ class Globals {
         _subject,
         listSyllables,
         '/ModuleSound2Words',
+        optionWidth: 150,
       );
     }());
 
@@ -1210,6 +1212,7 @@ class Globals {
         _subject,
         syllableUnique.where((word) => word.title.length == 4).toList(),
         '/ModuleSyllablesWord',
+        optionWidth: 150,
       );
     }());
 
@@ -1224,6 +1227,7 @@ class Globals {
         _subject,
         listSyllables,
         '/ModuleSound2Words',
+        optionWidth: 150,
       );
     }());
 
@@ -1238,6 +1242,7 @@ class Globals {
         _subject,
         syllableUnique.where((word) => word.title.length == 4).toList(),
         '/ModuleSyllablesWord',
+        optionWidth: 150,
       );
     }());
 
@@ -1266,8 +1271,7 @@ class Globals {
       );
     }());
     listModules.add(() {
-      String _title = getAssetsVocab('PICTURE') + " / " +
-          getAssetsVocab('NUMBERS');
+      String _title = "Imagem / Números";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -1277,6 +1281,7 @@ class Globals {
         _subject,
         listNumber1t20.where((word) => word.id <= 154).toList(),
         '/ModuleNumbers2Picture',
+        optionWidth: 150,
       );
     }());
     listModules.add(() {
@@ -1293,6 +1298,7 @@ class Globals {
         '/ModuleNumbers2Picture',
         useNavigation: false,
         sortCriteria: FieldType.ID,
+        optionWidth: 150,
       );
     }());
     listModules.add(() {
@@ -1321,6 +1327,7 @@ class Globals {
         '/ModuleBeforeAndAfter',
         optionFontSize: 40,
         mainFieldType: FieldType.VAL1,
+        optionWidth: 150,
       );
     }());
 
@@ -1370,6 +1377,7 @@ class Globals {
         sortCriteria: FieldType.ID,
         optionFontSize: 40,
         mainFieldType: FieldType.VAL1,
+        optionWidth: 150,
       );
     }());
 
@@ -1467,8 +1475,8 @@ class Globals {
         _subject,
         listColors,
         '/ModuleColors',
-        optionHeight: 150,
         misc: false,
+        optionWidth: 150,
       );
     }());
 
@@ -1483,7 +1491,7 @@ class Globals {
         _subject,
         listColors,
         '/ModuleColors',
-        optionHeight: 150,
+        optionWidth: 150,
         misc: false,
       );
     }());
@@ -1523,7 +1531,7 @@ class Globals {
         // only use first C
         listMusicNotes.where((word) => word.id < 808).toList(),  //alphabet,
         '/ModuleWord2Pictures',
-        optionHeight: 150,
+        optionWidth: 150,
       );
     }());
 
@@ -1541,6 +1549,7 @@ class Globals {
         optionFieldType: FieldType.TITLE,
         optionFontSize: 30,
         containsAudio: false,
+        optionWidth: 150,
       );
     }());
 
@@ -1556,7 +1565,7 @@ class Globals {
         // only use first C
         listMusicNotes.where((word) => word.id < 808).toList(),  // no upper C
         '/ModuleWord2Pictures',
-        optionHeight: 150,
+        optionWidth: 150,
       );
     }());
 
@@ -1574,6 +1583,7 @@ class Globals {
         optionFieldType: FieldType.TITLE,
         optionFontSize: 30,
         containsAudio: false,
+        optionWidth: 150,
       );
     }());
 
@@ -1612,7 +1622,7 @@ class Globals {
         // only use first C
         listMusicInstruments,  //alphabet,
         '/ModuleWord2Pictures',
-        optionHeight: 150,
+        optionWidth: 160,
       );
     }());
 
@@ -1628,7 +1638,7 @@ class Globals {
           listMusicInstruments,
           '/ModuleSound2Images',
           containsAudio: true,
-          optionHeight: 150,
+          optionWidth: 160,
           misc: false // no reference note
       );
     }());
@@ -1645,7 +1655,7 @@ class Globals {
           listMusicInstruments,
           '/ModuleSound2Images',
           containsAudio: true,
-          optionHeight: 150,
+          optionWidth: 160,
           misc: false // no reference note
       );
     }());
@@ -1720,6 +1730,7 @@ class Globals {
           listMusicNotes,
           '/ModuleSound2Images',
           useNavigation: false,
+          optionWidth: 160,
           misc: true // include reference note
       );
     }());
@@ -1787,11 +1798,12 @@ class Globals {
         '/ModuleBeforeAndAfter',
         optionFontSize: 50,
         mainFieldType: FieldType.VAL1,
+        optionWidth: 150,
       );
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('ONSET') + " / " + getAssetsVocab('WORDS');
+      String _title = "Som inicial / Palavras";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -1801,13 +1813,13 @@ class Globals {
         _subject,
         listOnsetConsonants,
         '/LessonOnset2Words',
-        optionWidth: 100,
-        optionHeight: 50,
+        optionWidth: 80,
+        optionHeight: 30,
       );
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('ONSETS');
+      String _title = "Palavra / Sons iniciais";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -1867,6 +1879,7 @@ class Globals {
         _subject,
         listVocab.where((word) => word.containsAudio && word.title.length < 10).toList(),
         '/ModuleSyllablesCount',
+        optionWidth: 150,
       );
     }());
 
@@ -1887,7 +1900,7 @@ class Globals {
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS');
+      String _title = "Imagem / Palavras";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -1898,12 +1911,13 @@ class Globals {
         listVocab.where((word) => word.containsImage && word.containsAudio && word.title.length <= 5).toList(),
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
-        optionFontSize: 30,
+        optionFontSize: 25,
+        optionWidth: 160,
       );
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS') + " (cursiva)";
+      String _title = "Imagem / Palavras (cursiva)";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -1916,6 +1930,7 @@ class Globals {
         optionFieldType: FieldType.TITLE,
         optionFontSize: 40,
         fontFamily: "Maria_lucia",
+        optionWidth: 160,
       );
     }());
 
@@ -1932,11 +1947,12 @@ class Globals {
         '/ModuleBeforeAndAfter',
         optionFontSize: 50,
         mainFieldType: FieldType.VAL1,
+        optionWidth: 160,
       );
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('PICTURE') + " / " + getAssetsVocab('WORDS');
+      String _title = "Imagem / Palavras";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -1947,8 +1963,9 @@ class Globals {
         listVocab.where((word) => word.containsImage && word.containsAudio && word.title.length <= 5).toList(),
         '/ModulePicture2Words',
         optionFieldType: FieldType.TITLE,
-        optionFontSize: 30,
+        optionFontSize: 25,
         sortCriteria: FieldType.TITLE,
+        optionWidth: 160,
       );
     }());
 
@@ -1994,11 +2011,13 @@ class Globals {
         _subject,
         listGenderNumber,
         '/ModuleGenderNumber',
+        optionWidth: 160,
+        optionFontSize: 20,
       );
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
+      String _title = "Palavras / Imagens";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -2008,12 +2027,12 @@ class Globals {
         _subject,
         alphabet,
         '/ModuleWord2Pictures',
-        optionHeight: 150,
+        optionWidth: 160,
       );
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('SPELLING') + " 1";
+      String _title = "Soletrar 1";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -2032,7 +2051,7 @@ class Globals {
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('SPELLING') + " 2";
+      String _title = "Soletrar 2";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -2051,7 +2070,7 @@ class Globals {
     }());
 
     listModules.add(() {
-      String _title = getAssetsVocab('WORD') + " / " + getAssetsVocab('PICTURES');
+      String _title = "Palavras / Imagens";
       int _modulePos = listModules.length;
       return Module(
         _modulePos,
@@ -2061,7 +2080,7 @@ class Globals {
         _subject,
         alphabet,
         '/ModuleWord2Pictures',
-        optionHeight: 150,
+        optionWidth: 160,
       );
     }());
 
@@ -2132,6 +2151,7 @@ class Globals {
         _subject,
         listNumber1t20,
         '/ModuleNumbers2Word',
+        optionWidth: 160,
       );
     }());
 
@@ -2146,6 +2166,7 @@ class Globals {
         _subject,
         listNumber1t20,
         '/ModuleNumbers2Word',
+        optionWidth: 160,
       );
     }());
 
@@ -2161,7 +2182,7 @@ class Globals {
         listMath2.where((word) => word.title.contains("+")).toList(),
         '/ModuleExpressionEval',
         numberQuestions: 999,
-        misc: 'v'
+        misc: 'v',
       );
     }());
 
@@ -2244,6 +2265,7 @@ class Globals {
         _subject,
         listNumber30t100,
         '/ModuleNumbers2Word',
+        optionWidth: 160,
       );
     }());
 
@@ -2258,6 +2280,7 @@ class Globals {
         _subject,
         listNumber30t100,
         '/ModuleNumbers2Word',
+        optionWidth: 160,
       );
     }());
 
@@ -2265,15 +2288,16 @@ class Globals {
       String _title = "Par ou Ímpar";
       int _modulePos = listModules.length;
       return Module(
-          _modulePos,
-          _title,
-          ModuleType.LESSON,
-          _year,
-          _subject,
-          mapMatchOddEvenNumber,
-          '/LessonCategory2Word2Picture',
-          list2: listVocab,
-          mainFieldType: FieldType.VAL1
+        _modulePos,
+        _title,
+        ModuleType.LESSON,
+        _year,
+        _subject,
+        mapMatchOddEvenNumber,
+        '/LessonCategory2Word2Picture',
+        list2: listVocab,
+        mainFieldType: FieldType.VAL1,
+        optionWidth: 160,
       );
     }());
 
@@ -2291,6 +2315,7 @@ class Globals {
         list2: mapMatchOddEvenNumber,
         containsAudio: false,
         numberQuestions: 999,
+        optionWidth: 160,
       );
     }());
 
@@ -2308,6 +2333,7 @@ class Globals {
         list2: mapMatchOddEvenNumber,
         containsAudio: false,
         numberQuestions: 999,
+        optionWidth: 160,
       );
     }());
 
@@ -2340,6 +2366,7 @@ class Globals {
         _subject,
         listNumber1t10Ordinal,
         '/ModuleNumbers2Word',
+        optionWidth: 160,
       );
     }());
 
@@ -2371,6 +2398,7 @@ class Globals {
         _subject,
         listNumber1t10Ordinal,
         '/ModuleNumbers2Word',
+        optionWidth: 160,
       );
     }());
 
@@ -2404,6 +2432,7 @@ class Globals {
         _subject,
         listNumber20t100Ordinal,
         '/ModuleNumbers2Word',
+        optionWidth: 160,
       );
     }());
 
@@ -2418,6 +2447,7 @@ class Globals {
         _subject,
         listNumber20t100Ordinal,
         '/ModuleNumbers2Word',
+        optionWidth: 160,
       );
     }());
 
@@ -2526,7 +2556,7 @@ class Globals {
         listDirections,
         '/ModuleLeftRight',
         numberQuestions: 10,
-        optionHeight: 200,
+        optionWidth: 160,
       );
     }());
 
@@ -2542,7 +2572,7 @@ class Globals {
         listDirections,
         '/ModuleLeftRight',
         numberQuestions: 10,
-        optionHeight: 200,
+        optionWidth: 160,
       );
     }());
 
@@ -2574,6 +2604,8 @@ class Globals {
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
         mainFieldType: FieldType.TITLE,
+        optionWidth: 160,
+        misc: 2,
       );
     }());
 
@@ -2590,6 +2622,8 @@ class Globals {
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
         mainFieldType: FieldType.TITLE,
+        optionWidth: 160,
+        misc: 2,
       );
     }());
 
@@ -2624,7 +2658,8 @@ class Globals {
           optionFieldType: FieldType.VAL1,
           mainFontSize: 50,
           optionFontSize: 50,
-          mainFontColor: Colors.red
+          mainFontColor: Colors.red,
+          optionWidth: 160,
       );
     }());
 
@@ -2639,8 +2674,9 @@ class Globals {
         _subject,
         listMonthsOfTheYear,
         '/ModuleBeforeAndAfter',
-        optionFontSize: 25,
+        optionFontSize: 30,
         mainFieldType: FieldType.TITLE,
+        optionWidth: 160,
       );
     }());
 
@@ -2657,6 +2693,7 @@ class Globals {
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
         mainFieldType: FieldType.TITLE,
+        optionWidth: 160,
       );
     }());
 
@@ -2688,6 +2725,7 @@ class Globals {
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
         mainFieldType: FieldType.TITLE,
+        optionWidth: 160,
       );
     }());
 
@@ -2704,6 +2742,7 @@ class Globals {
         '/ModuleBeforeAndAfter',
         optionFontSize: 25,
         mainFieldType: FieldType.TITLE,
+        optionWidth: 160,
       );
     }());
 
@@ -2765,6 +2804,7 @@ class Globals {
         _subject,
         listTimeTest,
         '/ModuleClock',
+        optionWidth: 160,
       );
     }());
 
@@ -2779,6 +2819,7 @@ class Globals {
         _subject,
         listTimeTest,
         '/ModuleClock',
+        optionWidth: 160,
       );
     }());
 
@@ -2852,6 +2893,7 @@ class Globals {
         numberQuestions: 20,
         mainFontSize: 40,
         optionFontSize: 50,
+        optionWidth: 160,
         mainWidth: 120,
         mainFieldType: FieldType.VAL2,
       );
@@ -2879,6 +2921,7 @@ class Globals {
         numberQuestions: 20,
         mainFontSize: 40,
         optionFontSize: 50,
+        optionWidth: 160,
         mainWidth: 120,
         mainFieldType: FieldType.VAL2,
       );
@@ -3057,6 +3100,7 @@ class Globals {
         '/ModuleHomophone2Options',
         misc: "ch|x",
         containsAudio: false,
+        optionWidth: 160,
         numberQuestions: 999
       );
     }());
@@ -3077,6 +3121,7 @@ class Globals {
         ).toList(),
         '/ModuleHomophone2Options',
         misc: "ch|x",
+        optionWidth: 160,
         containsAudio: false,
         numberQuestions: 999
       );
@@ -3119,6 +3164,7 @@ class Globals {
           misc: "ge|je",
           containsAudio: false,
           optionFontSize: 25,
+          optionWidth: 160,
           numberQuestions: 999
       );
     }());
@@ -3138,6 +3184,7 @@ class Globals {
           ).toList(),
           '/ModuleHomophone2Options',
           misc: "ge|je",
+          optionWidth: 160,
           containsAudio: false,
           numberQuestions: 999
       );
@@ -3178,6 +3225,7 @@ class Globals {
           ).toList(),
           '/ModuleHomophone2Options',
           misc: "gi|ji",
+          optionWidth: 160,
           containsAudio: false,
           numberQuestions: 999
       );
@@ -3198,6 +3246,7 @@ class Globals {
           ).toList(),
           '/ModuleHomophone2Options',
           misc: "gi|ji",
+          optionWidth: 160,
           containsAudio: false,
           numberQuestions: 999
       );
@@ -3255,6 +3304,29 @@ class Globals {
     }());
 
     listModules.add(() {
+      String _title = "Qual é a Capital?";
+      int _modulePos = listModules.length;
+      return Module(
+        _modulePos,
+        _title,
+        ModuleType.EXERCISE,
+        _year,
+        _subject,
+        listStateCapital,
+        '/ModuleWord2Numbers',
+        mainFontSize: 30,
+        optionFontSize: 25,
+        mainWidth: 300,
+        mainHeight: 150,
+        optionWidth: 160,
+        mainFontColor: Colors.red,
+        containsAudio: false,
+        mainFieldType: FieldType.TITLE,
+        optionFieldType: FieldType.VAL2,
+      );
+    }());
+
+    listModules.add(() {
       String _title = "Jogo da Memória";
       int _modulePos = listModules.length;
       return Module(
@@ -3270,29 +3342,6 @@ class Globals {
         mainFontSize: 15,
         optionFieldType: FieldType.TITLE,
         noLock: true,
-      );
-    }());
-
-    listModules.add(() {
-      String _title = "Qual é a Capital?";
-      int _modulePos = listModules.length;
-      return Module(
-        _modulePos,
-        _title,
-        ModuleType.EXERCISE,
-        _year,
-        _subject,
-        listStateCapital,
-        '/ModuleWord2Numbers',
-        mainFontSize: 30,
-        optionFontSize: 25,
-        mainWidth: 300,
-        mainHeight: 150,
-        optionWidth: 250,
-        mainFontColor: Colors.red,
-        containsAudio: false,
-        mainFieldType: FieldType.TITLE,
-        optionFieldType: FieldType.VAL2,
       );
     }());
 
@@ -3333,7 +3382,7 @@ class Globals {
         optionFontSize: 25,
         mainWidth: 300,
         mainHeight: 150,
-        optionWidth: 250,
+        optionWidth: 160,
         mainFontColor: Colors.red,
         containsAudio: false,
         mainFieldType: FieldType.TITLE,
@@ -3467,7 +3516,7 @@ class Globals {
         containsAudio: false,
         numberQuestions: 999,
         optionFontSize: 20,
-        optionWidth: 180,
+        optionWidth: 160,
       );
     }());
 
@@ -3486,7 +3535,7 @@ class Globals {
         containsAudio: false,
         numberQuestions: 999,
         optionFontSize: 20,
-        optionWidth: 180,
+        optionWidth: 160,
       );
     }());
 

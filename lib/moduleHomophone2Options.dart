@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'word.dart';
 import 'baseOptionTiles.dart';
 import 'globals.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class ModuleHomophone2Options extends BaseOptionTiles {
   @override
@@ -103,7 +104,7 @@ class _State extends BaseOptionTilesState<ModuleHomophone2Options> {
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Text(
+      child: AutoSizeText(
         word.title,
         textAlign: TextAlign.center,
         style: TextStyle(

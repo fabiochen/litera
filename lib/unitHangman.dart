@@ -78,10 +78,11 @@ class _State extends BaseModuleState<UnitHangman> {
                 Globals().listAlphabetSounds[i].title.toUpperCase(),
                 style: TextStyle(
                   color: (!listBadLetters.contains(Globals().listAlphabetSounds[i].title))?Colors.white:Colors.grey,
-                  fontSize: 23,
+                  fontSize: 50,
                 ),
               ),
             style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
               backgroundColor: MaterialStateProperty.resolveWith<Color?>(
                     (Set<MaterialState> states) {
                   return Globals().appButtonColor; // defer to the defaults

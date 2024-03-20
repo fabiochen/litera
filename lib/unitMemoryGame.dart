@@ -3,6 +3,7 @@ import 'package:litera/globals.dart';
 
 import 'baseModule.dart';
 import 'word.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class UnitMemoryGame extends BaseModule {
   @override
@@ -51,13 +52,13 @@ class _State extends BaseModuleState<UnitMemoryGame> {
 
   Widget getMainTile() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(5.0),
       child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 150,
+            maxCrossAxisExtent: 100,
             childAspectRatio: 1,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10),
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5),
           itemCount: listGame.length,
           itemBuilder: (BuildContext ctx, index) {
             Word word = listGame[index];
@@ -80,11 +81,12 @@ class _State extends BaseModuleState<UnitMemoryGame> {
                 backgroundColor: (isSelected) ? sColor : cardColor, // Background color
                 disabledBackgroundColor: (!unmatched || isSelected) ? optionColors[word.id%10] : cardColor,
                 surfaceTintColor: cardColor,
+                padding: EdgeInsets.all(10),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                     side: BorderSide(
                       color: Colors.white,
-                      width: 10.0,
+                      width: 3.0,
                     )
                 ),
               ),
@@ -156,15 +158,16 @@ class _State extends BaseModuleState<UnitMemoryGame> {
       return Icon(
         IconData(57400, fontFamily: 'LiteraIcons'),
         color: cardColor,
-        size: 40,
       );
     }
-    return Text(
+    return AutoSizeText(
       word.title,
       textAlign: TextAlign.center,
+      wrapWords: false,
+      softWrap: false,
       style: TextStyle(
         color: cardColor,
-        fontSize: mainFontSize
+        fontSize: 60
       ),
     );
   }

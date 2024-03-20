@@ -27,14 +27,31 @@ class _State extends BaseModuleState<LessonWordAndWord> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        getTextTile(word,
+        Expanded(child:getTextTile(word,
             fontSize: mainFontSize,
             fontColor: Colors.teal,
             borderColor: optionColors[listPosition%10],
             width: mainWidth,
-            containsAudio: containsAudio),
-        getText(text, optionFontSize, Colors.blueAccent), // words
+            containsAudio: containsAudio)),
+        getTextVal(text), // words
       ],
+    );
+  }
+
+  Widget getTextVal(text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: optionFontSize,
+        fontFamily: 'mynerve',
+        shadows: <Shadow>[
+          Shadow(
+            offset: Offset(3,3),
+            blurRadius: 3.0,
+            color: Colors.blue,
+          ),
+        ],
+      ),
     );
   }
 
@@ -50,7 +67,7 @@ class _State extends BaseModuleState<LessonWordAndWord> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(5.0),
               child: Container(
                 width: width,
                 height: 200,

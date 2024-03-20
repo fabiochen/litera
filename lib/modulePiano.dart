@@ -54,12 +54,12 @@ class _State extends BaseModuleState<ModulePiano> {
                     return SizedBox.shrink();
                   },
                 ),
-                getImageTile(
+                Expanded(child:getImageTile(
                     801,
                     imageSize: 100,
                     borderColor: Colors.orange
-                ),
-                (bool.parse(misc.toString())) ? getImageTile(wordMain.id, imageSize: 100, borderColor: Colors.blue) : getSoundTile(wordMain),
+                )),
+                (bool.parse(misc.toString())) ? Expanded(child:getImageTile(wordMain.id, imageSize: 100, borderColor: Colors.blue)) : Expanded(child:getSoundTile(wordMain)),
                 ValueListenableBuilder(
                   valueListenable: flagWrong,
                   builder: (context, value, widget) {

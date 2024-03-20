@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'baseModule.dart';
 import 'globals.dart';
@@ -32,7 +33,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
   Set<int> selectedTempIndexes = Set<int>();
   List<Set<int>> listWordIndexes = [];
   final key = GlobalKey();
-  final Set<_Foo> _trackTaped = Set<_Foo>();
+  final Set<_WordSearch> _trackTaped = Set<_WordSearch>();
   String strPuzzle = '';
   String selectedWord = '';
   List<String> listString = [];
@@ -119,7 +120,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
               onPointerMove: _detectTapedItem,
               onPointerUp: _checkSelection,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(1.0),
                 child: GridView.builder(
                   key: key,
                   itemCount: puzzleWidth*puzzleHeight,
@@ -131,12 +132,12 @@ class _State extends BaseModuleState<UnitWordSearch> {
                     mainAxisSpacing: 5.0,
                   ),
                   itemBuilder: (context, index) {
-                    return Foo(
+                    return WordSearch(
                       index: index,
                       child: Container(
                         alignment: Alignment.center,
                         color: selectedIndexes.contains(index) ? selectedIndexColor[index] : Colors.white,
-                        child: Text(
+                        child: AutoSizeText(
                           _removeDiacritics(strPuzzle.characters.elementAt(index).toUpperCase()),
                           style: TextStyle(
                             fontSize: 30,
@@ -201,7 +202,7 @@ class _State extends BaseModuleState<UnitWordSearch> {
       for (final hit in result.path) {
         /// temporary variable so that the [is] allows access of [index]
         final target = hit.target;
-        if (target is _Foo && !_trackTaped.contains(target)) {
+        if (target is _WordSearch && !_trackTaped.contains(target)) {
           _trackTaped.add(target);
           _selectIndex(target.index);
           selectedWord = selectedWord + strPuzzle.characters.elementAt(target.index);
@@ -299,23 +300,23 @@ class _State extends BaseModuleState<UnitWordSearch> {
 
 }
 
-class Foo extends SingleChildRenderObjectWidget {
+class WordSearch extends SingleChildRenderObjectWidget {
   final int index;
 
-  Foo({required Widget child, required this.index, Key? key}) : super(child: child, key: key);
+  WordSearch({required Widget child, required this.index, Key? key}) : super(child: child, key: key);
 
   @override
-  _Foo createRenderObject(BuildContext context) {
-    return _Foo(index);
+  _WordSearch createRenderObject(BuildContext context) {
+    return _WordSearch(index);
   }
 
   @override
-  void updateRenderObject(BuildContext context, _Foo renderObject) {
+  void updateRenderObject(BuildContext context, _WordSearch renderObject) {
     renderObject..index = index;
   }
 }
 
-class _Foo extends RenderProxyBox {
+class _WordSearch extends RenderProxyBox {
   int index;
-  _Foo(this.index);
+  _WordSearch(this.index);
 }

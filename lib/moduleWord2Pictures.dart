@@ -39,7 +39,7 @@ class _ModuleWord2PicturesState extends BaseOptionTilesState<ModuleWord2Pictures
   @override
   Widget getOptionValue(Word word, [double fontSize=50]) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(15.0),
       child: Image(
         image: AssetImage('assets/images/' + word.id.toString() + '.png'),
         gaplessPlayback: true,

@@ -276,8 +276,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (useProgressBar) getProgressBar(),
-        Flexible(
-            child: getMainTile()
+        Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: getMainTile(),
+            )
         ),
         Column(
           children: [
@@ -433,11 +436,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
                 ),
               ),
               Positioned(
-                bottom: 10, right: 0,
+                bottom: 11, right: 1,
                 child: Icon(
                   IconData(57400, fontFamily: 'LiteraIcons'),
                   color: Colors.blue,
-                  size: 40,
+                  size: 38,
                 ),
               ),
               Positioned(
@@ -470,13 +473,14 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
     }
   }
 
-  Text getText(String text, [double fontSize = 100, Color fontColor = Colors.teal]) {
-    return Text(
+  Widget getText(String text, [double fontSize = 100, Color fontColor = Colors.teal, String fontFamily = 'Litera-Regular']) {
+    return AutoSizeText(
       text,
       textAlign: TextAlign.center,
       style: TextStyle(
         color: fontColor,
         fontSize: fontSize,
+        fontFamily: fontFamily,
       ),
     );
   }
@@ -488,11 +492,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
           borderColor: borderColor
         ),
         child: Stack(
+          alignment: Alignment.center,
           children: [
             Icon(
               IconData(57400, fontFamily: 'LiteraIcons'),
               color: Colors.blue,
-              size: 100,
+              size: 98,
             ),
             Icon(
               IconData(57401, fontFamily: 'LiteraIcons'),
@@ -521,11 +526,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
           children: [
             getImage('voice-onset',width:imageSize),
             Positioned(
-              bottom: 10, right: 0,
+              bottom: 11, right: 1,
               child: Icon(
                 IconData(57400, fontFamily: 'LiteraIcons'),
                 color: Colors.blue.withOpacity((word.id==8)?0.5:1.0), // opacity on muted letter (h)
-                size: 40,
+                size: 38,
               ),
             ),
             Positioned(
@@ -544,7 +549,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
   Widget getImageTile(int id, {double imageSize=200, Color borderColor=Colors.blue, Color backgroundColor=Colors.white}) {
     if (containsAudio)
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(3.0),
         child: ElevatedButton(
           onPressed: () => audioPlay(id),
           style: Globals().buttonStyle(
@@ -554,11 +559,11 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
             children: [
               getImage(id,width:imageSize),
               Positioned(
-                bottom: 10, right: 0,
+                bottom: 11, right: 1,
                 child: Icon(
                   IconData(57400, fontFamily: 'LiteraIcons'),
                   color: Colors.blue,
-                  size: 40,
+                  size: 38,
                 ),
               ),
               Positioned(
@@ -575,7 +580,7 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
       );
     else
       return Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(3.0),
         child: ElevatedButton(
             onPressed: () => null,
             style: Globals().buttonStyle(),
@@ -843,9 +848,12 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
 
   void playTime(String time) async {
     int hr = int.parse(time.substring(0,2));
+    debugPrint("playTime: 1");
     int min = int.parse(time.substring(3,5));
-    player.stop();
+    debugPrint("playTime: 2");
+    debugPrint("playTime: 3");
     String strHr = (400+hr).toString();
+    debugPrint("playTime: 4");
     String strHrEnding = "horas";
     String strMin = (600+min).toString();
     late final playlist;
@@ -870,11 +878,21 @@ class BaseModuleState<T extends BaseModule> extends State<T> {
         ],
       );
     }
-    await player.setAudioSource(playlist, initialIndex: 0, initialPosition: Duration.zero);
+    player.stop();
+    debugPrint("playTime: 5");
+    try {
+      await player.setAudioSource(playlist, initialIndex: 0, initialPosition: Duration.zero);
+    } catch (e) {
+      player = AudioPlayer();
+    }
+    debugPrint("playTime: 6");
     await player.play();
+    debugPrint("playTime: 7");
   }
 
   void audioStop() {
+    player.stop();
+    player.dispose();
     Globals().audioPlayer.stop();
     Globals().t1?.cancel();
     Globals().t2?.cancel();

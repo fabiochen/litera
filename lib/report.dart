@@ -60,7 +60,7 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
                               child: Column(
                                 children: [
                                   LinearPercentIndicator(
-                                    lineHeight: 15.0,
+                                    lineHeight: 20.0,
                                     animation: true,
                                     animationDuration: 1000,
                                     percent: correctCount/totalCount,
@@ -69,7 +69,7 @@ class BaseReportState<T extends Report> extends BaseModuleState<T> {
                                     backgroundColor: Colors.black,
                                   ),
                                   LinearPercentIndicator(
-                                    lineHeight: 15.0,
+                                    lineHeight: 20.0,
                                     animation: true,
                                     animationDuration: 2000,
                                     percent: wrongCount/totalCount,

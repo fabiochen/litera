@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:litera/baseModule.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:litera/globals.dart';
 import 'package:litera/pageYear.dart';
@@ -233,7 +234,7 @@ class _PageHomeState extends BaseModuleState<PageHome> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  Expanded(child:AutoSizeText(
                     Globals().listYears[i].value,
                     style: TextStyle(
                         shadows: <Shadow>[
@@ -248,7 +249,7 @@ class _PageHomeState extends BaseModuleState<PageHome> {
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Mynerve'
                     ),
-                  )
+                  ))
                 ],
               )
           ),

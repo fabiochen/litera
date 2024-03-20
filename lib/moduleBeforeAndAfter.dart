@@ -6,6 +6,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:litera/baseOptionTiles.dart';
 import 'package:litera/word.dart';
 import 'package:litera/globals.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class ModuleBeforeAndAfter extends BaseOptionTiles {
   @override
@@ -15,6 +16,17 @@ class ModuleBeforeAndAfter extends BaseOptionTiles {
 class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
 
   List<int> listRel = [];
+
+  int maxLines = 1;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    try {
+      maxLines = int.parse(misc.toString());
+    } catch (e) {
+    }
+  }
 
   @override
   Widget getCenterTile(word) {
@@ -53,11 +65,11 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
     return getTextTile(word);
   }
 
-  Text getText(String text, [double fontSize = 100, Color color = Colors.teal]) {
+  Widget getText(String text, [double fontSize = 100, Color color = Colors.teal, String fontFamily = 'LiteraIcons']) {
     String rel = (listRel[listPosition] > 0)?"Antes":"Depois";
     text = Globals().getCategoryFromId(listProcess, listMain[listPosition].id + listRel[listPosition]).title;
     text = rel + " de $text";
-    return super.getText(text, fontSize, Colors.red);
+    return super.getText(text, fontSize, Colors.red, fontFamily);
   }
 
   ElevatedButton getSoundTile(Word word, {Color borderColor=Colors.white}) {
@@ -66,11 +78,12 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
         onPressed: () => _playAudio(),
         style: Globals().buttonStyle(),
         child: Stack(
+          alignment: Alignment.center,
           children: [
             Icon(
               IconData(57400, fontFamily: 'LiteraIcons'),
               color: Colors.blue,
-              size: 100,
+              size: 99,
             ),
             Icon(
               IconData(57401, fontFamily: 'LiteraIcons'),
@@ -96,7 +109,7 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
   }
 
   @override
-  Widget getOptionValue(Word word) {
+  Widget getOptionValue(Word word, [double fontSize=50]) {
     String text = '';
     switch(mainFieldType) {
       case FieldType.TITLE:
@@ -107,10 +120,12 @@ class _State extends BaseOptionTilesState<ModuleBeforeAndAfter> {
         break;
     }
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
+      padding: const EdgeInsets.all(3.0),
+      child: AutoSizeText(
         text,
         textAlign: TextAlign.center,
+        minFontSize: 20,
+        maxLines: maxLines,
         style: TextStyle(
           color: Colors.teal,
           fontSize: optionFontSize,
